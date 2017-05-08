@@ -1,0 +1,1 @@
+json.partial! "v1/bags/bag", collection: @bags, as: :bag

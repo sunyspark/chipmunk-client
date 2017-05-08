@@ -1,0 +1,1 @@
+json.partial! "v1/requests/request", collection: @request_records, as: :request_record
