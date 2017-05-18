@@ -43,7 +43,6 @@
 Gemfile.local
 config/resque.yml
 config/resque-pool.yml
-config/secrets.yml
 
 # Ignore capistrano
 /Capfile
