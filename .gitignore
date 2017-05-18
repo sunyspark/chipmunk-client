@@ -41,7 +41,6 @@
 
 # Configuration files
 Gemfile.local
-config/database.yml
 config/resque.yml
 config/resque-pool.yml
 config/secrets.yml
