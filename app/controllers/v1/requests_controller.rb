@@ -19,7 +19,7 @@ module V1
       if existing_record
         head 303, location: v1_request_url(existing_record)
       else
-        @request_record = RequestBuilder.new(create_params).build
+        @request_record = RequestBuilder.new.create(create_params.merge({user: current_user}))
         if @request_record.errors.empty?
           head 201, location: v1_request_url(@request_record)
         else
@@ -31,7 +31,7 @@ module V1
     private
 
     def create_params
-      request.parameters[:request] # This bypasses strong parameters
+      params.require(:request).permit([:bag_id, :external_id, :content_type])
     end
 
   end

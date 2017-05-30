@@ -3,7 +3,6 @@ Fabricator(:base_request, class_name: "Request") do
   bag_id { SecureRandom.uuid }
   user { Fabricate(:user) }
   external_id { SecureRandom.uuid }
-  upload_link { Faker::Internet.email }
 end
 
 Fabricator(:audio_request, from: :base_request) do
