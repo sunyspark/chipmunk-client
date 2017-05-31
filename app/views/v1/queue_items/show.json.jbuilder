@@ -1,0 +1,1 @@
+json.partial! "v1/queue_items/queue_item", queue_item: @queue_item
