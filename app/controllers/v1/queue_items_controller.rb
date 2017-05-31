@@ -2,7 +2,7 @@ module V1
   class QueueItemsController < ApplicationController
     # GET /v1/queue
     def index
-      @queue_items = policy_scope(QueueItem)
+      @queue_items = policy_scope(QueueItem).where(bag: nil)
     end
 
     # GET /v1/queue/:id

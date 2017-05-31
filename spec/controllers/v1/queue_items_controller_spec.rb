@@ -30,6 +30,14 @@ RSpec.describe V1::QueueItemsController, type: :controller do
 
     describe "GET #index" do
       it_behaves_like "an index endpoint" do
+        before(:each) do
+          # We invoke the done_proc here to add an additional,
+          # non-pending (complete) queue item.  Its existence
+          # will cause the tests to fail if it is retrieved by
+          # the index endpoint.
+          # This is a hack.
+          done_proc.call(user)
+        end
         let(:key) { :id }
         let(:factory) { pending_proc }
         let(:assignee) { :queue_items }
