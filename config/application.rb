@@ -38,5 +38,7 @@ module Chipmunk
     config.api_only = true
 
     config.autoload_paths << Rails.root.join('lib')
+
+    config.upload = config_for('upload')
   end
 end

@@ -3,6 +3,7 @@ class User < ApplicationRecord
   validates :email, presence: true
   validates :admin, inclusion: { in: [true, false] }
   validates :api_key, presence: true
+  validates :username, presence: true
 
   # Assign an API key
   before_create do |user|

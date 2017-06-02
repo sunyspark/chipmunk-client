@@ -28,16 +28,15 @@ RSpec.describe V1::RequestsController, type: :controller do
         {
           bag_id: SecureRandom.uuid,
           content_type: "audio",
-          user: user.email,
-          mirlyn_id: SecureRandom.uuid
-        }
+          external_id: SecureRandom.uuid
+        }.with_indifferent_access
       end
       let(:request_builder) { double(:request_builder, build: nil) }
       let(:expected_record) do
         Fabricate(:audio_request,
           bag_id: attributes[:bag_id],
           user: user,
-          external_id: attributes[:mirlyn_id]
+          external_id: attributes[:external_id]
         )
       end
       before(:each) do
@@ -70,11 +69,11 @@ RSpec.describe V1::RequestsController, type: :controller do
           end
           context "RequestBuilder returns a valid record" do
             before(:each) do
-              allow(request_builder).to receive(:build).and_return(expected_record)
+              allow(request_builder).to receive(:create).and_return(expected_record)
             end
             it "passes the parameters to a RequestBuilder" do
               post :create, params: {request: attributes}
-              expect(RequestBuilder).to have_received(:new).with(attributes)
+              expect(request_builder).to have_received(:create).with(attributes.merge({user: user}))
             end
             it "returns 201" do
               post :create, params: {request: attributes}
@@ -93,7 +92,7 @@ RSpec.describe V1::RequestsController, type: :controller do
             before(:each) do
               record = Fabricate.build(:request, user: nil)
               record.valid?
-              allow(request_builder).to receive(:build).and_return(record)
+              allow(request_builder).to receive(:create).and_return(record)
             end
             it "returns 422" do
               post :create, params: {request: attributes}

@@ -1,0 +1,11 @@
+# configuration for upload paths
+
+production:
+
+development:
+
+test:
+  # application-writable directory where upload points should be created, e.g. /pfdr/incoming/uniqname
+  upload_path: /pfdr/incoming/
+  # rsync point to user-writable upload path
+  rsync_point: localhost:incoming
