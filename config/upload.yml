@@ -3,6 +3,8 @@
 production:
 
 development:
+  upload_path: /tmp/incoming
+  rsync_point: localhost:incoming
 
 test:
   # application-writable directory where upload points should be created, e.g. /pfdr/incoming/uniqname

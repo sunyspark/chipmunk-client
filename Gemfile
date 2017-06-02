@@ -10,6 +10,9 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'rack-cors'
 gem 'jbuilder'
 gem 'pundit'
+# cli - should separate out
+gem 'bagit'
+gem 'rest-client'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri]

@@ -8,5 +8,9 @@ class ChipmunkBag < BagIt::Bag
   def chipmunk_info
     read_info_file chipmunk_info_txt_file
   end
+
+  def write_chipmunk_info(hash)
+    write_info_file chipmunk_info_txt_file, hash
+  end
   
 end

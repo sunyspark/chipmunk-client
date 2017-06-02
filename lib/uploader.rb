@@ -7,10 +7,10 @@ require_relative './chipmunk_bag'
 DARK_BLUE_ENDPOINT = "http://localhost:3000"
 
 class Uploader
-  def initialize(api_key,content_type,bag_path)
+  def initialize(api_key,bag_path)
     @api_key = api_key
     @bag_path = bag_path.chomp('/')
-    @request_params = request_params_from_bag(bag_path).merge(content_type: content_type)
+    @request_params = request_params_from_bag(bag_path)
   end
 
   def upload
@@ -21,22 +21,32 @@ class Uploader
     p bag
   end
 
+  def bag_id
+    request_params[:bag_id]
+  end
+
   private
 
-  attr_accessor :request_params, :api_key, :bag_path, :bag_id
+  attr_accessor :request_params, :api_key, :bag_path
+
+  def require_chipmunk_bag_tags(tags)
+  ["External-Identifier", 
+   "Bag-ID", 
+   "Chipmunk-Content-Type"].each do |field| 
+      raise RuntimeError, "missing #{field}" unless tags[field]
+    end
+  end
 
   def request_params_from_bag(bag_path)
     bag = ChipmunkBag.new bag_path
     raise RuntimeError, bag.errors.full_messages if !bag.valid?
 
-    bag_chipmunk_info = bag.chipmunk_info
-    external_id = bag_chipmunk_info['External-Identifier']
-    raise RuntimeError, 'missing external id' unless external_id
+    tags = bag.chipmunk_info
+    require_chipmunk_bag_tags(tags)
 
-    @bag_id = bag_chipmunk_info['Bag-ID']
-    raise RuntimeError, 'missing bag id' unless bag_id
-    
-    {external_id: external_id, bag_id: bag_id}
+    {external_id: tags['External-Identifier'],
+     content_type: tags['Chipmunk-Content-Type'],
+     bag_id: tags['Bag-ID']}
   end
 
   def auth_header

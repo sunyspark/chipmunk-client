@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+require 'bagit'
+require 'securerandom'
+require_relative '../lib/chipmunk_bag'
+
+unless ARGV.length == 3
+  raise ArgumentError, "Usage: #{$0} content_type external_id /path/to/bag" 
+end
+
+(content_type, external_id, bag_path) = ARGV
+
+# make a new bag with the given external id and content type at given path
+bag = ChipmunkBag.new bag_path
+
+# make a new file
+bag.add_file("samplefile") do |io|
+  io.puts "Hello Bag!"
+end
+
+bag.write_chipmunk_info({
+  'External-Identifier' => external_id,
+  'Chipmunk-Content-Type' => content_type,
+  'Bag-ID' => SecureRandom.uuid
+})
+
+# generate the manifest and tagmanifest files
+bag.manifest!
