@@ -3,7 +3,7 @@ class Bag < ApplicationRecord
   belongs_to :user
 
   def to_param
-    :bag_id
+    bag_id
   end
 
   validates :bag_id, presence: true
