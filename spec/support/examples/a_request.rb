@@ -32,5 +32,12 @@ RSpec.shared_examples "a request" do |factory_id|
     expect(request.upload_link).to eq(File.join(upload_link,'1'))
   end
 
+  describe "#to_param" do
+    it "uses the bag id" do
+      bag_id = 'made_up'
+      expect(Fabricate.build(factory_id, bag_id: bag_id).to_param).to eq(bag_id)
+    end
+  end
+
 end
 
