@@ -6,7 +6,7 @@ RSpec.describe RequestBuilder do
   let(:config_upload_path) { Rails.application.config.upload['upload_path'] }
   let(:user) { Fabricate(:user) }
 
-  describe '#build' do
+  describe '#create' do
     subject { described_class.new.create(params) }
 
     context "when given audio params" do

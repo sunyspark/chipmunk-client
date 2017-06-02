@@ -24,7 +24,7 @@ module V1
         head 303, location: v1_queue_item_url(existing_record)
       else
         authorize_create!
-        @queue_item = QueueItemBuilder.new(params[:bag_id]).build
+        @queue_item = QueueItemBuilder.new().create(params[:bag_id])
         if @queue_item.errors.empty?
           head 201, location: v1_queue_item_url(@queue_item)
         else

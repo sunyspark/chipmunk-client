@@ -1,11 +1,10 @@
 
 class QueueItemBuilder
 
-  def initialize(request)
-    @request = request
+  def initialize
   end
 
-  def create
+  def create(request)
     queue_item = QueueItem.new(request: request, bag: nil)
     if queue_item.valid?
       BagMoveJob.perform_later(queue_item, request.upload_path, storage_location)

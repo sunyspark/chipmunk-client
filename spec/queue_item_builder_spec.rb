@@ -11,13 +11,11 @@ RSpec.describe QueueItemBuilder do
   end
 
   describe "#create" do
-    subject { described_class.new(request).create }
-    it "creates a QueueItem" do
-      expect(subject).to be_an_instance_of(QueueItem)
-    end
-    it "is valid" do
-      expect(subject).to be_valid
-    end
+    subject { described_class.new().create(request) }
+
+    it { is_expected.to be_an_instance_of(QueueItem)}
+    it { is_expected.to be_valid }
+
     it "contains the request" do
       expect(subject.request).to eql(request)
     end

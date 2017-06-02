@@ -150,7 +150,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
         context "duplicate record" do
           let!(:request_record) { Fabricate(:request, bag_id: attributes[:bag_id], user: user) }
           let!(:expected_record) { Fabricate(:queue_item, request: request_record) }
-          before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+          before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
           it "does not invoke QueueItemBuilder" do
             expect(QueueItemBuilder).to_not receive(:new)
             post :create, params: attributes
@@ -177,7 +177,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
           context "user owns request, success" do
             let(:request_record) { Fabricate(:request, bag_id: attributes[:bag_id], user: user) }
             let(:expected_record) { Fabricate(:queue_item, request: request_record) }
-            before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+            before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
             it "returns 201" do
               post :create, params: attributes
               expect(response).to have_http_status(201)
@@ -198,7 +198,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
               record.errors.add(:bag, message: "test_error")
               record
             end
-            before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+            before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
             it "returns 422" do
               post :create, params: attributes
               expect(response).to have_http_status(422)
@@ -211,7 +211,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
           context "user does not own request, success" do
             let(:request_record) { Fabricate(:request, bag_id: attributes[:bag_id])}
             let(:expected_record) { Fabricate(:queue_item, request: request_record) }
-            before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+            before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
             it "returns 403" do
               post :create, params: attributes
               expect(response).to have_http_status(403)
@@ -228,7 +228,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
               record.errors.add(:bag, message: "test_error")
               record
             end
-            before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+            before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
             it "returns 403" do
               post :create, params: attributes
               expect(response).to have_http_status(403)
@@ -246,7 +246,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
         context "duplicate record" do
           let!(:request_record) { Fabricate(:request, bag_id: attributes[:bag_id], user: user) }
           let!(:expected_record) { Fabricate(:queue_item, request: request_record) }
-          before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+          before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
           it "does not invoke QueueItemBuilder" do
             expect(QueueItemBuilder).to_not receive(:new)
             post :create, params: attributes
@@ -273,7 +273,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
           context "user owns request, success" do
             let(:request_record) { Fabricate(:request, bag_id: attributes[:bag_id], user: user) }
             let(:expected_record) { Fabricate(:queue_item, request: request_record) }
-            before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+            before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
             it "returns 201" do
               post :create, params: attributes
               expect(response).to have_http_status(201)
@@ -294,7 +294,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
               record.errors.add(:bag, message: "test_error")
               record
             end
-            before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+            before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
             it "returns 422" do
               post :create, params: attributes
               expect(response).to have_http_status(422)
@@ -307,7 +307,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
           context "user does not own request, success" do
             let(:request_record) { Fabricate(:request, bag_id: attributes[:bag_id])}
             let(:expected_record) { Fabricate(:queue_item, request: request_record) }
-            before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+            before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
             it "returns 201" do
               post :create, params: attributes
               expect(response).to have_http_status(201)
@@ -328,7 +328,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
               record.errors.add(:bag, message: "test_error")
               record
             end
-            before(:each) { allow(builder).to receive(:build).and_return(expected_record) }
+            before(:each) { allow(builder).to receive(:create).and_return(expected_record) }
             it "returns 422" do
               post :create, params: attributes
               expect(response).to have_http_status(422)
