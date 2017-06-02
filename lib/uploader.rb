@@ -4,7 +4,7 @@ require 'pry'
 require 'json'
 require_relative './chipmunk_bag'
 
-DARK_BLUE_ENDPOINT = "http://localhost:3000"
+CHIPMUNK_URL = "http://localhost:3000"
 
 class Uploader
   def initialize(api_key,bag_path)
@@ -53,6 +53,45 @@ class Uploader
     { Authorization: "Token token=#{api_key}" }
   end
 
+
+  def make_request
+    chipmunk_post("/v1/requests",{request: request_params})
+  end
+
+  def rsync_bag(upload_link)
+    # append trailing / to bag path here so we actually put the bag instead of
+    # a directory containing the bag in the upload target
+    raise RuntimeError, 'rsync failed' unless
+      system('rsync','-avz',"#{bag_path}/",upload_link)
+  end
+
+  def complete_request(request)
+    chipmunk_post("/v1/requests/#{bag_id}/complete")
+  end
+
+  def wait_for_bag(qitem)
+    loop do
+      # update qitem
+      result = chipmunk_get("/v1/queue/#{qitem["id"]}")
+      break if qitem["status"] != "PENDING"
+      puts "Waiting for queue item to be processed"
+      sleep 10
+    end
+
+    # TODO: error h&&ling 
+    # get 200 or 303
+
+    # get /bags/:bag_id, display
+  end
+
+  def chipmunk_post(endpoint,params = {})
+    chipmunk_request(:post,endpoint,payload: params)
+  end
+
+  def chipmunk_get(endpoint)
+    chipmunk_request(:get,endpoint)
+  end
+  
   # Manually follows the redirect from a 201 response
   # if needed and returns the result as a JSON object.
   def follow_redir_and_parse(response) 
@@ -64,31 +103,10 @@ class Uploader
     JSON.parse(response)
   end
 
-  # post to requests & follow redirection (from 201 or 303)
-  def make_request
-    # link from result automatically follows redirection from 303
-    follow_redir_and_parse(RestClient.post "#{DARK_BLUE_ENDPOINT}/v1/requests", 
-      { request: request_params}, auth_header)
-
-  end
-
-  def rsync_bag(upload_link)
-    # append trailing / to bag path here so we actually put the bag instead of
-    # a directory containing the bag in the upload target
-    raise RuntimeError, 'rsync failed' unless
-      system('rsync','-avz',"#{bag_path}/",upload_link)
-  end
-
-  def complete_request(request)
-    follow_redir_and_parse(RestClient.post "#{DARK_BLUE_ENDPOINT}/v1/requests/#{bag_id}/complete", {}, auth_header)
-  end
-
-  def wait_for_bag(qitem)
-    # poll queue item status
-
-    # TODO: error h&&ling 
-    # get 200 or 303
-
-    # get /bags/:bag_id, display
+  def chipmunk_request(method,endpoint,**kwargs)
+    follow_redir_and_parse(RestClient::Request.execute(method: method, 
+                                url: CHIPMUNK_URL + endpoint,
+                                headers: auth_header,
+                                **kwargs))
   end
 end
