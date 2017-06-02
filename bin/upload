@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/uploader'
+
+API_KEY = ENV["CHIPMUNK_API_KEY"]
+
+
+content_type = ARGV[0]
+bag_path = ARGV[1]
+
+unless content_type && bag_path
+  raise ArgumentError, "Usage: #{$0} [audio|digital] /path/to/bag" 
+end
+
+Uploader.new(API_KEY,content_type,bag_path).upload
+
+
