@@ -2,13 +2,18 @@ module V1
   class QueueItemsController < ApplicationController
     # GET /v1/queue
     def index
-      @queue_items = policy_scope(QueueItem)
+      @queue_items = policy_scope(QueueItem).where(bag: nil)
     end
 
     # GET /v1/queue/:id
     def show
       @queue_item = QueueItem.find(params[:id])
       authorize @queue_item
+      if @queue_item.bag
+        head 303, location: v1_bag_url(@queue_item.bag)
+      else
+        render template: "v1/queue_items/show", status: 200
+      end
     end
 
     # POST /v1/requests/:bag_id/complete
