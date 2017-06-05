@@ -5,11 +5,13 @@ class QueueItemBuilder
     @request = request
   end
 
-  def build
+  def create
     queue_item = QueueItem.new(request: request, bag: nil)
     if queue_item.valid?
-      FileMoveJob.perform_later(queue_item, request.upload_path, storage_location)
+      BagMoveJob.perform_later(queue_item, request.upload_path, storage_location)
+      queue_item.save!
     end
+    return queue_item
   end
 
   private

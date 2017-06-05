@@ -9,3 +9,5 @@ test:
   upload_path: /pfdr/incoming/
   # rsync point to user-writable upload path
   rsync_point: localhost:incoming
+  # application-writable directory for final storage of bags; allows creation of dirs, files
+  storage_path: /pfdr/storage/
