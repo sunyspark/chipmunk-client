@@ -17,6 +17,7 @@ gem 'rest-client'
 group :development, :test do
   gem 'byebug', platforms: [:mri]
   gem 'pry'
+  gem 'pry-byebug'
   gem 'sqlite3'
   gem 'rspec'
   gem 'rspec-rails'
