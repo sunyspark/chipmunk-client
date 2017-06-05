@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170531160317) do
+ActiveRecord::Schema.define(version: 20170510191941) do
 
   create_table "bags", force: :cascade do |t|
     t.string "bag_id", null: false
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20170531160317) do
   create_table "queue_items", force: :cascade do |t|
     t.integer "request_id", null: false
     t.integer "bag_id"
+    t.integer "status", default: 0, null: false
+    t.text "error"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bag_id"], name: "index_queue_items_on_bag_id"
@@ -45,12 +47,12 @@ ActiveRecord::Schema.define(version: 20170531160317) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
+    t.string "username", null: false
+    t.string "email", null: false
     t.boolean "admin", default: false, null: false
     t.string "api_key", default: "x", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "username", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end

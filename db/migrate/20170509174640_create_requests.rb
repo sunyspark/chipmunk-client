@@ -6,12 +6,11 @@ class CreateRequests < ActiveRecord::Migration[5.1]
       t.string :type, null: false
       t.integer :user_id, null: false
       t.string :external_id, null: false
-      t.string :upload_link, null: false
       t.timestamps
     end
 
     add_index :requests, :bag_id, unique: true
-
+    add_index :requests, :external_id, unique: true
     add_index :requests, :user_id, unique: false
     add_foreign_key :requests, :users
 
