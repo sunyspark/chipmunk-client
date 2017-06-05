@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/uploader'
+
+API_KEY = ENV["CHIPMUNK_API_KEY"]
+
+
+bag_path = ARGV[0]
+
+raise ArgumentError, "Usage: #{$0} /path/to/bag" unless bag_path
+
+Uploader.new(API_KEY,bag_path).upload
+
+

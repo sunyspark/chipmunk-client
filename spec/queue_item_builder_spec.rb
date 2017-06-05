@@ -11,13 +11,11 @@ RSpec.describe QueueItemBuilder do
   end
 
   describe "#create" do
-    subject { described_class.new(request).create }
-    it "creates a QueueItem" do
-      expect(subject).to be_an_instance_of(QueueItem)
-    end
-    it "is valid" do
-      expect(subject).to be_valid
-    end
+    subject { described_class.new().create(request) }
+
+    it { is_expected.to be_an_instance_of(QueueItem)}
+    it { is_expected.to be_valid }
+
     it "contains the request" do
       expect(subject.request).to eql(request)
     end
@@ -27,7 +25,8 @@ RSpec.describe QueueItemBuilder do
     it "enqueues a BagMoveJob to /<storage_path>/:bag_id" do
       upload_path = File.join(config_upload_path, request.user.username, request.bag_id)
       storage_path = File.join(config_storage_path, request.bag_id)
-      expect(BagMoveJob).to receive(:perform_later).with(subject, upload_path, storage_path)
+      queue_item = subject
+      expect(BagMoveJob).to have_received(:perform_later).with(queue_item, upload_path, storage_path)
     end
 
   end

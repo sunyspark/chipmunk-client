@@ -23,8 +23,9 @@ module V1
       if existing_record
         head 303, location: v1_queue_item_url(existing_record)
       else
-        authorize_create!
-        @queue_item = QueueItemBuilder.new(params[:bag_id]).build
+        request = Request.find_by_bag_id(params[:bag_id])
+        authorize_create!(request)
+        @queue_item = QueueItemBuilder.new().create(request)
         if @queue_item.errors.empty?
           head 201, location: v1_queue_item_url(@queue_item)
         else
@@ -36,9 +37,9 @@ module V1
 
     private
 
-    def authorize_create!
+    def authorize_create!(request)
       policy = QueueItemPolicy.new(current_user, QueueItem)
-      unless policy.create?(Request.find_by_bag_id(params[:bag_id]))
+      unless policy.create?(request)
         raise Pundit::NotAuthorizedError, "not allowed to create? this QueueItem for #{params[:bag_id]}"
       end
     end

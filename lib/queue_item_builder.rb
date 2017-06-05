@@ -1,26 +1,23 @@
 
 class QueueItemBuilder
 
-  def initialize(request)
-    @request = request
+  def initialize
   end
 
-  def create
+  def create(request)
     queue_item = QueueItem.new(request: request, bag: nil)
     if queue_item.valid?
-      BagMoveJob.perform_later(queue_item, request.upload_path, storage_location)
       queue_item.save!
+      BagMoveJob.perform_later(queue_item, request.upload_path, storage_location(request))
     end
     return queue_item
   end
 
   private
 
-  attr_reader :request
-
-  def storage_location
+  # should get moved to a merged request/bag
+  def storage_location(request)
     root = Rails.application.config.upload['storage_path']
-    user = request.user.username
-    File.join root, user, request.bag_id
+    File.join root, request.bag_id
   end
 end
