@@ -7,7 +7,6 @@ describe "/v1/requests/index.json.jbuilder" do
       user: double(:user, email: Faker::Internet.email),
       external_id: SecureRandom.uuid,
       upload_link: "#{Faker::Internet.email}:/#{Faker::Lorem.word}/path",
-      external_service: "mirlyn",
       content_type: "fake",
       created_at: Time.at(0),
       updated_at: Time.now
@@ -17,7 +16,7 @@ describe "/v1/requests/index.json.jbuilder" do
     {
       bag_id: request_record.bag_id,
       user: request_record.user.email,
-      mirlyn_id: request_record.external_id,
+      external_id: request_record.external_id,
       content_type: request_record.content_type,
       upload_link: request_record.upload_link,
       created_at: request_record.created_at.to_formatted_s(:default),
