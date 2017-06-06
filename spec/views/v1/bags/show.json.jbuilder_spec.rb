@@ -17,7 +17,7 @@ describe "/v1/bags/show.json.jbuilder" do
     {
       bag_id: bag.bag_id,
       user: bag.user.email,
-      mirlyn_id: bag.external_id,
+      external_id: bag.external_id,
       content_type: bag.content_type,
       created_at: bag.created_at.to_formatted_s(:default),
       updated_at: bag.updated_at.to_formatted_s(:default)

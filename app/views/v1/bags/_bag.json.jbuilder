@@ -1,7 +1,7 @@
 json.bag_id bag.bag_id
 json.user bag.user.email
 json.content_type bag.content_type
-json.set! "#{bag.external_service}_id".to_sym, bag.external_id
+json.external_id bag.external_id
 if @current_user&.admin?
   json.storage_location bag.storage_location
 end
