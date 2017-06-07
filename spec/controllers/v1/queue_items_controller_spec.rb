@@ -54,79 +54,10 @@ RSpec.describe V1::QueueItemsController, type: :controller do
       end
 
       context "queue_item has a bag (is complete)" do
-        before(:each) do
-          request.headers.merge! auth_header
-          get :show, params: {id: record.id}
-        end
-
-        context "as unauthenticated user" do
-          include_context "as unauthenticated user"
-          let(:record) { done_proc.call }
-          it "returns 401" do
-            expect(response).to have_http_status(401)
-          end
-          it "renders nothing" do
-            expect(response).to render_template(nil)
-          end
-        end
-
-        context "as underprivileged user" do
-          include_context "as underprivileged user"
-
-          context "the record belongs to the user" do
-            let(:record) { done_proc.call(user) }
-            it "returns 303" do
-              expect(response).to have_http_status(303)
-            end
-            it "correctly sets the location header" do
-              expect(response.location).to eql(v1_bag_url(record.bag))
-            end
-            it "renders nothing" do
-              expect(response).to render_template(nil)
-            end
-          end
-
-          context "the record does not belong to the user" do
-            let(:record) { done_proc.call }
-            it "returns 403" do
-              expect(response).to have_http_status(403)
-            end
-            it "renders nothing" do
-              expect(response).to render_template(nil)
-            end
-          end
-
-        end
-
-        context "as admin" do
-          include_context "as admin user"
-
-          context "the record belongs to the user" do
-            let(:record) { done_proc.call(user) }
-            it "returns 303" do
-              expect(response).to have_http_status(303)
-            end
-            it "correctly sets the location header" do
-              expect(response.location).to eql(v1_bag_url(record.bag))
-            end
-            it "renders nothing" do
-              expect(response).to render_template(nil)
-            end
-          end
-
-          context "the record does not belong to the user" do
-            let(:record) { done_proc.call }
-            it "returns 303" do
-              expect(response).to have_http_status(303)
-            end
-            it "correctly sets the location header" do
-              expect(response.location).to eql(v1_bag_url(record.bag))
-            end
-            it "renders nothing" do
-              expect(response).to render_template(nil)
-            end
-          end
-
+        it_behaves_like "a show endpoint" do
+          let(:key) { :id }
+          let(:factory) { done_proc }
+          let(:assignee) { :queue_item }
         end
       end
 

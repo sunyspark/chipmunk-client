@@ -9,11 +9,7 @@ module V1
     def show
       @queue_item = QueueItem.find(params[:id])
       authorize @queue_item
-      if @queue_item.bag
-        head 303, location: v1_bag_url(@queue_item.bag)
-      else
-        render template: "v1/queue_items/show", status: 200
-      end
+      render template: "v1/queue_items/show", status: 200
     end
 
     # POST /v1/requests/:bag_id/complete
