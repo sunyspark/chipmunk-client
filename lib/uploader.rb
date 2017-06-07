@@ -17,8 +17,7 @@ class Uploader
     req = make_request
     rsync_bag(req["upload_link"])
     qitem = complete_request(req)
-    bag = wait_for_bag(qitem)
-    p bag
+    print_result(wait_for_bag(qitem))
   end
 
   def bag_id
@@ -28,6 +27,14 @@ class Uploader
   private
 
   attr_accessor :request_params, :api_key, :bag_path
+
+  def print_result(qitem_result)
+    if qitem_result["status"] == "DONE"
+      pp chipmunk_get(qitem_result["bag"])
+    else
+      pp qitem_result
+    end
+  end
 
   def require_chipmunk_bag_tags(tags)
   ["External-Identifier", 
@@ -70,18 +77,14 @@ class Uploader
   end
 
   def wait_for_bag(qitem)
+    result = qitem
     loop do
       # update qitem
-      result = chipmunk_get("/v1/queue/#{qitem["id"]}")
-      break if qitem["status"] != "PENDING"
+      return result if result["status"] != "PENDING"
       puts "Waiting for queue item to be processed"
       sleep 10
+      result = chipmunk_get("/v1/queue/#{qitem["id"]}")
     end
-
-    # TODO: error h&&ling 
-    # get 200 or 303
-
-    # get /bags/:bag_id, display
   end
 
   def chipmunk_post(endpoint,params = {})
@@ -104,9 +107,15 @@ class Uploader
   end
 
   def chipmunk_request(method,endpoint,**kwargs)
+    begin
     follow_redir_and_parse(RestClient::Request.execute(method: method, 
                                 url: CHIPMUNK_URL + endpoint,
                                 headers: auth_header,
                                 **kwargs))
+    rescue RestClient::InternalServerError => e
+      puts e.to_s
+      puts JSON.parse(e.response)["exception"]
+      exit 1
+    end
   end
 end
