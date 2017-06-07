@@ -1,0 +1,11 @@
+# configuration for upload paths
+
+production:
+
+development:
+  audio: "/path/to/validator"
+  digital: "/path/to/validator"
+
+test:
+  audio: "/path/to/validator"
+  digital: "/path/to/validator"

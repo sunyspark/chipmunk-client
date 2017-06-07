@@ -23,4 +23,8 @@ class Request < ApplicationRecord
     File.join(Rails.application.config.upload['rsync_point'],bag_id)
   end
 
+  def external_validation_cmd
+    Rails.application.config.validation[content_type.to_s]
+  end
+
 end

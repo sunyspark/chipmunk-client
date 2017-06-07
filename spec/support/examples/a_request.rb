@@ -39,5 +39,11 @@ RSpec.shared_examples "a request" do |factory_id|
     end
   end
 
+  describe "#external_validation_cmd" do
+    it "returns a path to a command" do
+      expect(Fabricate.build(factory_id).external_validation_cmd).not_to be_nil
+    end
+  end
+
 end
 

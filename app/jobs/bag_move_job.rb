@@ -1,3 +1,5 @@
+require 'open3'
+
 class BagMoveJob < ApplicationJob
   def perform(queue_item, src_path, dest_path)
     @queue_item = queue_item
@@ -12,7 +14,7 @@ class BagMoveJob < ApplicationJob
       #    - move the bag into place
       #    - success: commit the transaction
       #    - failure (exception) - transaction automatically rolls back
-      if bag_is_valid?
+      if bag_is_valid? and externally_validates?
         File.rename(src_path,dest_path)
         record_success
       end
@@ -45,6 +47,17 @@ class BagMoveJob < ApplicationJob
       queue_item.error = error
       queue_item.status = :failed
       queue_item.save!
+    end
+  end
+
+  def externally_validates?
+    stdout,stderr,status = Open3.capture3(queue_item.request.external_validation_cmd)
+
+    if status == 0
+      true
+    else
+      record_error("Error validating content:\n" + stderr)
+      false
     end
   end
 
