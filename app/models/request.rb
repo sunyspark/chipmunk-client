@@ -24,7 +24,7 @@ class Request < ApplicationRecord
   end
 
   def external_validation_cmd
-    Rails.application.config.validation[content_type.to_s]
+    [Rails.application.config.validation[content_type.to_s],upload_path].join(" ")
   end
 
 end
