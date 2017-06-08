@@ -40,5 +40,6 @@ module Chipmunk
     config.autoload_paths << Rails.root.join('lib')
 
     config.upload = config_for('upload')
+    config.validation = config_for('validation')
   end
 end
