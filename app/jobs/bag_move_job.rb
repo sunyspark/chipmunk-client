@@ -5,6 +5,7 @@ class BagMoveJob < ApplicationJob
     @queue_item = queue_item
     @src_path = src_path
     @dest_path = dest_path
+    @errors = []
 
     begin
       
@@ -17,10 +18,13 @@ class BagMoveJob < ApplicationJob
       if bag_is_valid? and externally_validates?
         File.rename(src_path,dest_path)
         record_success
+      else
+        record_failure
       end
 
     rescue => exception
-      record_error(exception.to_s)
+      @errors.push(exception.to_s)
+      record_failure
       raise exception
     end
   end
@@ -34,17 +38,16 @@ class BagMoveJob < ApplicationJob
     if bag.valid?
       true
     else
-      record_error("Error validating bag:\n" + 
-                   indent_array(bag.errors.full_messages))
-
+      @errors.push("Error validating bag:\n" + 
+        indent_array(bag.errors.full_messages))
       false
     end
 
   end
 
-  def record_error(error)
+  def record_failure
     queue_item.transaction do
-      queue_item.error = error
+      queue_item.error = @errors.join("\n\n")
       queue_item.status = :failed
       queue_item.save!
     end
@@ -56,7 +59,7 @@ class BagMoveJob < ApplicationJob
     if status == 0
       true
     else
-      record_error("Error validating content:\n" + stderr)
+      @errors.push("Error validating content:\n" + stderr)
       false
     end
   end
