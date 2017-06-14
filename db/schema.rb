@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170510191941) do
+ActiveRecord::Schema.define(version: 20170614165848) do
 
   create_table "bags", force: :cascade do |t|
     t.string "bag_id", null: false
-    t.string "type", null: false
     t.integer "user_id", null: false
     t.string "external_id", null: false
     t.string "storage_location", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "content_type", default: "default", null: false
     t.index ["user_id"], name: "index_bags_on_user_id"
   end
 
