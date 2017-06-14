@@ -17,10 +17,7 @@ RSpec.describe QueueItemBuilder do
     it { is_expected.to be_valid }
 
     it "contains the request" do
-      expect(subject.request).to eql(request)
-    end
-    it "has no bag" do
-      expect(subject.bag).to be_nil
+      expect(subject.bag).to eql(request)
     end
     it "enqueues a BagMoveJob to /<storage_path>/:bag_id" do
       upload_path = File.join(config_upload_path, request.user.username, request.bag_id)

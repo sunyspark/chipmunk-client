@@ -16,7 +16,7 @@ RSpec.describe RequestBuilder do
     end
 
     it "creates a Request" do
-      expect(described_class.new(params).create).to be_an_instance_of(Request)
+      expect(described_class.new(params).create).to be_an_instance_of(Bag)
     end
 
     it "creates the directory at the upload path" do

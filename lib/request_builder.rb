@@ -11,7 +11,7 @@
 class RequestBuilder
   def initialize(bag_id:, content_type:, external_id:, user:, fs: Filesystem.new)
     @fs = fs
-    @request = Request.new(
+    @request = Bag.new(
       bag_id: bag_id,
       external_id: external_id,
       content_type: content_type,

@@ -1,4 +1,4 @@
-Fabricator(:bag) do
+Fabricator(:bag, aliases: [:request]) do
   bag_id { SecureRandom.uuid }
   user { Fabricate(:user) }
   external_id { SecureRandom.uuid }

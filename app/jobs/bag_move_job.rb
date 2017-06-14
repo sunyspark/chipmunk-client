@@ -54,7 +54,7 @@ class BagMoveJob < ApplicationJob
   end
 
   def externally_validates?
-    stdout,stderr,status = Open3.capture3(queue_item.request.external_validation_cmd)
+    stdout,stderr,status = Open3.capture3(queue_item.bag.external_validation_cmd)
 
     if status == 0
       true
@@ -66,14 +66,10 @@ class BagMoveJob < ApplicationJob
 
   def record_success
     queue_item.transaction do
-      queue_item.bag = Bag.create!(
-        bag_id: queue_item.request.bag_id,
-        user: queue_item.user,
-        storage_location: dest_path,
-        external_id: queue_item.request.external_id,
-      )
       queue_item.status = :done
       queue_item.save!
+      queue_item.bag.storage_location = dest_path
+      queue_item.bag.save!
     end
   end
 

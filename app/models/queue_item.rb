@@ -6,15 +6,13 @@ class QueueItem < ApplicationRecord
     done: 2
   }
 
-  belongs_to :request
-  belongs_to :bag, optional: true # belongs_to adds a presence validator by default
-                                  # we disable it here
+  belongs_to :bag
 
   validates :status, presence: true
-  validates :request_id, presence: true
+  validates :bag_id, presence: true
 
   def user
-    request.user
+    bag.user
   end
 
 end

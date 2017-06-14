@@ -8,6 +8,10 @@ class BagPolicy < ApplicationPolicy
     user&.admin? || record&.user == user
   end
 
+  def create?
+    !user.nil?
+  end
+
   class Scope < Scope
     def resolve
       if user.admin?
