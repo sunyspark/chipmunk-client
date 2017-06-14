@@ -1,4 +1,4 @@
 Fabricator(:queue_item) do
-  request { Fabricate([:audio_request, :digital_request].sample) }
+  request { Fabricate(:request) }
   bag { Fabricate(:bag) }
 end

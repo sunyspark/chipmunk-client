@@ -19,7 +19,8 @@ module V1
       if existing_record
         head 303, location: v1_request_url(existing_record)
       else
-        @request_record = RequestBuilder.new.create(create_params.merge({user: current_user}))
+        @request_record = RequestBuilder.new(create_params.merge({user: current_user}))
+          .create
         if @request_record.errors.empty?
           head 201, location: v1_request_url(@request_record)
         else
@@ -32,6 +33,8 @@ module V1
 
     def create_params
       params.require(:request).permit([:bag_id, :external_id, :content_type])
+        .to_h
+        .symbolize_keys
     end
 
   end

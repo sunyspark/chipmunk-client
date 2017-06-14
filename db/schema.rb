@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614165848) do
+ActiveRecord::Schema.define(version: 20170614171011) do
 
   create_table "bags", force: :cascade do |t|
     t.string "bag_id", null: false
@@ -36,11 +36,11 @@ ActiveRecord::Schema.define(version: 20170614165848) do
 
   create_table "requests", force: :cascade do |t|
     t.string "bag_id", null: false
-    t.string "type", null: false
     t.integer "user_id", null: false
     t.string "external_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "content_type", default: "default", null: false
     t.index ["bag_id"], name: "index_requests_on_bag_id", unique: true
     t.index ["external_id"], name: "index_requests_on_external_id", unique: true
     t.index ["user_id"], name: "index_requests_on_user_id"
