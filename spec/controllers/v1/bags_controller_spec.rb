@@ -47,15 +47,15 @@ RSpec.describe V1::BagsController, type: :controller do
       context "as unauthenticated user" do
         include_context "as unauthenticated user"
         it "returns 401" do
-          post :create, params: {request: attributes}
+          post :create, params: attributes
           expect(response).to have_http_status(401)
         end
         it "renders nothing" do
-          post :create, params: {request: attributes}
+          post :create, params: attributes
           expect(response).to render_template(nil)
         end
         it "does not create the record" do
-          post :create, params: {request: attributes}
+          post :create, params: attributes
           expect(Bag.count).to eql(0)
         end
       end
@@ -73,20 +73,20 @@ RSpec.describe V1::BagsController, type: :controller do
               allow(request_builder).to receive(:create).and_return(expected_record)
             end
             it "passes the parameters to a RequestBuilder" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(RequestBuilder).to have_received(:new).with(attributes.merge({user: user}))
               expect(request_builder).to have_received(:create)
             end
             it "returns 201" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response).to have_http_status(201)
             end
             it "correctly sets the location header" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response.location).to eql(v1_request_url(expected_record))
             end
             it "renders nothing" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response).to render_template(nil)
             end
           end
@@ -97,11 +97,11 @@ RSpec.describe V1::BagsController, type: :controller do
               allow(request_builder).to receive(:create).and_return(record)
             end
             it "returns 422" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response).to have_http_status(422)
             end
             it "renders nothing" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response).to render_template(nil)
             end
           end
@@ -110,22 +110,22 @@ RSpec.describe V1::BagsController, type: :controller do
           before(:each) { expected_record } # fabricates our record
           it "does not invoke RequestBuilder" do
             expect(RequestBuilder).to_not receive(:new)
-            post :create, params: {request: attributes}
+            post :create, params: attributes
           end
           it "does not create an additional record" do
-            post :create, params: {request: attributes}
+            post :create, params: attributes
             expect(Bag.count).to eql(1)
           end
           it "returns 303" do
-            post :create, params: {request: attributes}
+            post :create, params: attributes
             expect(response).to have_http_status(303)
           end
           it "correctly sets the location header" do
-            post :create, params: {request: attributes}
+            post :create, params: attributes
             expect(response.location).to eql(v1_request_url(expected_record))
           end
           it "renders nothing" do
-            post :create, params: {request: attributes}
+            post :create, params: attributes
             expect(response).to render_template(nil)
           end
         end

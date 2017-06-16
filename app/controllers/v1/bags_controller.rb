@@ -15,7 +15,7 @@ module V1
     # POST /v1/requests
     def create
       authorize Bag
-      existing_record = Bag.find_by_bag_id(params[:request][:bag_id])
+      existing_record = Bag.find_by_bag_id(params[:bag_id])
       if existing_record
         head 303, location: v1_request_url(existing_record)
       else
@@ -32,7 +32,7 @@ module V1
     private
 
     def create_params
-      params.require(:request).permit([:bag_id, :external_id, :content_type])
+      params.permit([:bag_id, :external_id, :content_type])
         .to_h
         .symbolize_keys
     end
