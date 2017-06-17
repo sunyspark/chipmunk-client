@@ -23,10 +23,15 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'rails-controller-testing'
+  gem 'sqlite3'
+end
+
+group :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'rspec-activejob'
-  gem 'sqlite3'
+  gem 'timecop'
+  gem 'turnip'
 end
 
 group :development do
