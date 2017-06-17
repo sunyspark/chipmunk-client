@@ -4,7 +4,7 @@ describe "/v1/bags/index.json.jbuilder" do
   let(:bag) do
     double(:bag,
       bag_id: SecureRandom.uuid,
-      user: double(:user, email: Faker::Internet.email),
+      user: double(:user, username: Faker::Internet.user_name),
       external_id: SecureRandom.uuid,
       storage_location: "#{Faker::Lorem.word}/path",
       external_service: "mirlyn",
@@ -17,7 +17,7 @@ describe "/v1/bags/index.json.jbuilder" do
   let(:expected) do
     {
       bag_id: bag.bag_id,
-      user: bag.user.email,
+      user: bag.user.username,
       external_id: bag.external_id,
       content_type: bag.content_type,
       upload_link: bag.upload_link,
