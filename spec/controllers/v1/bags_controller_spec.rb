@@ -83,7 +83,7 @@ RSpec.describe V1::BagsController, type: :controller do
             end
             it "correctly sets the location header" do
               post :create, params: attributes
-              expect(response.location).to eql(v1_request_url(expected_record))
+              expect(response.location).to eql(v1_request_path(expected_record))
             end
             it "renders nothing" do
               post :create, params: attributes
@@ -122,7 +122,7 @@ RSpec.describe V1::BagsController, type: :controller do
           end
           it "correctly sets the location header" do
             post :create, params: attributes
-            expect(response.location).to eql(v1_request_url(expected_record))
+            expect(response.location).to eql(v1_request_path(expected_record))
           end
           it "renders nothing" do
             post :create, params: attributes

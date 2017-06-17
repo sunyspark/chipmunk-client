@@ -17,12 +17,12 @@ module V1
       authorize Bag
       existing_record = Bag.find_by_bag_id(params[:bag_id])
       if existing_record
-        head 303, location: v1_request_url(existing_record)
+        head 303, location: v1_request_path(existing_record)
       else
         @request_record = RequestBuilder.new(create_params.merge({user: current_user}))
           .create
         if @request_record.errors.empty?
-          head 201, location: v1_request_url(@request_record)
+          head 201, location: v1_request_path(@request_record)
         else
           render json: @request_record.errors, status: :unprocessable_entity
         end

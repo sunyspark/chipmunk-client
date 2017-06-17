@@ -49,7 +49,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
           end
           it "populates the location header" do
             post :create, params: { bag_id: bag.bag_id }
-            expect(response.location).to eql(v1_queue_item_url(result_queue_item.id))
+            expect(response.location).to eql(v1_queue_item_path(result_queue_item.id))
           end
           it "renders nothing" do
             post :create, params: { bag_id: bag.bag_id }
@@ -64,7 +64,7 @@ RSpec.describe V1::QueueItemsController, type: :controller do
           end
           it "populates the location header" do
             post :create, params: { bag_id: bag.bag_id }
-            expect(response.location).to eql(v1_queue_item_url(result_queue_item.id))
+            expect(response.location).to eql(v1_queue_item_path(result_queue_item.id))
           end
           it "renders nothing" do
             post :create, params: { bag_id: bag.bag_id }
