@@ -18,6 +18,10 @@ module RequestSteps
     })
   end
 
+  step "I send an empty POST request to :url" do |url|
+    request(url, { method: :post, params: {}.to_json } )
+  end
+
   step "the response should have the following headers:" do |table|
     table.rows_hash.each do |header, value|
       expect(last_response.get_header(header)).to eql(value)
@@ -33,7 +37,14 @@ module RequestSteps
   end
 
   step "the json/JSON response should be:" do |table|
-    expect(JSON.parse(last_response.body)).to eql(table.rows_hash)
+    expect(JSON.parse(last_response.body)).to eql(adjust_table_hash(table.rows_hash))
+  end
+
+  private
+
+  def adjust_table_hash(hash)
+    hash["id"] ? hash["id"] = Integer(hash["id"]) : nil
+    return hash
   end
 end
 
