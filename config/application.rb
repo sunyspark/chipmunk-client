@@ -41,5 +41,7 @@ module Chipmunk
 
     config.upload = config_for('upload')
     config.validation = config_for('validation')
+
+    config.active_job.queue_adapter = :resque
   end
 end

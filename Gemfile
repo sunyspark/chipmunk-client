@@ -7,24 +7,26 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.1.0'
 gem 'bcrypt', '~> 3.1.7'
-gem 'rack-cors'
 gem 'jbuilder'
 gem 'pundit'
+gem 'rack-cors'
+gem 'resque'
+gem 'resque-pool'
 # cli - should separate out
 gem 'bagit'
 gem 'rest-client'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri]
+  gem 'fabrication'
+  gem 'faker'
   gem 'pry'
   gem 'pry-byebug'
-  gem 'sqlite3'
+  gem 'rails-controller-testing'
   gem 'rspec'
   gem 'rspec-rails'
   gem 'rspec-activejob'
-  gem 'rails-controller-testing'
-  gem 'fabrication'
-  gem 'faker'
+  gem 'sqlite3'
 end
 
 group :development do
