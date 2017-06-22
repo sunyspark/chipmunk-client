@@ -6,43 +6,24 @@ RSpec.describe RequestBuilder do
   let(:config_upload_path) { Rails.application.config.upload['upload_path'] }
   let(:user) { Fabricate(:user) }
 
-  describe '#create' do
-    subject { described_class.new.create(params) }
-
-    context "when given audio params" do
-      let(:params) { {content_type: 'audio',
-                      user: user,
-                      bag_id: 1} }
-
-      it { is_expected.to be_an_instance_of(AudioRequest)}
-
-      context "with user parameters" do
-        it "returns a Request with the configured upload link" do
-          expect(subject.upload_link).to match(/^#{config_rsync_point}/)
-        end
-      end
+  describe "#create" do
+    let(:fs) { double(:fs, mkdir_p: nil) }
+    let(:params) do
+      { content_type: 'audio', user: user,
+        bag_id: SecureRandom.uuid, external_id: "blah",
+        fs: fs
+      }
     end
 
-    context "when given digital forensics params" do
-      let(:params) { {content_type: 'digital' }}
-
-      it { is_expected.to be_an_instance_of(DigitalRequest) }
+    it "creates a Request" do
+      expect(described_class.new(params).create).to be_an_instance_of(Bag)
     end
 
-    context "when building two different requests" do
-      let (:params1) { {content_type: 'audio', bag_id: '1', 
-                        external_id: 'foo', user: user} }
-      let (:request1) { described_class.new().create(params1) }
-
-      let (:params2) { {content_type: 'audio', bag_id: '2', 
-                        external_id: 'bar', user: user } }
-      let (:request2) { described_class.new().create(params2) }
-
-      it "returns a different upload link" do
-        expect(request1.upload_link).not_to eq(request2.upload_link)
-      end
-      
+    it "creates the directory at the upload path" do
+      request = described_class.new(params.merge(fs: fs)).create
+      expect(fs).to have_received(:mkdir_p).with(request.upload_path)
     end
+
   end
 end
 

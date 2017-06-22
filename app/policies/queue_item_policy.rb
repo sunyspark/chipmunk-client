@@ -21,7 +21,7 @@ class QueueItemPolicy < ApplicationPolicy
       if user.admin?
         scope.all
       else
-        scope.joins(:request).where(requests: {user_id: user.id })
+        scope.joins(:bag).where(bags: {user_id: user.id })
       end
     end
   end

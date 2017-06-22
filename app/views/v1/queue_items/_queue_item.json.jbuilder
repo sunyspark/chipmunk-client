@@ -1,22 +1,10 @@
 json.id queue_item.id
-json.request url_for(
-  controller: "v1/requests",
-  action: "show",
-  bag_id: queue_item.request.bag_id
-)
-
-case queue_item.status.to_sym
-when :pending
-  json.status "PENDING"
-when :done
-  json.status "DONE"
-  json.bag url_for(
-    controller: "v1/bags",
-    action: "show",
-    bag_id: queue_item.bag.bag_id
-  )
-when :failed
-  json.status "FAILED"
+json.status queue_item.status.to_s.upcase
+json.request v1_request_path(queue_item.bag)
+if queue_item.status.to_sym == :done
+  json.bag v1_bag_path(queue_item.bag)
+end
+if queue_item.status.to_sym == :failed
   json.error queue_item.error
 end
 

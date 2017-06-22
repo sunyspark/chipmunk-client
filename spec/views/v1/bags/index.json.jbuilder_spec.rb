@@ -8,6 +8,7 @@ describe "/v1/bags/index.json.jbuilder" do
       external_id: SecureRandom.uuid,
       storage_location: "#{Faker::Lorem.word}/path",
       external_service: "mirlyn",
+      upload_link: "#{Faker::Internet.email}:/#{Faker::Lorem.word}/path",
       content_type: "fake",
       created_at: Time.at(0),
       updated_at: Time.now
@@ -19,6 +20,7 @@ describe "/v1/bags/index.json.jbuilder" do
       user: bag.user.email,
       external_id: bag.external_id,
       content_type: bag.content_type,
+      upload_link: bag.upload_link,
       created_at: bag.created_at.to_formatted_s(:default),
       updated_at: bag.updated_at.to_formatted_s(:default)
     }

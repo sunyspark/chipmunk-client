@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :v1 do
 
-    resources :requests, only: [:index, :show, :create], param: :bag_id
+    resources :requests, controller: :bags, only: [:index, :show, :create], param: :bag_id
     post "/requests/:bag_id/complete", controller: :queue_items, action: :create
     resources :bags, only: [:index, :show], param: :bag_id
 

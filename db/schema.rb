@@ -10,40 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170510191941) do
+ActiveRecord::Schema.define(version: 20170614173751) do
 
   create_table "bags", force: :cascade do |t|
     t.string "bag_id", null: false
-    t.string "type", null: false
     t.integer "user_id", null: false
     t.string "external_id", null: false
-    t.string "storage_location", null: false
+    t.string "storage_location"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "content_type", default: "default", null: false
+    t.index ["bag_id"], name: "index_bags_on_bag_id", unique: true
+    t.index ["external_id"], name: "index_bags_on_external_id", unique: true
     t.index ["user_id"], name: "index_bags_on_user_id"
   end
 
   create_table "queue_items", force: :cascade do |t|
-    t.integer "request_id", null: false
     t.integer "bag_id"
     t.integer "status", default: 0, null: false
     t.text "error"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bag_id"], name: "index_queue_items_on_bag_id"
-    t.index ["request_id"], name: "index_queue_items_on_request_id", unique: true
-  end
-
-  create_table "requests", force: :cascade do |t|
-    t.string "bag_id", null: false
-    t.string "type", null: false
-    t.integer "user_id", null: false
-    t.string "external_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["bag_id"], name: "index_requests_on_bag_id", unique: true
-    t.index ["external_id"], name: "index_requests_on_external_id", unique: true
-    t.index ["user_id"], name: "index_requests_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

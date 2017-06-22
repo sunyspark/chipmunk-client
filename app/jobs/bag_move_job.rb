@@ -54,7 +54,7 @@ class BagMoveJob < ApplicationJob
   end
 
   def externally_validates?
-    stdout,stderr,status = Open3.capture3(queue_item.request.external_validation_cmd)
+    stdout,stderr,status = Open3.capture3(queue_item.bag.external_validation_cmd)
 
     if status == 0
       true
@@ -66,25 +66,10 @@ class BagMoveJob < ApplicationJob
 
   def record_success
     queue_item.transaction do
-      queue_item.bag = bag_type.create!(
-        bag_id: queue_item.request.bag_id,
-        user: queue_item.user,
-        storage_location: dest_path,
-        external_id: queue_item.request.external_id,
-      )
       queue_item.status = :done
       queue_item.save!
-    end
-  end
-
-  def bag_type
-    case queue_item.request.content_type
-    when :audio
-      AudioBag
-    when :digital
-      DigitalBag
-    else
-      raise ArgumentError, "there has to be a better way of doing this"
+      queue_item.bag.storage_location = dest_path
+      queue_item.bag.save!
     end
   end
 

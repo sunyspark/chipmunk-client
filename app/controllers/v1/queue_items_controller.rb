@@ -2,7 +2,7 @@ module V1
   class QueueItemsController < ApplicationController
     # GET /v1/queue
     def index
-      @queue_items = policy_scope(QueueItem).where(bag: nil)
+      @queue_items = policy_scope(QueueItem)
     end
 
     # GET /v1/queue/:id
@@ -15,20 +15,19 @@ module V1
     # POST /v1/requests/:bag_id/complete
     def create
       skip_authorization #disables did-not-auth protection
-      existing_record = QueueItem.joins(:request).find_by(requests: { bag_id: params[:bag_id]})
-      if existing_record
-        head 303, location: v1_queue_item_url(existing_record)
+      request = Bag.find_by_bag_id!(params[:bag_id])
+      authorize_create!(request)
+      status, @queue_item = QueueItemBuilder.new.create(request)
+      case status
+      when :duplicate
+        head 303, location: v1_queue_item_url(@queue_item)
+      when :created
+        head 201, location: v1_queue_item_url(@queue_item)
+      when :invalid
+        render json: @queue_item.errors, status: :unprocessable_entity
       else
-        request = Request.find_by_bag_id(params[:bag_id])
-        authorize_create!(request)
-        @queue_item = QueueItemBuilder.new().create(request)
-        if @queue_item.errors.empty?
-          head 201, location: v1_queue_item_url(@queue_item)
-        else
-          render json: @queue_item.errors, status: :unprocessable_entity
-        end
+        raise RuntimeError, [status, @queue_item]
       end
-
     end
 
     private
