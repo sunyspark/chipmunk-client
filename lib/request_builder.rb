@@ -9,24 +9,23 @@
 #
 # This process is synchronous.
 class RequestBuilder
-  def initialize(bag_id:, content_type:, external_id:, user:, fs: Filesystem.new)
-    @fs = fs
-    @request = Bag.new(
+  def create(bag_id:, content_type:, external_id:, user:)
+    duplicate = Bag.where(bag_id: bag_id).first
+    unless duplicate.nil?
+      return :duplicate, duplicate
+    end
+
+    request = Bag.new(
       bag_id: bag_id,
       external_id: external_id,
       content_type: content_type,
       user: user
       )
+    if request.valid?
+      request.save!
+      return :created, request
+    else
+      return :invalid, request
+    end
   end
-
-  def create
-    Rails.logger.debug "making directory #{request.upload_path}"
-    fs.mkdir_p request.upload_path
-    request.save!
-    request
-  end
-
-  private
-
-  attr_accessor :request, :fs
 end

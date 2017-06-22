@@ -20,9 +20,9 @@ module V1
       status, @queue_item = QueueItemBuilder.new.create(request)
       case status
       when :duplicate
-        head 303, location: v1_queue_item_url(@queue_item)
+        head 303, location: v1_queue_item_path(@queue_item)
       when :created
-        head 201, location: v1_queue_item_url(@queue_item)
+        head 201, location: v1_queue_item_path(@queue_item)
       when :invalid
         render json: @queue_item.errors, status: :unprocessable_entity
       else

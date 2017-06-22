@@ -31,101 +31,95 @@ RSpec.describe V1::BagsController, type: :controller do
           external_id: SecureRandom.uuid
         }
       end
-      let(:request_builder) { double(:request_builder, build: nil) }
-      let(:expected_record) do
-        Fabricate(:request,
-          bag_id: attributes[:bag_id],
-          user: user,
-          external_id: attributes[:external_id],
-          content_type: attributes[:content_type]
-        )
+
+      shared_context "mocked RequestBuilder" do |status|
+        let(:result_request) do
+          Fabricate(:bag,
+            bag_id: attributes[:bag_id],
+            user: user,
+            external_id: attributes[:external_id],
+            content_type: attributes[:content_type]
+          )
+        end
+        let(:result_status) { status }
+        let(:builder) { double(:builder) }
+        before(:each) do
+          allow(RequestBuilder).to receive(:new).and_return(builder)
+          allow(builder).to receive(:create).and_return([result_status, result_request])
+        end
       end
+
       before(:each) do
-        allow(RequestBuilder).to receive(:new).and_return(request_builder)
         request.headers.merge! auth_header
       end
+
       context "as unauthenticated user" do
         include_context "as unauthenticated user"
         it "returns 401" do
-          post :create, params: {request: attributes}
+          post :create, params: attributes
           expect(response).to have_http_status(401)
         end
         it "renders nothing" do
-          post :create, params: {request: attributes}
+          post :create, params: attributes
           expect(response).to render_template(nil)
         end
         it "does not create the record" do
-          post :create, params: {request: attributes}
+          post :create, params: attributes
           expect(Bag.count).to eql(0)
         end
       end
       context "as authenticated user" do
         include_context "as underprivileged user"
         context "new record" do
-          before(:each) do
-            # mock the search to return nil; we must do this because we're mocking
-            # the return of RequestBuilder#build
-            allow(Bag).to receive(:find_by_bag_id).with(attributes[:bag_id])
-              .and_return nil
-          end
           context "RequestBuilder returns a valid record" do
-            before(:each) do
-              allow(request_builder).to receive(:create).and_return(expected_record)
-            end
+            include_context "mocked RequestBuilder", :created
+
             it "passes the parameters to a RequestBuilder" do
-              post :create, params: {request: attributes}
-              expect(RequestBuilder).to have_received(:new).with(attributes.merge({user: user}))
-              expect(request_builder).to have_received(:create)
+              post :create, params: attributes
+              expect(RequestBuilder).to have_received(:new)
+              expect(builder).to have_received(:create).with(attributes.merge({user: user}))
             end
             it "returns 201" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response).to have_http_status(201)
             end
             it "correctly sets the location header" do
-              post :create, params: {request: attributes}
-              expect(response.location).to eql(v1_request_url(expected_record))
+              post :create, params: attributes
+              expect(response.location).to eql(v1_request_path(result_request))
             end
             it "renders nothing" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response).to render_template(nil)
             end
           end
           context "RequestBuilder returns an invalid record" do
-            before(:each) do
-              record = Fabricate.build(:request, user: nil)
-              record.valid?
-              allow(request_builder).to receive(:create).and_return(record)
-            end
+            include_context "mocked RequestBuilder", :invalid
             it "returns 422" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response).to have_http_status(422)
             end
             it "renders nothing" do
-              post :create, params: {request: attributes}
+              post :create, params: attributes
               expect(response).to render_template(nil)
             end
           end
         end
         context "as duplicate record" do
-          before(:each) { expected_record } # fabricates our record
-          it "does not invoke RequestBuilder" do
-            expect(RequestBuilder).to_not receive(:new)
-            post :create, params: {request: attributes}
-          end
+          include_context "mocked RequestBuilder", :duplicate
           it "does not create an additional record" do
-            post :create, params: {request: attributes}
+            post :create, params: attributes
             expect(Bag.count).to eql(1)
           end
           it "returns 303" do
-            post :create, params: {request: attributes}
+            post :create, params: attributes
             expect(response).to have_http_status(303)
           end
           it "correctly sets the location header" do
-            post :create, params: {request: attributes}
-            expect(response.location).to eql(v1_request_url(expected_record))
+            post :create, params: attributes
+            expect(response.location).to eql(v1_request_path(result_request))
           end
           it "renders nothing" do
-            post :create, params: {request: attributes}
+            post :create, params: attributes
             expect(response).to render_template(nil)
           end
         end

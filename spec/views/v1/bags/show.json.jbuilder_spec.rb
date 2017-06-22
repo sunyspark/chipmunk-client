@@ -4,7 +4,7 @@ describe "/v1/bags/show.json.jbuilder" do
   let(:bag) do
     double(:bag,
       bag_id: SecureRandom.uuid,
-      user: double(:user, email: Faker::Internet.email),
+      user: double(:user, username: Faker::Internet.user_name),
       external_id: SecureRandom.uuid,
       storage_location: "#{Faker::Lorem.word}/path",
       external_service: "mirlyn",
@@ -17,7 +17,7 @@ describe "/v1/bags/show.json.jbuilder" do
   let(:expected) do
     {
       bag_id: bag.bag_id,
-      user: bag.user.email,
+      user: bag.user.username,
       external_id: bag.external_id,
       upload_link: bag.upload_link,
       content_type: bag.content_type,
@@ -34,10 +34,10 @@ describe "/v1/bags/show.json.jbuilder" do
     it "renders correct json w/o storage_location" do
       assign(:bag, bag)
       render
-      expect(JSON.parse(rendered, symbolize_names: true)).to eql(expected)  
+      expect(JSON.parse(rendered, symbolize_names: true)).to eql(expected)
     end
   end
-  
+
   context "when the user is an admin" do
     before(:each) { assign(:current_user, admin_user) }
     it "renders correct json w/ storage_location" do
