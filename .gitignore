@@ -27,9 +27,6 @@
 /.env.local
 /.env
 
-# Ignore rspec config
-/.rspec
-
 # Ignore test coverage
 /coverage
 
