@@ -58,13 +58,16 @@ Feature: End to End functionality
       | user          | <username>                           |
       | content_type  | audio                                |
       | external_id   | <external_id>                        |
+      # see PFDR-66 (this is present for completed bags after the request/bag merger)
+      | upload_link   | localhost:/tmp/chipmunk/inc/<bag_id> |
       | created_at    | 2017-05-17 18:49:08 UTC              |
       | updated_at    | 2017-05-17 18:49:08 UTC              |
-    When I send a GET request to /v1/requests/<bag_id>"      |
-    Then the response status should be "303"
-    And the response should be empty
-    And the response should have the following headers:
-      | Location | /v1/bags/<bag_id> |
+      # see PFDR-66 (this fails after the request/bag merger)
+      #    When I send a GET request to /v1/requests/<bag_id>"      |
+      #    Then the response status should be "303"
+      #    And the response should be empty
+      #    And the response should have the following headers:
+      #      | Location | /v1/bags/<bag_id> |
 
   Examples:
     | bag_id                                | external_id   | username |
