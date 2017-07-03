@@ -2,8 +2,8 @@ require "pathname"
 
 module ConfigSteps
 
-  step ":upload_field is :value" do |field, value|
-    Rails.application.config.upload[field] = value
+  step ":config_block.:field is :value" do |config,field, value|
+    Rails.application.config.public_send(config.to_sym)[field] = value
   end
 
   step ":dir exists and is empty" do |dir|

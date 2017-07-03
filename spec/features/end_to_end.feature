@@ -10,9 +10,10 @@ Feature: End to End functionality
     And upload.upload_path is "/tmp/chipmunk/inc"
     And upload.rsync_point is "localhost:/tmp/chipmunk/inc"
     And upload.storage_path is "/tmp/chipmunk/store"
+    And validation.audio is "/bin/true"
 
   Scenario Outline: Create initial request and verify
-    Given "/tmp/chipmunk/inc" exists and is empty
+    Given "/tmp/chipmunk/inc/<username>" exists and is empty
     And "/tmp/chipmunk/store" exists and is empty
 
     When I send a POST request to "/v1/requests" with this json:
@@ -33,8 +34,9 @@ Feature: End to End functionality
       | upload_link   | localhost:/tmp/chipmunk/inc/<bag_id> |
       | created_at    | 2017-05-17 18:49:08 UTC              |
       | updated_at    | 2017-05-17 18:49:08 UTC              |
-    When I rsync a test bag to "localhost:/tmp/chipmunk/inc/<bag_id>"
-    Then rsync finishes successfully
+    # simulates action of correctly-configured rsync (out of scope of the application)
+    When I copy a test bag to "/tmp/chipmunk/inc/<username>/<bag_id>"
+    Then copy finishes successfully
     When I send an empty POST request to "/v1/requests/<bag_id>/complete"
     Then the response status should be "201"
     And the response should be empty

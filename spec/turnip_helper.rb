@@ -16,4 +16,5 @@ require_relative "support/step_definitions/placeholders"
 Dir[File.expand_path(File.join(File.dirname(__FILE__), 'support', 'step_definitions', '**', "*.rb"))]
   .each {|f| require f}
 
-Rails.application.config.active_job.queue_adapter = :inline
+#Rails.application.config.active_job.queue_adapter = :inline
+ActiveJob::Base.queue_adapter = :inline
