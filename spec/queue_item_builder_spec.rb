@@ -38,7 +38,7 @@ RSpec.describe QueueItemBuilder do
       upload_path = File.join(config_upload_path, request.user.username, request.bag_id)
       storage_path = File.join(config_storage_path, request.bag_id)
       _, queue_item = subject
-      expect(BagMoveJob).to have_received(:perform_later).with(queue_item, upload_path, storage_path)
+      expect(BagMoveJob).to have_received(:perform_later).with(queue_item)
     end
   end
 

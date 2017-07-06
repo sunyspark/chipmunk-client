@@ -5,7 +5,9 @@ production:
 development:
   audio: "/path/to/validator"
   digital: "/path/to/validator"
+  video: "/path/to/validator"
 
 test:
   audio: "/path/to/validator"
   digital: "/path/to/validator"
+  video: "/path/to/validator"

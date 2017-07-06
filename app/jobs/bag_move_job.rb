@@ -1,10 +1,10 @@
 require 'open3'
 
 class BagMoveJob < ApplicationJob
-  def perform(queue_item, src_path, dest_path)
+  def perform(queue_item)
     @queue_item = queue_item
-    @src_path = src_path
-    @dest_path = dest_path
+    @src_path = queue_item.bag.src_path
+    @dest_path = queue_item.bag.dest_path
     @errors = []
 
     begin
@@ -34,6 +34,7 @@ class BagMoveJob < ApplicationJob
   attr_accessor :queue_item, :src_path, :dest_path
 
   def bag_is_valid?
+    return false unless File.exists?(src_path)
     bag = ChipmunkBag.new(src_path)
     if bag.valid?
       true

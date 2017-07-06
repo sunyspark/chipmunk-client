@@ -2,18 +2,19 @@ require 'rails_helper'
 
 RSpec.describe BagMoveJob do
   let (:queue_item) { Fabricate(:queue_item) }
-  let (:srcpath) { 'foo' }
-  let (:destpath) { 'bar' }
+  let (:src_path) { queue_item.bag.src_path }
+  let (:dest_path) { queue_item.bag.dest_path }
 
   class InjectedError < RuntimeError
   end
 
   describe '#perform' do
-    subject { described_class.perform_now(queue_item,srcpath,destpath) }
+    subject { described_class.perform_now(queue_item) }
 
     before(:each) do
-      allow(ChipmunkBag).to receive(:new).with(srcpath).and_return(fakebag)
-      allow(File).to receive(:rename).with(srcpath,destpath).and_return true
+      allow(File).to receive(:'exists?').with(src_path).and_return true
+      allow(ChipmunkBag).to receive(:new).with(src_path).and_return(fakebag)
+      allow(File).to receive(:rename).with(src_path,dest_path).and_return true
       allow(Open3).to receive(:capture3).and_return(ext_validation_result)
     end
 
@@ -22,7 +23,7 @@ RSpec.describe BagMoveJob do
       let(:ext_validation_result) { ['','',0] }
 
       it "moves the bag" do
-        expect(File).to receive(:rename).with(srcpath,destpath)
+        expect(File).to receive(:rename).with(src_path,dest_path)
         subject
       end
 
@@ -33,7 +34,7 @@ RSpec.describe BagMoveJob do
 
       context "but the move fails" do
         before(:each) do
-          allow(File).to receive(:rename).with(srcpath,destpath).and_raise InjectedError, 'injected error'
+          allow(File).to receive(:rename).with(src_path,dest_path).and_raise InjectedError, 'injected error'
         end
 
         it "re-raises the exception" do
@@ -67,7 +68,7 @@ RSpec.describe BagMoveJob do
       let(:ext_validation_result) { ['','',0] }
 
       it "does not move the bag" do
-        expect(File).not_to receive(:rename).with(srcpath,destpath)
+        expect(File).not_to receive(:rename).with(src_path,dest_path)
       end
 
       it "does not try to run external validation" do
@@ -90,7 +91,7 @@ RSpec.describe BagMoveJob do
       let(:ext_validation_result) { ['external output','external error',1] }
 
       it "does not move the bag" do
-        expect(File).not_to receive(:rename).with(srcpath,destpath)
+        expect(File).not_to receive(:rename).with(src_path,dest_path)
       end
 
       it "updates the queue_item to status 'failed'" do

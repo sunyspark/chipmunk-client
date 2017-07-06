@@ -16,8 +16,12 @@ class Bag < ApplicationRecord
     BagPolicy
   end
 
-  def upload_path
+  def src_path
     File.join(Rails.application.config.upload['upload_path'],user.username,bag_id)
+  end
+  
+  def dest_path
+    File.join(Rails.application.config.upload['storage_path'],bag_id)
   end
 
   def upload_link
@@ -25,7 +29,7 @@ class Bag < ApplicationRecord
   end
 
   def external_validation_cmd
-    [Rails.application.config.validation[content_type.to_s],upload_path].join(" ")
+    [Rails.application.config.validation[content_type.to_s],src_path].join(" ")
   end
 
 end
