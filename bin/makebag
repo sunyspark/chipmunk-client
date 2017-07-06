@@ -13,11 +13,6 @@ end
 # make a new bag with the given external id and content type at given path
 bag = ChipmunkBag.new bag_path
 
-# make a new file
-bag.add_file("samplefile") do |io|
-  io.puts "Hello Bag!"
-end
-
 bag.write_chipmunk_info({
   'External-Identifier' => external_id,
   'Chipmunk-Content-Type' => content_type,

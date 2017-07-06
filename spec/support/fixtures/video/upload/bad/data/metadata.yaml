@@ -1,0 +1,85 @@
+# Digitization details for University of Michigan Library DLPS
+---
+FileList:
+  -
+    filename: miam0001.mov
+    sound_present: yes
+    grp_use: archive
+    dateCreated: 2014-06-03
+    seq: 01
+  -
+    filename: mipm0001.mov
+    sound_present: yes
+    grp_use: production
+    dateCreated: 2014-06-03
+    seq: 02
+    
+
+OperatorList:
+  -
+    firstName: Erik
+    lastName: Piil
+    organization: DuArt Film and Video
+    street: 245 West 55th Street
+    city:  New York
+    region: NY
+    postal: 10019
+    country: USA
+  
+DeviceList:
+  -
+    type: hardware
+    name: MacPro
+    mfg: Apple
+    desc: Host computer
+  -
+    type: software
+    name: OS X
+    developer: Apple
+    version: 10.6.8
+    build: 
+    desc: Operating System
+  -
+    type: hardware
+    name: VHS Video Cassette Recorder
+    mfg: Sony
+    model: SVO-5800
+    desc: VHS Cassette Playback
+  -
+    type: hardware
+    name: DeckLink
+    mfg: Blackmagic
+    model: Multibridge Pro
+    serial: 
+    desc: Analog to Digital Component
+  -
+    type: software
+    name: DeckLink Driver
+    developer: Blackmagic
+    version: 7.9.6
+    desc: Device driver for Multibridge Pro
+    
+SourceMaterial:
+  -
+    EBU Storage Media Code: 
+    condition: Good
+    material Brand: Unknown	
+    physical Format: VHS
+    signal Format: NTSC
+    timecode Type: SMPTE non-dropframe
+    timecode Initial Value: 00:59:40:00
+    colorPresent: Yes
+    RF Level: 
+    Picture Quality: Good
+    Drop Out Activity: Fair/None
+    Audio Quality: Good
+    Closed Caption: None
+    Sound Field Level 1: average -20dB
+    Sound Field Level 2: average -20dB
+    Studio Transfer Method: 
+    Special Handling: none
+    Transfer Comments:
+
+Notes:
+  -
+    Clean transfer throughout
