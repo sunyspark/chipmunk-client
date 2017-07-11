@@ -30,5 +30,10 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 end
 
-Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
+support_dir = File.expand_path(File.join(File.dirname(__FILE__), 'support'))
+['examples', 'contexts', 'helpers'].each do |folder|
+  Dir[File.join(support_dir, folder, '**', '*.rb')].each {|f| require f}
+end
 
+# Load Turnip. The rest of the config is in the turnip_helper.rb
+require "turnip/rspec"
