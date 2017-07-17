@@ -3,10 +3,12 @@
 use File::Basename;
 
 # lightweight ingest for video - just checks file presence and naming
-# parameter should be a directory containing a bag
-my $DIRECTORY = shift;
+# parameter should be the external ID (unused) and a directory containing a bag
+my $EXTERNAL_ID = shift;
+my $BAG_DIRECTORY = shift;
+my $DIRECTORY = "$BAG_DIRECTORY/data";
 
-my %files = map { basename($_) => 1 } glob("$DIRECTORY/data/*");
+my %files = map { basename($_) => 1 } glob("$DIRECTORY/*");
 
 foreach my $required_file ("metadata.yaml") {
     die("$required_file is missing in $DIRECTORY\n") unless defined $files{$required_file};

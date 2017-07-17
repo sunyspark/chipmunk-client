@@ -29,7 +29,7 @@ class Bag < ApplicationRecord
   end
 
   def external_validation_cmd
-    [Rails.application.config.validation[content_type.to_s],src_path].join(" ")
+    [Rails.application.config.validation[content_type.to_s],external_id,src_path].join(" ")
   end
 
 end

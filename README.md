@@ -2,7 +2,17 @@
 
 A Preservation-Focused Dark Repository for the University of Michigan
 
-## CLI / integration testing
+## Running integration tests
+
+- Make sure the validation scripts under `bin` have all required dependencies
+  installed (out of scope for this respository)
+
+- Set the `RUN_INTEGRATION` environment variable; otherwise integration tests
+  are skipped.
+
+- Run `bundle exec rspec`
+
+## CLI / end-to-end testing
 
 - Prerequisite: install `rsync` and set up the ability for the current user to use rsync over
   ssh to `localhost` (an ssh key is nice but not required).
