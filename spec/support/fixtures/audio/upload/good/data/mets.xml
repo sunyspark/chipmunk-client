@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:marc21="http://www.loc.gov/MARC21/slim"
+    xmlns:rights="http://cosimo.stanford.edu/sdr/metsrights/"
+    xmlns:aes="http://www.aes.org/audioObject" xmlns:tcf="http://www.aes.org/tcf"
+    xmlns:ph="http://www.aes.org/processhistory" xmlns:dc="http://dublincore.org/documents/2012/06/14/dcmi-terms/?v=elements"
+    xmlns:fn="http://www.w3.org/TR/xpath-functions/"
+    xmlns:fits="http://projects.iq.harvard.edu/fits"
+    xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version15/mets.xsd http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd http://cosimo.stanford.edu/sdr/metsrights/  http://www.loc.gov/standards/rights/METSRights.xsd http://www.aes.org/audioObject http://www.dlib.indiana.edu/lib/xml/aes/audioObject.xsd http://www.aes.org/processhistory http://www.dlib.indiana.edu/lib/xml/aes/processHistory.xsd"
+    TYPE="AUDIO RECORDING" ID="mdp.39015083868474" OBJID="39015083868474">
+    <mets:metsHdr CREATEDATE="2017-04-13T09:00:42.125-04:00">
+        <mets:agent ROLE="OTHER">
+            <mets:name>The MediaPreserve</mets:name>
+        </mets:agent>
+    </mets:metsHdr>
+    <mets:dmdSec ID="DMD1">
+        <mets:mdRef LOCTYPE="URL" MDTYPE="MARC"
+            xlink:href="http://quod.lib.umich.edu/s/sclead/umich-scl-warresisters"/>
+    </mets:dmdSec>
+    <mets:amdSec ID="mdp.39015083868474-amd">
+        <mets:techMD ID="am000001-aesCoreAudio">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="AESCoreAudio">
+              <mets:xmlData>
+                    <aes:audioObject analogDigitalFlag="FILE_DIGITAL"
+                        disposition="Validated by JHOVE" schemaVersion="1.03b" ID="mdp.39015083868474-am000001">
+                        <aes:format specificationVersion="">WAVE</aes:format>
+                        <aes:audioDataEncoding>PCM audio in integer format</aes:audioDataEncoding>
+                        <aes:byteOrder>LITTLE_ENDIAN</aes:byteOrder>
+                        <aes:use useType="PRESERVATION_MASTER"/>
+                        <aes:primaryIdentifier identifierType="FILE_NAME">am000001.wav</aes:primaryIdentifier>
+                        <aes:checksum>
+                            <aes:checksumValue>cde277bc57845885b03fa9e341b3105d</aes:checksumValue>
+                            <aes:checksumKind>MD5</aes:checksumKind>
+                            <aes:checksumCreateDate>2017-04-12T11:21:08</aes:checksumCreateDate>
+                        </aes:checksum>
+                        <aes:face direction="FORWARD" label="New Face" audioObjectRef="mdp.39015083868474-am000001"
+                            ID="mdp.39015083868474-am000001-face1">
+                            <aes:timeline>
+                                <startTime xmlns="http://www.aes.org/tcf" frameCount="30"
+                                    timeBase="1000" videoField="FIELD_1"
+                                    countingMode="NTSC_NON_DROP_FRAME">
+                                    <hours>0</hours>
+                                    <minutes>0</minutes>
+                                    <seconds>0</seconds>
+                                    <frames>0</frames>
+                                    <samples sampleRate="S96000">
+                                        <numberOfSamples>0</numberOfSamples>
+                                    </samples>
+                                    <filmFraming framing="NOT_APPLICABLE"
+                                        xsi:type="ntscFilmFramingType"/>
+                                </startTime>
+                                <duration xmlns="http://www.aes.org/tcf" frameCount="30"
+                                    timeBase="1000" videoField="FIELD_1"
+                                    countingMode="NTSC_NON_DROP_FRAME">
+                                    <hours>0</hours>
+                                    <minutes>2</minutes>
+                                    <seconds>47</seconds>
+                                    <frames>23</frames>
+                                    <samples sampleRate="S96000">
+                                        <numberOfSamples>2144</numberOfSamples>
+                                    </samples>
+                                    <filmFraming framing="NOT_APPLICABLE"
+                                        xsi:type="ntscFilmFramingType"/>
+                                </duration>
+                            </aes:timeline>
+                            <aes:region label="Region 1"
+                                formatRef="mdp.39015083868474-am000001-face1-formatregion1" faceRef="mdp.39015083868474-am000001"
+                                ID="mdp.39015083868474-am000001-face1-region1">
+                                <aes:timeRange>
+                                    <startTime xmlns="http://www.aes.org/tcf" frameCount="30"
+                                        timeBase="1000" videoField="FIELD_1"
+                                        countingMode="NTSC_NON_DROP_FRAME">
+                                        <hours>0</hours>
+                                        <minutes>0</minutes>
+                                        <seconds>0</seconds>
+                                        <frames>0</frames>
+                                        <samples sampleRate="S96000">
+                                            <numberOfSamples>0</numberOfSamples>
+                                        </samples>
+                                        <filmFraming framing="NOT_APPLICABLE"
+                                            xsi:type="ntscFilmFramingType"/>
+                                    </startTime>
+                                    <duration xmlns="http://www.aes.org/tcf" frameCount="30"
+                                        timeBase="1000" videoField="FIELD_1"
+                                        countingMode="NTSC_NON_DROP_FRAME">
+                                        <hours>0</hours>
+                                        <minutes>2</minutes>
+                                        <seconds>47</seconds>
+                                        <frames>23</frames>
+                                        <samples sampleRate="S96000">
+                                            <numberOfSamples>2144</numberOfSamples>
+                                        </samples>
+                                        <filmFraming framing="NOT_APPLICABLE"
+                                            xsi:type="ntscFilmFramingType"/>
+                                    </duration>
+                                </aes:timeRange>
+                                <aes:numChannels>2</aes:numChannels>
+                                <aes:stream label="Stream 1" faceRegionRef="mdp.39015083868474-am000001-face1"
+                                    ID="mdp.39015083868474-am000001-face1-formatregion1-stream1">
+                                    <aes:channelAssignment channelNum="1" mapLocation="LEFT"/>
+                                </aes:stream>
+                                <aes:stream label="Stream 2" faceRegionRef="mdp.39015083868474-am000001-face1"
+                                    ID="mdp.39015083868474-am000001-face1-formatregion1-stream2">
+                                    <aes:channelAssignment channelNum="2" mapLocation="RIGHT"/>
+                                </aes:stream>
+                            </aes:region>
+                        </aes:face>
+                        <aes:formatList>
+                            <aes:formatRegion label="FORMAT REGION 1"
+                                ownerRef="mdp.39015083868474-am000001-face1-region1"
+                                ID="mdp.39015083868474-am000001-face1-formatregion1">
+                                <aes:bitDepth>24</aes:bitDepth>
+                                <aes:sampleRate>96000.0</aes:sampleRate>
+                                <aes:soundField>Stereo</aes:soundField>
+                            </aes:formatRegion>
+                        </aes:formatList>
+                    </aes:audioObject>
+              </mets:xmlData>
+            </mets:mdWrap>
+        </mets:techMD>
+        <mets:techMD ID="pm000001-aesCoreAudio">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="AESCoreAudio">
+                <mets:xmlData>
+                    <aes:audioObject analogDigitalFlag="FILE_DIGITAL"
+                        disposition="Validated by JHOVE" schemaVersion="1.03b" ID="mdp.39015083868474-pm000001">
+                        <aes:format specificationVersion="">WAVE</aes:format>
+                        <aes:audioDataEncoding>PCM audio in integer format</aes:audioDataEncoding>
+                        <aes:byteOrder>LITTLE_ENDIAN</aes:byteOrder>
+                        <aes:use useType="PRODUCTION_MASTER"/>
+                        <aes:primaryIdentifier identifierType="FILE_NAME">pm000001.wav</aes:primaryIdentifier>
+                        <aes:checksum>
+                            <aes:checksumValue>212a2eb960ac1e8445c2ffc7c1a4f908</aes:checksumValue>
+                            <aes:checksumKind>MD5</aes:checksumKind>
+                            <aes:checksumCreateDate>2017-04-12T11:21:08</aes:checksumCreateDate>
+                        </aes:checksum>
+                        <aes:face direction="FORWARD" label="New Face" audioObjectRef="mdp.39015083868474-pm000001"
+                            ID="mdp.39015083868474-pm000001-face1">
+                            <aes:timeline>
+                                <startTime xmlns="http://www.aes.org/tcf" frameCount="30"
+                                    timeBase="1000" videoField="FIELD_1"
+                                    countingMode="NTSC_NON_DROP_FRAME">
+                                    <hours>0</hours>
+                                    <minutes>0</minutes>
+                                    <seconds>0</seconds>
+                                    <frames>0</frames>
+                                    <samples sampleRate="S96000">
+                                        <numberOfSamples>0</numberOfSamples>
+                                    </samples>
+                                    <filmFraming framing="NOT_APPLICABLE"
+                                        xsi:type="ntscFilmFramingType"/>
+                                </startTime>
+                                <duration xmlns="http://www.aes.org/tcf" frameCount="30"
+                                    timeBase="1000" videoField="FIELD_1"
+                                    countingMode="NTSC_NON_DROP_FRAME">
+                                    <hours>0</hours>
+                                    <minutes>2</minutes>
+                                    <seconds>47</seconds>
+                                    <frames>23</frames>
+                                    <samples sampleRate="S96000">
+                                        <numberOfSamples>2144</numberOfSamples>
+                                    </samples>
+                                    <filmFraming framing="NOT_APPLICABLE"
+                                        xsi:type="ntscFilmFramingType"/>
+                                </duration>
+                            </aes:timeline>
+                            <aes:region label="Region 1"
+                                formatRef="mdp.39015083868474-pm000001-face1-formatregion1"
+                                faceRef="mdp.39015083868474-pm000001-face1" ID="mdp.39015083868474-pm000001-face1-region1">
+                                <aes:timeRange>
+                                    <startTime xmlns="http://www.aes.org/tcf" frameCount="30"
+                                        timeBase="1000" videoField="FIELD_1"
+                                        countingMode="NTSC_NON_DROP_FRAME">
+                                        <hours>0</hours>
+                                        <minutes>0</minutes>
+                                        <seconds>0</seconds>
+                                        <frames>0</frames>
+                                        <samples sampleRate="S96000">
+                                            <numberOfSamples>0</numberOfSamples>
+                                        </samples>
+                                        <filmFraming framing="NOT_APPLICABLE"
+                                            xsi:type="ntscFilmFramingType"/>
+                                    </startTime>
+                                    <duration xmlns="http://www.aes.org/tcf" frameCount="30"
+                                        timeBase="1000" videoField="FIELD_1"
+                                        countingMode="NTSC_NON_DROP_FRAME">
+                                        <hours>0</hours>
+                                        <minutes>2</minutes>
+                                        <seconds>47</seconds>
+                                        <frames>23</frames>
+                                        <samples sampleRate="S96000">
+                                            <numberOfSamples>2144</numberOfSamples>
+                                        </samples>
+                                        <filmFraming framing="NOT_APPLICABLE"
+                                            xsi:type="ntscFilmFramingType"/>
+                                    </duration>
+                                </aes:timeRange>
+                                <aes:numChannels>2</aes:numChannels>
+                                <aes:stream label="Stream 1" faceRegionRef="mdp.39015083868474-pm000001-face1"
+                                    ID="mdp.39015083868474-pm000001-face1-formatregion1-stream1">
+                                    <aes:channelAssignment channelNum="1" mapLocation="LEFT"/>
+                                </aes:stream>
+                                <aes:stream label="Stream 2" faceRegionRef="mdp.39015083868474-pm000001-face1"
+                                    ID="mdp.39015083868474-pm000001-face1-formatregion1-stream2">
+                                    <aes:channelAssignment channelNum="2" mapLocation="RIGHT"/>
+                                </aes:stream>
+                            </aes:region>
+                        </aes:face>
+                        <aes:formatList>
+                            <aes:formatRegion label="FORMAT REGION 1"
+                                ownerRef="mdp.39015083868474-pm000001-face1-region1"
+                                ID="mdp.39015083868474-pm000001-face1-formatregion1">
+                                <aes:bitDepth>24</aes:bitDepth>
+                                <aes:sampleRate>96000.0</aes:sampleRate>
+                                <aes:soundField>Stereo</aes:soundField>
+                            </aes:formatRegion>
+                        </aes:formatList>
+                    </aes:audioObject>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:techMD>
+        <mets:techMD ID="TMD1">
+            <mets:mdRef LOCTYPE="OTHER" OTHERLOCTYPE="SYSTEM" MDTYPE="OTHER" OTHERMDTYPE="text"
+                LABEL="Production notes" xlink:href="notes.txt"/>
+        </mets:techMD>
+        <mets:sourceMD ID="mdp.39015083868474-source">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="AESCoreAudio">
+                <mets:xmlData>
+                    <aes:audioObject analogDigitalFlag="ANALOG" disposition="-"
+                        generation="Original" schemaVersion="1.03b" ID="mdp.39015083868474-src">
+                        <aes:format>Open Reel</aes:format>
+                        <aes:physicalProperties>
+                            <aes:stockBrand>unknown</aes:stockBrand>
+                        </aes:physicalProperties>
+                        <aes:use useType="ORIGINAL_MASTER"/>
+                        <aes:primaryIdentifier identifierType="OTHER">mdp.39015083868474-source</aes:primaryIdentifier>
+                        <aes:face direction="A_WIND" label="mdp.39015083868474-src-face1"
+                            audioObjectRef="mdp.39015083868474-src"
+                            ID="mdp.39015083868474-src-face1">
+                            <aes:timeline>
+                                <startTime xmlns="http://www.aes.org/tcf" frameCount="30"
+                                    timeBase="1000" videoField="FIELD_1"
+                                    countingMode="NTSC_NON_DROP_FRAME">
+                                    <hours>0</hours>
+                                    <minutes>0</minutes>
+                                    <seconds>0</seconds>
+                                    <frames>0</frames>
+                                    <samples sampleRate="S96000">
+                                        <numberOfSamples>0</numberOfSamples>
+                                    </samples>
+                                    <filmFraming framing="NOT_APPLICABLE"
+                                        xsi:type="ntscFilmFramingType"/>
+                                </startTime>
+                                <duration xmlns="http://www.aes.org/tcf" frameCount="30"
+                                    timeBase="1000" videoField="FIELD_1"
+                                    countingMode="NTSC_NON_DROP_FRAME">
+                                    <hours>0</hours>
+                                    <minutes>2</minutes>
+                                    <seconds>47</seconds>
+                                    <frames>23</frames>
+                                    <samples sampleRate="S96000">
+                                        <numberOfSamples>2144</numberOfSamples>
+                                    </samples>
+                                    <filmFraming framing="NOT_APPLICABLE"
+                                        xsi:type="ntscFilmFramingType"/>
+                                </duration>
+                            </aes:timeline>
+                            <aes:region label="Region 1"
+                                formatRef="mdp.39015083868474-src-face1-formatregion1"
+                                faceRef="mdp.39015083868474-src-face1"
+                                ID="mdp.39015083868474-src-face1-region1">
+                                <aes:timeRange>
+                                    <startTime xmlns="http://www.aes.org/tcf" frameCount="30"
+                                        timeBase="1000" videoField="FIELD_1"
+                                        countingMode="NTSC_NON_DROP_FRAME">
+                                        <hours>0</hours>
+                                        <minutes>0</minutes>
+                                        <seconds>0</seconds>
+                                        <frames>0</frames>
+                                        <samples sampleRate="S96000">
+                                            <numberOfSamples>0</numberOfSamples>
+                                        </samples>
+                                        <filmFraming framing="NOT_APPLICABLE"
+                                            xsi:type="ntscFilmFramingType"/>
+                                    </startTime>
+                                    <duration xmlns="http://www.aes.org/tcf" frameCount="30"
+                                        timeBase="1000" videoField="FIELD_1"
+                                        countingMode="NTSC_NON_DROP_FRAME">
+                                        <hours>0</hours>
+                                        <minutes>2</minutes>
+                                        <seconds>47</seconds>
+                                        <frames>23</frames>
+                                        <samples sampleRate="S96000">
+                                            <numberOfSamples>2144</numberOfSamples>
+                                        </samples>
+                                        <filmFraming framing="NOT_APPLICABLE"
+                                            xsi:type="ntscFilmFramingType"/>
+                                    </duration>
+                                </aes:timeRange>
+                                <aes:numChannels>2</aes:numChannels>
+                                <aes:stream label="Stream 1"
+                                    faceRegionRef="mdp.39015083868474-src-face1-region1"
+                                    ID="mdp.39015083868474-src-face1-formatregion1-stream1">
+                                    <aes:channelAssignment channelNum="1" mapLocation="LEFT"/>
+                                </aes:stream>
+                                <aes:stream label="Stream 2"
+                                    faceRegionRef="mdp.39015083868474-src-face1-region1"
+                                    ID="mdp.39015083868474-src-face1-formatregion1-stream2">
+                                    <aes:channelAssignment channelNum="2" mapLocation="RIGHT"/>
+                                </aes:stream>
+                            </aes:region>
+                        </aes:face>
+                        <aes:formatList>
+                            <aes:formatRegion label="Region 1"
+                                ownerRef="mdp.39015083868474-src-face1-formatregion1"
+                                ID="mdp.39015083868474-src-face1-formatregion1">
+                                <aes:speed>
+                                    <aes:speedCoarse unit="Inches per second"
+                                        >1.875</aes:speedCoarse>
+                                </aes:speed>
+                                <aes:trackLayout>Half track</aes:trackLayout>
+                                <aes:soundField>Stereo</aes:soundField>
+                                <aes:noiseReduction>None</aes:noiseReduction>
+                            </aes:formatRegion>
+                        </aes:formatList>
+                    </aes:audioObject>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:sourceMD>
+        <mets:digiprovMD ID="mdp.39015083868474-processHistory">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="AESProcessHistory">
+                <mets:xmlData>
+                    <ph:processHistory schemaVersion="1.0" ID="mdp.39015083868474-ph">
+                        <ph:processEvent sequenceNum="1" label="mdp.39015083868474-ph-event1"
+                            ID="mdp.39015083868474-ph-event1">
+                            <ph:operator ID="MediaPreserve">
+                                <ph:lastName>MediaPreserve</ph:lastName>
+                                <ph:firstName>Engineer</ph:firstName>
+                                <ph:organization>The MediaPreserve</ph:organization>
+                                <ph:street1>111 Thomson Park Dr</ph:street1>
+                                <ph:city>Cranberry Township</ph:city>
+                                <ph:countryCode>USA</ph:countryCode>
+                            </ph:operator>
+                            <ph:creationDate>2017-04-12T11:04:06-04:00</ph:creationDate>
+                            <ph:deviceChain ID="mdp.39015083868474-ph-event1-devicechain"
+                                masterSyncDeviceRef="mdp.39015083868474-ph-event1-device2"
+                                label="Preservation">
+                                <ph:device ID="mdp.39015083868474-ph-event1-device1">
+                                    <ph:descriptor>
+                                        <ph:manufacturer>Studer</ph:manufacturer>
+                                        <ph:modelName>A-820 1</ph:modelName>
+                                        <ph:kind>1/4" Open Reel Reproducer</ph:kind>
+                                        <ph:userLabel>Master Recorder</ph:userLabel>
+                                    </ph:descriptor>
+                                    <ph:outputChannel
+                                        patchRef="mdp.39015083868474-ph-event1-device1-patchlist-patch1"
+                                        routing="OUTPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device1"
+                                        label="Output L"
+                                        ID="mdp.39015083868474-ph-event1-device1-channel1"/>
+                                    <ph:outputChannel routing="OUTPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device1"
+                                        label="Output R"
+                                        ID="mdp.39015083868474-ph-event1-device1-channel2"/>
+                                    <ph:settings>
+                                        <ph:singleStateParameter name="Speed"
+                                            interface="ANALOG_STEPPED" value="7.5"
+                                            units="Inches per&#xA;                                                  second"
+                                            ID="mdp.39015083868474-ph-event1-device1-setting1"/>
+                                        <ph:singleStateParameter name="EQ"
+                                            interface="ANALOG_STEPPED" value="NAB"
+                                            ID="mdp.39015083868474-ph-event1-device1-setting2"/>
+                                        <ph:singleStateParameter name="Azimuth"
+                                            interface="ANALOG_FREE" value="adjusted"
+                                            ID="mdp.39015083868474-ph-event1-device1-setting3"/>
+                                    </ph:settings>
+                                    <ph:inputMediaChannel label="MediaIn" channelNumber="1"
+                                        multiplexed="false"
+                                        ID="mdp.39015083868474-ph-event1-device1-mediachannel1"
+                                        patchRef="mdp.39015083868474-ph-event1-device1-patchlist-patch1"
+                                        streamRef="mdp.39015083868474-ph-event1-inMedia-stream1"
+                                        deviceRef="mdp.39015083868474-ph-event1-device1"/>
+                                    <ph:patchList
+                                        ID="mdp.39015083868474-ph-event1-device1-patchlist">
+                                        <ph:patch
+                                            ID="mdp.39015083868474-ph-event1-device1-patchlist-patch1"
+                                            sourceRef="mdp.39015083868474-ph-event1-device1-mediachannel1"
+                                            destinationRef="mdp.39015083868474-ph-event1-device1-channel1"
+                                        />
+                                    </ph:patchList>
+                                </ph:device>
+                                <ph:device ID="mdp.39015083868474-ph-event1-device2">
+                                    <ph:descriptor>
+                                        <ph:manufacturer>Mytek</ph:manufacturer>
+                                        <ph:modelName>8X192ADDA</ph:modelName>
+                                        <ph:serialNumber>01503-0609-012</ph:serialNumber>
+                                        <ph:kind>A-D Converter</ph:kind>
+                                        <ph:userLabel>Mytek 8x192ADDA 1</ph:userLabel>
+                                    </ph:descriptor>
+                                    <ph:inputChannel routing="INPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Input 1"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel1"/>
+                                    <ph:inputChannel routing="INPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Input 2"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel2"/>
+                                    <ph:inputChannel routing="INPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Input 3"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel3"/>
+                                    <ph:inputChannel routing="INPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Input 4"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel4"/>
+                                    <ph:inputChannel routing="INPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Input 5"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel5"/>
+                                    <ph:inputChannel routing="INPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Input 6"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel6"/>
+                                    <ph:inputChannel routing="INPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Input 7"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel7"/>
+                                    <ph:inputChannel routing="INPUT" format="ANALOG_BALANCED_XLR"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Input 8"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel8"/>
+                                    <ph:inputChannel routing="INPUT" format="WORD_CLOCK"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Word Clock In"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel9"/>
+                                    <ph:outputChannel routing="OUTPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Digital Out 1"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel10"/>
+                                    <ph:outputChannel routing="OUTPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Digital Out 2"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel11"/>
+                                    <ph:outputChannel routing="OUTPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Digital Out 3"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel12"/>
+                                    <ph:outputChannel routing="OUTPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Digital Out 4"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel13"/>
+                                    <ph:outputChannel routing="OUTPUT" format="WORD_CLOCK"
+                                        deviceRef="mdp.39015083868474-ph-event1-device2"
+                                        label="Word Clock Out"
+                                        ID="mdp.39015083868474-ph-event1-device2-channel14"/>
+                                    <ph:settings>
+                                        <ph:singleStateParameter name="FS (Sample rate)"
+                                            interface="ANALOG_STEPPED" value="96" units="KHz"
+                                            ID="mdp.39015083868474-ph-event1-device2-setting1"/>
+                                        <ph:singleStateParameter name="Word Length (Bit depth)"
+                                            interface="ANALOG_STEPPED" value="24" units="Bits"
+                                            ID="mdp.39015083868474-ph-event1-device2-setting2"/>
+                                        <ph:singleStateParameter name="Input Volume"
+                                            interface="ANALOG_FREE" value="16" units="dbfs"
+                                            ID="mdp.39015083868474-ph-event1-device2-setting3"/>
+                                        <ph:singleStateParameter name="Word Clock"
+                                            interface="ANALOG_STEPPED" value="Internal"
+                                            ID="mdp.39015083868474-ph-event1-device2-setting4"/>
+                                    </ph:settings>
+                                    <ph:patchList
+                                        ID="mdp.39015083868474-ph-event1-device2-patchlist"/>
+                                </ph:device>
+                                <ph:device ID="mdp.39015083868474-ph-event1-device3">
+                                    <ph:descriptor>
+                                        <ph:manufacturer>RME</ph:manufacturer>
+                                        <ph:modelName>AES32</ph:modelName>
+                                        <ph:serialNumber>22824605</ph:serialNumber>
+                                        <ph:kind>Sound card (PCI)</ph:kind>
+                                        <ph:userLabel>RME AES32 1</ph:userLabel>
+                                    </ph:descriptor>
+                                    <ph:inputChannel routing="INPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Input 1 and 2"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel1"/>
+                                    <ph:inputChannel routing="INPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Input 3 and 4"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel2"/>
+                                    <ph:inputChannel routing="INPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Input 5 and 6"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel3"/>
+                                    <ph:inputChannel routing="INPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Input 7 and 8"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel4"/>
+                                    <ph:inputChannel routing="INPUT" format="WORD_CLOCK"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Word Clock In"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel5"/>
+                                    <ph:outputChannel routing="OUTPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Output 1"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel6"/>
+                                    <ph:outputChannel routing="OUTPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Output 2"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel7"/>
+                                    <ph:outputChannel routing="OUTPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Output 3"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel8"/>
+                                    <ph:outputChannel routing="OUTPUT" format="DIGITAL_AES_EBU"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Output 4"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel9"/>
+                                    <ph:outputChannel routing="OUTPUT" format="WORD_CLOCK"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="Word Clock Out"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel10"/>
+                                    <ph:outputChannel routing="OUTPUT" format="OTHER"
+                                        otherFormat="PCI slot"
+                                        deviceRef="mdp.39015083868474-ph-event1-device3"
+                                        label="PCI slot output"
+                                        ID="mdp.39015083868474-ph-event1-device3-channel11"/>
+                                    <ph:settings>
+                                        <ph:singleStateParameter name="Rate select"
+                                            interface="DIGITAL" value="96" units="KHz"
+                                            ID="mdp.39015083868474-ph-event1-device3-setting1"/>
+                                        <ph:singleStateParameter name="Rate lock"
+                                            interface="DIGITAL" value="on"
+                                            ID="mdp.39015083868474-ph-event1-device3-setting2"/>
+                                        <ph:singleStateParameter name="Dual Wire In"
+                                            interface="DIGITAL" value="off"
+                                            ID="mdp.39015083868474-ph-event1-device3-setting3"/>
+                                        <ph:singleStateParameter name="Dual Wire Out"
+                                            interface="DIGITAL" value="off"
+                                            ID="mdp.39015083868474-ph-event1-device3-setting4"/>
+                                        <ph:singleStateParameter name="Preferred Clock Source"
+                                            interface="DIGITAL" value="Word Clock"
+                                            ID="mdp.39015083868474-ph-event1-device3-setting5"/>
+                                    </ph:settings>
+                                    <ph:patchList
+                                        ID="mdp.39015083868474-ph-event1-device3-patchlist"/>
+                                </ph:device>
+                                <ph:device ID="mdp.39015083868474-ph-event1-device4">
+                                    <ph:descriptor>
+                                        <ph:manufacturer>Dell</ph:manufacturer>
+                                        <ph:modelName>PrecisionT3500</ph:modelName>
+                                        <ph:serialNumber>JZBNVH1</ph:serialNumber>
+                                        <ph:kind>Computer</ph:kind>
+                                        <ph:userLabel>Host Computer</ph:userLabel>
+                                    </ph:descriptor>
+                                    <ph:inputChannel routing="INPUT" format="OTHER"
+                                        otherFormat="PCI slot" label="Input"
+                                        patchRef="mdp.39015083868474-ph-event1-device4-patchlist-patch1"
+                                        deviceRef="mdp.39015083868474-ph-event1-device4"
+                                        ID="mdp.39015083868474-ph-event1-device4-channel1"/>
+                                    <ph:settings>
+                                        <ph:singleStateParameter name="Processor"
+                                            interface="DIGITAL" value="Intel Xenon CPU 2.8"
+                                            units="GHz"
+                                            ID="mdp.39015083868474-ph-event1-device4-setting1"/>
+                                        <ph:singleStateParameter name="RAM" interface="DIGITAL"
+                                            value="12.0" units="GB"
+                                            ID="mdp.39015083868474-ph-event1-device4-setting2"/>
+                                        <ph:singleStateParameter name="Operating System"
+                                            interface="DIGITAL" value="Windows 7 Pro"
+                                            ID="mdp.39015083868474-ph-event1-device4-setting3"/>
+                                        <ph:softwareVersion>Microsoft Windows 7
+                                                  Pro</ph:softwareVersion>
+                                    </ph:settings>
+                                    <ph:module ID="mdp.39015083868474-ph-event1-device4-module1">
+                                        <ph:descriptor>
+                                            <ph:manufacturer>Steinberg</ph:manufacturer>
+                                            <ph:modelName>Wavelab 7</ph:modelName>
+                                            <ph:kind>Recording/Editing Software</ph:kind>
+                                        </ph:descriptor>
+                                        <ph:inputChannel routing="INPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Input 1"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel1"/>
+                                        <ph:inputChannel routing="INPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Input 2"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel2"/>
+                                        <ph:inputChannel routing="INPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Input 3"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel3"/>
+                                        <ph:inputChannel routing="INPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Input 4"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel4"/>
+                                        <ph:inputChannel routing="INPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Input 5"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel5"/>
+                                        <ph:inputChannel routing="INPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Input 6"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel6"/>
+                                        <ph:inputChannel routing="INPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Input 7"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel7"/>
+                                        <ph:inputChannel routing="INPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Input 8"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel8"/>
+                                        <ph:outputChannel routing="OUTPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Output 1"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel9"/>
+                                        <ph:outputChannel routing="OUTPUT"
+                                            moduleRef="mdp.39015083868474-ph-event1-device4-module1"
+                                            label="Output 2"
+                                            ID="mdp.39015083868474-ph-event1-device4-module1-channel10"/>
+                                        <ph:settings>
+                                            <ph:singleStateParameter name="Type" interface="DIGITAL"
+                                                group="Audio File Format dialog box" value="Wave"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting1"/>
+                                            <ph:singleStateParameter name="Audio Format"
+                                                interface="DIGITAL"
+                                                group="Audio File Format dialog box"
+                                                value="PCM (uncompressed)"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting2"/>
+                                            <ph:singleStateParameter name="Channels"
+                                                interface="DIGITAL"
+                                                group="Audio File Format dialog box" value=""
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting3"/>
+                                            <ph:singleStateParameter name="Sample Rate"
+                                                interface="DIGITAL"
+                                                group="Audio File Format dialog box" value="96000"
+                                                units="KHz"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting4"/>
+                                            <ph:singleStateParameter name="Bit Resolution"
+                                                interface="DIGITAL"
+                                                group="Audio File Format dialog box" value="24"
+                                                units="bit"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting5"/>
+                                            <ph:singleStateParameter name="Playback device"
+                                                interface="DIGITAL"
+                                                group="Preferences: Audio device tab"
+                                                value="ASIO Hammerfall DSP"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting6"/>
+                                            <ph:singleStateParameter name="Playback buffer number"
+                                                interface="DIGITAL"
+                                                group="Preferences: Audio device tab" value="4"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting7"/>
+                                            <ph:singleStateParameter name="Playback buffer size"
+                                                interface="DIGITAL"
+                                                group="Preferences: Audio device tab" value="16384"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting8"/>
+                                            <ph:singleStateParameter name="Recording device"
+                                                interface="DIGITAL"
+                                                group="Preferences: Audio device tab"
+                                                value="ASIO Hammerfall DSP"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting9"/>
+                                            <ph:singleStateParameter name="Recording buffer number"
+                                                interface="DIGITAL"
+                                                group="Preferences: Audio device tab" value="4"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting10"/>
+                                            <ph:singleStateParameter name="Recording buffer size"
+                                                interface="DIGITAL"
+                                                group="Preferences: Audio device tab" value="16384"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting11"/>
+                                            <ph:singleStateParameter name="Playback resolution"
+                                                interface="DIGITAL"
+                                                group="Preferences: Audio device tab" value="24"
+                                                units="bit"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting12"/>
+                                            <ph:singleStateParameter name="24 bit sample format"
+                                                interface="DIGITAL"
+                                                group="Preferences: Audio device tab" value="32"
+                                                units="bit (4 byte)"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting13"/>
+                                            <ph:singleStateParameter name="Time code"
+                                                interface="DIGITAL"
+                                                group="Preferences: Wave edit tab" value="30"
+                                                units="FPS"
+                                                ID="mdp.39015083868474-ph-event1-device4-module1-setting14"/>
+                                            <ph:softwareVersion>7.2.1</ph:softwareVersion>
+                                        </ph:settings>
+                                    </ph:module>
+                                    <ph:outputMediaChannel label="MediaOut" channelNumber="1"
+                                        multiplexed="false"
+                                        ID="mdp.39015083868474-ph-event1-device4-mediachannel1"
+                                        streamRef="mdp.39015083868474-ph-event1-outMedia-stream1"
+                                        deviceRef="mdp.39015083868474-ph-event1-device4"/>
+                                    <ph:outputMediaChannel label="MediaOut" channelNumber="2"
+                                        multiplexed="false"
+                                        ID="mdp.39015083868474-ph-event1-device4-mediachannel2"
+                                        streamRef="mdp.39015083868474-ph-event1-outMedia-stream2"
+                                        deviceRef="mdp.39015083868474-ph-event1-device4"/>
+                                    <ph:patchList
+                                        ID="mdp.39015083868474-ph-event1-device4-patchlist">
+                                        <ph:patch
+                                            ID="mdp.39015083868474-ph-event1-device4-patchlist-patch1"
+                                            sourceRef="mdp.39015083868474-ph-event1-device4-channel1"
+                                            destinationRef="mdp.39015083868474-ph-event1-device4-mediachannel1"/>
+                                        <ph:patch
+                                            ID="mdp.39015083868474-ph-event1-device4-patchlist-patch2"
+                                            sourceRef="mdp.39015083868474-ph-event1-device4-module1-channel2"
+                                            destinationRef="mdp.39015083868474-ph-event1-device4-mediachannel2"
+                                        />
+                                    </ph:patchList>
+                                </ph:device>
+                                <ph:devicePatchList ID="mdp.39015083868474-ph-event1-patchlist">
+                                    <ph:patch
+                                        sourceRef="mdp.39015083868474-ph-event1-device1-channel1"
+                                        destinationRef="mdp.39015083868474-ph-event1-device2-channel1"
+                                        ID="mdp.39015083868474-ph-event1-patchlist-patch1"/>
+                                    <ph:patch
+                                        sourceRef="mdp.39015083868474-ph-event1-device1-channel2"
+                                        destinationRef="mdp.39015083868474-ph-event1-device2-channel2"
+                                        ID="mdp.39015083868474-ph-event1-patchlist-patch2"/>
+                                    <ph:patch
+                                        sourceRef="mdp.39015083868474-ph-event1-device2-channel10"
+                                        destinationRef="mdp.39015083868474-ph-event1-device3-channel1"
+                                        ID="mdp.39015083868474-ph-event1-patchlist-patch3"/>
+                                    <ph:patch
+                                        sourceRef="mdp.39015083868474-ph-event1-device3-channel11"
+                                        destinationRef="mdp.39015083868474-ph-event1-device4-channel1"
+                                        ID="mdp.39015083868474-ph-event1-patchlist-patch4"/>
+                                </ph:devicePatchList>
+                            </ph:deviceChain>
+                            <ph:mediaPool ID="mdp.39015083868474-ph-event1-mediapool">
+                                <ph:media temporary="false" kind="CORE_AUDIO_METADATA"
+                                    ID="mdp.39015083868474-ph-event1-inMedia">
+                                    <ph:mediaLocation/>
+                                    <ph:stream label="inMedia" streamNum="1"
+                                        mediaRef="mdp.39015083868474-ph-event1-inMedia"
+                                        ID="mdp.39015083868474-ph-event1-inMedia-stream1"/>
+                                </ph:media>
+                                <ph:media temporary="false" kind="CORE_AUDIO_METADATA"
+                                    ID="mdp.39015083868474-ph-event1-outMedia">
+                                    <ph:mediaLocation/>
+                                    <ph:stream label="outMedia" streamNum="1"
+                                        mediaRef="mdp.39015083868474-ph-event1-outMedia"
+                                        ID="mdp.39015083868474-ph-event1-outMedia-stream1"/>
+                                    <ph:stream label="outMedia" streamNum="2"
+                                        mediaRef="mdp.39015083868474-ph-event1-outMedia"
+                                        ID="mdp.39015083868474-ph-event1-outMedia-stream2"/>
+                                </ph:media>
+                            </ph:mediaPool>
+                            <ph:syncGroup sequenceNum="1"
+                                masterMediaRef="mdp.39015083868474-ph-event1-syncGroup1-syncMedia1"
+                                ID="mdp.39015083868474-ph-event1-syncGroup1">
+                                <ph:syncMedia mediaRef="mdp.39015083868474-ph-event1-inMedia"
+                                    groupRef="mdp.39015083868474-ph-event1-syncGroup1"
+                                    ID="mdp.39015083868474-ph-event1-syncGroup1-syncMedia1"/>
+                                <ph:syncMedia mediaRef="mdp.39015083868474-ph-event1-outMedia"
+                                    groupRef="mdp.39015083868474-ph-event1-syncGroup1"
+                                    ID="mdp.39015083868474-ph-event1-syncGroup1-syncMedia2"/>
+                                <ph:timeRange>
+                                    <startTime xmlns="http://www.aes.org/tcf" frameCount="30"
+                                        timeBase="1000" videoField="FIELD_1"
+                                        countingMode="NTSC_NON_DROP_FRAME">
+                                        <hours>0</hours>
+                                        <minutes>0</minutes>
+                                        <seconds>0</seconds>
+                                        <frames>0</frames>
+                                        <filmFraming xsi:type="ntscFilmFramingType"
+                                            framing="NOT_APPLICABLE"/>
+                                    </startTime>
+                                </ph:timeRange>
+                            </ph:syncGroup>
+                            <ph:mediaPatchList ID="mdp.39015083868474-ph-event1-mediapatchlist"/>
+                        </ph:processEvent>
+                    </ph:processHistory>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp ID="audio-files">
+            <mets:fileGrp ID="audio-files-master" USE="archival_master">
+                <mets:file MIMETYPE="audio/wav" ID="am000001.wav" SIZE="17368"
+                    CHECKSUMTYPE="MD5" CHECKSUM="cde277bc57845885b03fa9e341b3105d"
+                    ADMID="am000001-aesCoreAudio">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="am000001.wav"/>
+                </mets:file>
+                <!--File Size in Bytes-->
+            </mets:fileGrp>
+            <mets:fileGrp ID="audio-files-production" USE="production_master">
+                <mets:file MIMETYPE="audio/wav" ID="pm000001.wav" SIZE="17368"
+                    CHECKSUMTYPE="MD5" CHECKSUM="212a2eb960ac1e8445c2ffc7c1a4f908"
+                    ADMID="pm000001-aesCoreAudio">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="pm000001.wav"/>
+                </mets:file>
+                <!--File Size in Bytes-->
+            </mets:fileGrp>
+        </mets:fileGrp>
+        <mets:fileGrp ID="media_images"/>
+    </mets:fileSec>
+    <mets:structMap ID="SM1" TYPE="physical">
+        <mets:div TYPE="recording">
+            <mets:div ORDER="1" TYPE="face" LABEL="Side 1">
+                <mets:fptr FILEID="am000001.wav"/>
+                <mets:fptr FILEID="pm000001.wav"/>
+            </mets:div>
+            <mets:div ORDER="1" TYPE="face" LABEL="Side 2"/>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>
