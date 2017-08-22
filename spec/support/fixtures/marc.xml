@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="http://www.loc.gov/MARC21/slim">
+ <record>
+  <leader>00000njm a22      a 4500</leader>
+  <controlfield tag="001">011500592</controlfield>
+  <controlfield tag="003">MiU</controlfield>
+  <controlfield tag="005">20130410150814.0</controlfield>
+  <controlfield tag="006">m        h        </controlfield>
+  <controlfield tag="007">sz zsnnnbnzneu</controlfield>
+  <controlfield tag="007">cr nna---uuuuu</controlfield>
+  <controlfield tag="008">120424m19602000xx |||  s           eng d</controlfield>
+  <datafield tag="040" ind1=" " ind2=" ">
+   <subfield code="a">EYM</subfield>
+   <subfield code="c">EYM</subfield>
+  </datafield>
+  <datafield tag="245" ind1="0" ind2="0">
+   <subfield code="a">Leo Sarkisian Voice of America African music collection</subfield>
+   <subfield code="h">[sound recording].</subfield>
+  </datafield>
+  <datafield tag="300" ind1=" " ind2=" ">
+   <subfield code="a">360 sound discs ;</subfield>
+   <subfield code="c">4 3/4 in.</subfield>
+  </datafield>
+  <datafield tag="520" ind1=" " ind2=" ">
+   <subfield code="a">Known as &quot;The Music Man,&quot; Leo Sarkisian hosted &quot;Music Time in Africa&quot; for Voice of America for many decades. Mr. Sarkisian's music collection was compiled as he helped to establish radio stations in newly independent African nations as an employee of the US State Department. During more than 50 years of traveling and recording music in Africa, he interviewed scores of musicians and compiled an enormous collection of recordings that reflects the continent's broad heritage of traditional and popular music. The Sarkisian Collection contains a digitized selection of 360 of his field recordings and broadcast reels.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+   <subfield code="a">Converted with permission from reel-to-reel tapes to digital sound discs.</subfield>
+  </datafield>
+  <datafield tag="540" ind1=" " ind2=" ">
+   <subfield code="a">Sound discs can only be used in Music Library.</subfield>
+  </datafield>
+  <datafield tag="500" ind1=" " ind2=" ">
+   <subfield code="a">The Collection is owned by the BBG broadcast service Voice of America, compiled by Leo Sarkisian in the scope of his employment with VOA's African Service. In 2009, VOA entered an agreement with the University of Michigan Library to digitize the reels that comprise the Collection for preservation purposes and to provide access for teaching, research, and other non-commercial purposes. This is a continuing relationship in which VOA provides the UM Library with reels for digitization on a revolving basis, thus additional materials will be added over time. Neither the University of Michigan nor the VOA has any additional information regarding copyright, privacy, or other legal rights that may be associated with the Collection or copies thereof for uses beyond those designated. You must make an independent analysis of any use you want to make that falls beyond the designated preservation, teaching, research, and other non-commercial purposes and are solely responsible for such analysis and resulting use of the Collection materials.</subfield>
+  </datafield>
+  <datafield tag="538" ind1=" " ind2=" ">
+   <subfield code="a">Mode of access: Internet.</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2="0">
+   <subfield code="a">Popular music</subfield>
+   <subfield code="z">Africa.</subfield>
+  </datafield>
+  <datafield tag="650" ind1=" " ind2="0">
+   <subfield code="a">Folk music</subfield>
+   <subfield code="z">Africa.</subfield>
+  </datafield>
+  <datafield tag="700" ind1="1" ind2=" ">
+   <subfield code="a">Sarkisian, Leo,</subfield>
+   <subfield code="d">1921-</subfield>
+  </datafield>
+  <datafield tag="856" ind1="4" ind2="0">
+   <subfield code="3">Finding aid:</subfield>
+   <subfield code="u">http://quod.lib.umich.edu/m/mlibraryead/umich-mlib-sarkisian</subfield>
+  </datafield>
+  <datafield tag="852" ind1="4" ind2=" ">
+   <subfield code="a">MiU</subfield>
+   <subfield code="b">MUSIC</subfield>
+   <subfield code="c">REC</subfield>
+   <subfield code="j">CDISC 30468</subfield>
+  </datafield>
+  <datafield tag="970" ind1=" " ind2=" ">
+   <subfield code="a">MU</subfield>
+   <subfield code="b">Music</subfield>
+  </datafield>
+  <datafield tag="970" ind1=" " ind2=" ">
+   <subfield code="a">RC</subfield>
+   <subfield code="b">Audio CD</subfield>
+  </datafield>
+  <datafield tag="970" ind1=" " ind2=" ">
+   <subfield code="a">RM</subfield>
+   <subfield code="b">Audio (music)</subfield>
+  </datafield>
+  <datafield tag="970" ind1=" " ind2=" ">
+   <subfield code="a">RU</subfield>
+   <subfield code="b">Audio</subfield>
+  </datafield>
+  <datafield tag="971" ind1=" " ind2=" ">
+   <subfield code="a">MiU</subfield>
+  </datafield>
+  <datafield tag="972" ind1=" " ind2=" ">
+   <subfield code="c">20120919</subfield>
+  </datafield>
+  <datafield tag="973" ind1=" " ind2=" ">
+   <subfield code="a">HT</subfield>
+   <subfield code="b">avail_ht</subfield>
+  </datafield>
+  <datafield tag="973" ind1=" " ind2=" ">
+   <subfield code="a">AO</subfield>
+   <subfield code="b">avail_online</subfield>
+  </datafield>
+ </record>
+</collection>

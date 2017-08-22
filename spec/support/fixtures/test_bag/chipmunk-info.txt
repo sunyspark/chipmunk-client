@@ -1,3 +1,6 @@
 External-Identifier: test_ex_id_22
 Chipmunk-Content-Type: audio
 Bag-ID: 14d25bcd-deaf-4c94-add7-c189fdca4692
+Metadata-Tagfile: meta.xml
+Metadata-Type: yes
+Metadata-URL: http://what.ever

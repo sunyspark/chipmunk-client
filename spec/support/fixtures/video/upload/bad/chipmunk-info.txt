@@ -1,3 +1,6 @@
 External-Identifier: video_test_bad
 Chipmunk-Content-Type: video
 Bag-ID: c94e5e60-067c-4d31-aea5-cdf4de88a1a2
+Metadata-URL: http://mirlyn.lib.umich.edu/Record/011500592.xml
+Metadata-Type: MARC
+Metadata-Tagfile: marc.xml

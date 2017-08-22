@@ -1,4 +1,6 @@
-f8bf2549f8e9489c51e14e5a92865a49 manifest-sha1.txt
-f7d9f776483a30bc3c961d34a3fc8399 manifest-md5.txt
-febf1c802920687a4e02fe1e62a2380d bag-info.txt
-9e5ad981e0d29adc278f6a294b8c2aca bagit.txt
+febf1c802920687a4e02fe1e62a2380d  bag-info.txt
+9e5ad981e0d29adc278f6a294b8c2aca  bagit.txt
+7a642073f77969e0aa73b3a1e6816fe3  chipmunk-info.txt
+f7d9f776483a30bc3c961d34a3fc8399  manifest-md5.txt
+f8bf2549f8e9489c51e14e5a92865a49  manifest-sha1.txt
+d41d8cd98f00b204e9800998ecf8427e  marc.xml

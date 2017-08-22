@@ -1,3 +1,6 @@
 External-Identifier: 39015083868474
 Chipmunk-Content-Type: audio
 Bag-ID: b2a07afc-800f-41c6-942d-91989aeed950
+Metadata-URL: http://mirlyn.lib.umich.edu/Record/011500592.xml
+Metadata-Type: MARC
+Metadata-Tagfile: marc.xml
