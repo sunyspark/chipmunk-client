@@ -40,3 +40,7 @@ end
 
 # Load Turnip. The rest of the config is in the turnip_helper.rb
 require "turnip/rspec"
+
+def fixture(*path)
+  File.join(Rails.application.root,"spec","support","fixtures",File.join(*path))
+end

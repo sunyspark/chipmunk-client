@@ -1,28 +1,36 @@
 require 'chipmunk_bag'
+require 'chipmunk_metadata_error'
+require 'find'
+require 'bagit'
+require 'securerandom'
+require 'nokogiri'
 
 class ChipmunkBagger
   
-  attr_accessor :content_type, :external_id, :bag_path
+  attr_accessor :content_type, :external_id, :src_path, :bag_path
 
-  def initialize(content_type, external_id, bag_path)
+  def initialize(content_type, external_id, src_path, bag_path)
     @content_type = content_type
     @external_id = external_id
+    # make sure src_path ends in a '/'
+    src_path += '/' unless src_path[-1] == '/'
+    @src_path = src_path
     @bag_path = bag_path
   end
 
 
-
+  # Moves data from src_path to bag_path/data and generates appropriate manifests
   def make_bag
-    # move everything into the data subdir if data subdir does not exist
-    move_files_to_data
-    
+    raise ArgumentError, "Making bags for #{content_type} is not supported" unless content_type == 'audio'
+
     # make a new bag with the given external id and content type at given path
     @bag = ChipmunkBag.new bag_path
+    
+    # move everything into the data subdir if data subdir does not exist
+    move_files_to_bag
 
-    tags = common_tags 
-    tags.merge!(send("#{content_type}_tags"))
-
-    bag.write_chipmunk_info(tags)
+    bag.write_chipmunk_info(common_tags.merge(audio_tags))
+    bag.download_metadata
 
     # generate the manifest and tagmanifest files
     bag.manifest!
@@ -40,51 +48,32 @@ class ChipmunkBagger
     }
   end
 
-  def content_specific_tags
-  
+  def move_files_to_bag
+    Find.find(src_path) do |file_to_add|
+      # directories will automatically be created in the bag based on the files
+      # added, so we don't need to explicitly add them to the bag
+      next if File.directory?(file_to_add)
+
+      # relative_path is the destination path within the bag (relative to data)
+      # file_to_add is a resolvable path on disk to an actual file.
+      relative_path = remove_prefix(src_path,file_to_add)
+      bag.add_file_by_moving(relative_path,file_to_add)
+    end
   end
-
-  def move_files_to_data
-    bag_data_dir = File.join(bag_path,"data")
-    return if File.exists?(bag_data_dir)
-
-    files_to_move = Dir.glob(File.join(bag_path,"*"))
-    FileUtils.mkdir(bag_data_dir)
-    FileUtils.mv(files_to_move,File.join(bag_path,"data"))
-  end
-
 
   def audio_tags
-    # extract metadata path from mets
-    doc = Nokogiri::XML(File.open(File.join(bag_path,"data","mets.xml")))
+    mets_fh = bag.get("mets.xml")
+    raise ChipmunkMetadataError, "Bag doesn't contain mets.xml" unless mets_fh
+    mets = AudioMETS.new(mets_fh)
 
-    # try MARC
-    marc_href_attr = doc.xpath("//mets:mdRef[@MDTYPE='MARC']/@xlink:href").first
-    
-    if marc_href_attr
-      {'Metadata-URL': download_marc(marc_href_attr.value),
-       'Metadata-Type': 'MARC'}
-    else
-      raise ArgumentError,"No linked MARC metadata found in mets.xml"
-    end
-#    end
-
-    # otherwise try EAD?
-#      ead_link = doc.xpath("//mets:mdRef[@MDTYPE='EAD']/@xlink:href")
+    {'Metadata-URL': mets.marcxml_url,
+     'Metadata-Type': 'MARC',
+     'Metadata-Tagfile': 'marc.xml'}
 
   end
 
-  def download_marc(catalog_url)
-    # fetch the xml version of the record over https
-    unless match = catalog_url.match(%r((mirlyn.lib.umich.edu/Record/\d{9}))) 
-      raise ArgumentError,"Catalog URL #{catalog_url} does not match mirlyn.lib.umich.edu/Record/RECORDNUM"
-    end
-
-    url = "https://#{match[0]}.xml"
-
-    IO.copy_stream(open(url),File.join(bag_path,'marc.xml'))
-    bag.add_tag_file('marc.xml')
-    
-    url
+  def remove_prefix(prefix,file)
+    file.sub(/^#{src_path}/,'')
   end
+
 end

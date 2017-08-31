@@ -2,124 +2,130 @@ require 'spec_helper'
 require 'chipmunk_bagger'
 
 RSpec.describe ChipmunkBagger do
-  TAGFILES = %w(bag-info.txt bagit.txt chipmunk-info.txt manifest-md5.txt
-  manifest-sha1.txt marc.xml)
-  TAGMANIFESTS = %w(tagmanifest-md5.txt tagmanifest-sha1.txt)
   DATAFILES = %w(am000001.wav pm000001.wav mets.xml) 
-  FIXTURES_PATH = File.join(Rails.application.root,"spec","support","fixtures")
+  MARCURL = "https://mirlyn.lib.umich.edu/Record/011500592.xml"
+  EXTERNAL_ID = '12345'
+  FAKEUUID = 'fakeuuid'
+  GOOD_DATA_PATH = fixture("audio","upload","good","data")
 
   def make_bag
-    ChipmunkBagger.new('audio','12345',@bag_path).make_bag
+    ChipmunkBagger.new('audio',EXTERNAL_ID,@src_path,@bag_path).make_bag
   end
 
   before(:each) do
     # don't actually fetch marc
-    allow(Kernel).to receive(:open)
-      .with("https://mirlyn.lib.umich.edu/Record/011500592.xml")
-      .and_return(File.open(File.join(FIXTURES_PATH,"marc.xml")))
+    allow(Net::HTTP).to receive(:get)
+      .with(URI(MARCURL))
+      .and_return(File.read(fixture("marc.xml")))
   end
+
+  
+  let(:mets_path) { File.join(GOOD_DATA_PATH,"mets.xml") }
+  let(:bag_data) { File.join(@bag_path,"data") }
 
   # set up data in safe area
   around(:each) do |example|
     Dir.mktmpdir do |tmpdir|
-      fixture_data = File.join(FIXTURES_PATH,"audio","upload","good","data")
       @bag_path = File.join(tmpdir,"testbag")
-      FileUtils.cp_r(fixture_data,@bag_path)
+      @src_path = File.join(tmpdir,"srcpath")
+      FileUtils.cp_r(fixture_data,@src_path)
       example.run
     end
   end
 
   context "with stubbed ChipmunkBag" do
+    let(:bag) do double(:bag,
+                        "manifest!": nil,
+                        write_chipmunk_info: nil,
+                        add_tag_file: nil,
+                        download_metadata: nil,
+                        )
+    end
+
     before(:each) do
-      bag = double(:bag)
+      allow(SecureRandom).to receive(:uuid).and_return(FAKEUUID)
       allow(ChipmunkBag).to receive(:new).and_return(bag)
-      allow(bag).to receive(:"manifest!")
-      allow(bag).to receive(:write_chipmunk_info)
-      allow(bag).to receive(:add_tag_file)
+      allow(bag).to receive(:get).with("mets.xml").and_return(File.open(mets_path))
     end
 
-    let(:bag_data) { File.join(@bag_path,"data") }
-    context "when the data dir exists" do
-      before(:each) do 
-        FileUtils.mkdir(bag_data)
+
+    context "with good audio data" do
+      let(:fixture_data) { GOOD_DATA_PATH }
+
+      before(:each) do
+        allow(bag).to receive(:add_file_by_moving)
       end
 
-      it "doesn't move anything" do 
-        begin
-          make_bag
-        rescue Errno::ENOENT
-          # expected - METS is not already present in data dir
+      shared_examples_for "moves files to the data dir" do
+        DATAFILES.each do |file|
+          it "moves #{file} to the data dir" do 
+            expect(bag).to receive(:add_file_by_moving).with(file,File.join(@src_path,file))
+            make_bag
+          end
         end
-
-        expect(Dir.entries(File.join(@bag_path,"data"))).to contain_exactly(".","..")
       end
-    end
 
-    context "when data dir doesn't exist" do
-      it "creates the data dir" do 
+
+      context "when data dir doesn't exist" do
+        it_behaves_like "moves files to the data dir"
+      end
+
+      context "when the source and destination directory are the same" do
+        it_behaves_like "moves files to the data dir"
+      end
+
+      it "adds the expected metadata tags" do
+        expect(bag).to receive(:write_chipmunk_info).with({
+          'External-Identifier' => EXTERNAL_ID,
+          'Chipmunk-Content-Type' => 'audio',
+          'Bag-ID' => FAKEUUID,
+          'Metadata-URL': MARCURL,
+          'Metadata-Type': 'MARC',
+          'Metadata-Tagfile': 'marc.xml'})
+
         make_bag
-        expect(File).to exist(bag_data)
       end
-     
-      DATAFILES.each do |file|
-        it "moves #{file} to the data dir" do 
-          make_bag
-          expect(File).to exist(File.join(bag_data,file))
+
+      it "downloads the metadata" do
+        expect(bag).to receive(:download_metadata)
+        make_bag
+      end
+
+      context "when bag doesn't contain mets.xml" do
+        before(:each) do
+          allow(bag).to receive(:get).with("mets.xml").and_return(nil)
+        end
+
+        it "reports an error" do
+          expect { make_bag }.to raise_error(ChipmunkMetadataError,/mets.xml/)
         end
       end
+
     end
 
-    context "when mets.xml doesn't exist" do
-      before(:each) do
-        File.unlink(File.join(@bag_path,"mets.xml"))
-      end
+    context "with src data that has hierarchy" do
+      let(:fixture_data) { fixture("data_hierarchy") }
 
-      it "reports an error" do
-        expect { make_bag }.to raise_error(Errno::ENOENT,/mets.xml/)
-      end
-    end
-
-    context "when mets.xml doesn't have a MARC record" do
-      before(:each) do
-        FileUtils.copy(File.join(FIXTURES_PATH,"audio","mets-nomarc.xml"),
-                            File.join(@bag_path,"mets.xml"))
-      end
-
-      it "reports an error" do
-        expect { make_bag }.to raise_error(ArgumentError,/MARC/)
+      it "preserves directory hierarchy under source dir" do
+        expect(bag).to receive(:add_file_by_moving).with("zero_file",File.join(@src_path,"zero_file"))
+        expect(bag).to receive(:add_file_by_moving).with("one/one_file",File.join(@src_path,"one/one_file"))
+        expect(bag).to receive(:add_file_by_moving).with("one/two/two_file",File.join(@src_path,"one/two/two_file"))
+        make_bag
       end
     end
 
-    context "when MARC link isn't to mirlyn" do
-      before(:each) do
-        FileUtils.copy(File.join(FIXTURES_PATH,"audio","mets-nonmirlyn.xml"),
-                            File.join(@bag_path,"mets.xml"))
-      end
-      it "reports an error" do
-        expect { make_bag }.to raise_error(ArgumentError,/does not match mirlyn/)
-      end
-    end
-  end
-    
-  # move these tests to ChipmunkBag?
-  it "creates the expected tag files" do
-    make_bag
-    TAGFILES.each do |tagfile|
-      expect(File).to exist(File.join(@bag_path,tagfile))
-    end
   end
 
-  TAGMANIFESTS.each do |tagmanifest|
-    it "includes all tag files in #{tagmanifest}" do 
+  context "with good audio data" do
+    let(:fixture_data) { GOOD_DATA_PATH }
+
+    it "creates a valid ChipmunkBag" do 
       make_bag
-      expect(File.readlines(File.join(@bag_path,tagmanifest))
-        .map { |l| l.strip.split[1] }).to contain_exactly(*TAGFILES)
+      expect(ChipmunkBag.new(@bag_path)).to be_valid
     end
   end
 
-  it "creates a valid ChipmunkBag" do 
-    make_bag
-    expect(ChipmunkBag.new(@bag_path)).to be_valid
-  end
+
+
 
 end

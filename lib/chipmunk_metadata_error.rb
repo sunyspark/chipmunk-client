@@ -1,0 +1,3 @@
+class ChipmunkMetadataError < RuntimeError
+end
+
