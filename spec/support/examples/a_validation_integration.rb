@@ -51,7 +51,6 @@ RSpec.shared_examples 'a validation integration' do
 
   context 'with an invalid bag' do
     let(:bag) { bag_with_id('bad') } 
-    let(:src_path) { fixture(content_type,"bad") } 
     it "reports the error and does not move the bag to storage" do
       expect(File).not_to receive(:rename).with(bag.src_path,bag.dest_path)
       subject
@@ -61,12 +60,11 @@ RSpec.shared_examples 'a validation integration' do
   end
 
   context 'with a nonexistent bag' do
-    let(:bag) { bag_with_id('nonexistent') }
-    before(:each) { FileUtils.rmtree fixture(content_type,"deleteme") }
-    let(:src_path) { fixture(content_type,"deleteme") }
+    let(:bag) { bag_with_id('deleteme') }
+    before(:each) { FileUtils.rmtree bag.src_path }
     it "does not create a bag" do
       subject
-      expect(File.exists?(src_path)).to be(false)
+      expect(File.exists?(bag.src_path)).to be(false)
     end
 
   end

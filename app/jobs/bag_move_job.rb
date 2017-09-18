@@ -9,14 +9,14 @@ class BagMoveJob < ApplicationJob
 
     begin
       
-      # TODO when a bag is just a completed request 
+      # TODO
       #  - if all validation succeeds:
       #    - start a transaction that updates the request to complete
       #    - move the bag into place
       #    - success: commit the transaction
       #    - failure (exception) - transaction automatically rolls back
-      @bag = ChipmunkBag.new(src_path)
-      if bag_is_valid? and bag_includes_metadata? and bag_externally_validates?
+      if bag_exists? and bag_is_valid? and 
+        bag_includes_metadata?  and bag_externally_validates?
         File.rename(src_path,dest_path)
         record_success
       else
@@ -34,8 +34,17 @@ class BagMoveJob < ApplicationJob
 
   attr_accessor :queue_item, :src_path, :dest_path, :bag
 
+  def bag_exists?
+    if File.exists?(src_path)
+      @bag = ChipmunkBag.new(src_path)
+      true
+    else
+      @errors.push("Bag does not exist at upload location #{src_path}")
+      false
+    end
+  end
+
   def bag_is_valid?
-    return false unless File.exists?(src_path)
     if bag.valid?
       true
     else
