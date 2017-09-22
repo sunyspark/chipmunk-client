@@ -62,7 +62,7 @@ class Uploader
 
 
   def make_request
-    chipmunk_post("/v1/requests",{request: request_params})
+    chipmunk_post("/v1/requests", request_params)
   end
 
   def rsync_bag(upload_link)

@@ -21,6 +21,6 @@ A Preservation-Focused Dark Repository for the University of Michigan
 - Set up the repository and upload paths: `bundle exec rake chipmunk:setup`
 - `export CHIPMUNK_API_KEY=the generated key`
 - In another window, start the development server: `bundle exec rails server`
-- Create a test bag: `bundle exec bin/makebag audio 12345 /tmp/whatever` 
-- Try to upload the bag: `bundle exec bin/upload /tmp/whatever`
+- (Optional) Bag some audio content: `bundle exec ruby -I lib bin/makebag audio 39015012345678 /path/to/audio/material /path/to/output/bag`
+- Try to upload a test bag: `bundle exec ruby -I lib bin/upload spec/support/fixtures/audio/upload/good` (or whatever bag you created before)
 

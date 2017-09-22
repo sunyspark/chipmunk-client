@@ -1,5 +1,6 @@
 require 'chipmunk_bag'
 require 'chipmunk_metadata_error'
+require 'audio_mets'
 require 'find'
 require 'bagit'
 require 'securerandom'
