@@ -1,6 +1,6 @@
 a3ca2b17a6c60dfc10baa8c46f2cfab902a49f7e  bag-info.txt
 e2924b081506bac23f5fffe650ad1848a1c8ac1d  bagit.txt
-1275b5aaf5de57f173fa214c76d517055243539a  chipmunk-info.txt
 fe1f4c470f9e6d3dc843a3eed3ddc45dc26fccfb  manifest-md5.txt
 9a10645172c6de8882738bf3a29a90c65c2f3d4f  manifest-sha1.txt
 ba9515177ee749aa7417505ef8bf194f71238ce2  marc.xml
+75d624eca8e0234d0292250b85a9cd25e5b75d80  chipmunk-info.txt
