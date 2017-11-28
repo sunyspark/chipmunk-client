@@ -7,7 +7,7 @@ class Bag < ApplicationRecord
     bag_id
   end
 
-  validates :bag_id, presence: true
+  validates :bag_id, presence: true, length: { minimum: 6 }
   validates :user_id, presence: true
   validates :external_id, presence: true
 
@@ -21,7 +21,9 @@ class Bag < ApplicationRecord
   end
   
   def dest_path
-    File.join(Rails.application.config.upload['storage_path'],bag_id)
+    prefixes = bag_id.match(/^(..)(..)(..).*/)
+    raise RuntimeError, "bag_id too short" unless prefixes
+    File.join(Rails.application.config.upload['storage_path'],*prefixes[1..3],bag_id)
   end
 
   def upload_link

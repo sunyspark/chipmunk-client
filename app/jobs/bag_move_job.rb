@@ -17,6 +17,7 @@ class BagMoveJob < ApplicationJob
       #    - failure (exception) - transaction automatically rolls back
       if bag_exists? and bag_is_valid? and 
         bag_includes_metadata?  and bag_externally_validates?
+        FileUtils.mkdir_p(File.dirname(dest_path))
         File.rename(src_path,dest_path)
         record_success
       else
