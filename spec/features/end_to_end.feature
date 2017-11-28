@@ -58,8 +58,6 @@ Feature: End to End functionality
       | user          | <username>                           |
       | content_type  | audio                                |
       | external_id   | <external_id>                        |
-      # see PFDR-66 (this is present for completed bags after the request/bag merger)
-      | upload_link   | localhost:/tmp/chipmunk/inc/<bag_id> |
       | created_at    | 2017-05-17 18:49:08 UTC              |
       | updated_at    | 2017-05-17 18:49:08 UTC              |
       # see PFDR-66 (this fails after the request/bag merger)
