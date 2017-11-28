@@ -12,7 +12,8 @@ RSpec.shared_examples_for "a bag view"  do |assignee,wrapper|
       upload_link: "#{Faker::Internet.email}:/#{Faker::Lorem.word}/path",
       content_type: "fake",
       created_at: Time.at(0),
-      updated_at: Time.now
+      updated_at: Time.now,
+      stored?: true
     )
   end
   let(:expected) do
@@ -23,7 +24,8 @@ RSpec.shared_examples_for "a bag view"  do |assignee,wrapper|
       content_type: bag.content_type,
       upload_link: bag.upload_link,
       created_at: bag.created_at.to_formatted_s(:default),
-      updated_at: bag.updated_at.to_formatted_s(:default)
+      updated_at: bag.updated_at.to_formatted_s(:default),
+      stored: bag.stored?
     }
   end
   let(:admin_user) { double(:admin_user, admin?: true) }

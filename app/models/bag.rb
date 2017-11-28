@@ -30,6 +30,10 @@ class Bag < ApplicationRecord
     File.join(Rails.application.config.upload['rsync_point'],bag_id)
   end
 
+  def stored?
+    storage_location != nil
+  end
+
   def external_validation_cmd
     [Rails.application.config.validation[content_type.to_s],external_id,src_path].join(" ")
   end

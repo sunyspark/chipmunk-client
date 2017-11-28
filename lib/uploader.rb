@@ -17,13 +17,16 @@ class Uploader
   def upload
     begin
       req = make_request
+      if req["stored"]
+        puts "Bag has already been uploaded"
+        return
+      end
       rsyncer.upload(req["upload_link"])
       qitem = complete_request(req)
       print_result(wait_for_bag(qitem))
     rescue ChipmunkClientError => e
       puts e.to_s
       puts e.service_exception
-      exit 1
     end
   end
 

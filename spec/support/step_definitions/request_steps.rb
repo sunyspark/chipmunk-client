@@ -44,6 +44,7 @@ module RequestSteps
 
   def adjust_table_hash(hash)
     hash["id"] ? hash["id"] = Integer(hash["id"]) : nil
+    hash["stored"] ? hash["stored"] = ActiveModel::Type::Boolean.new.cast(hash["stored"]) : nil
     return hash
   end
 end
