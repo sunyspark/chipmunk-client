@@ -32,6 +32,8 @@ group :test do
   gem 'rspec-activejob'
   gem 'timecop'
   gem 'turnip'
+  gem 'simplecov'
+  gem 'webmock'
 end
 
 group :development do

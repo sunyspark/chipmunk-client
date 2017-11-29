@@ -3,21 +3,28 @@ require 'rest-client'
 require 'pry'
 require 'json'
 require_relative './chipmunk_bag'
-
-CHIPMUNK_URL = "http://localhost:3000"
+require_relative './chipmunk_client'
+require_relative './bag_rsyncer'
 
 class Uploader
-  def initialize(api_key,bag_path)
-    @api_key = api_key
+  def initialize(api_key,bag_path,service: ChipmunkClient.new(api_key: api_key),rsyncer: BagRsyncer.new(bag_path))
     @bag_path = bag_path.chomp('/')
     @request_params = request_params_from_bag(bag_path)
+    @service = service
+    @rsyncer = rsyncer
   end
 
   def upload
-    req = make_request
-    rsync_bag(req["upload_link"])
-    qitem = complete_request(req)
-    print_result(wait_for_bag(qitem))
+    begin
+      req = make_request
+      rsyncer.upload(req["upload_link"])
+      qitem = complete_request(req)
+      print_result(wait_for_bag(qitem))
+    rescue ChipmunkClientError => e
+      puts e.to_s
+      puts e.service_exception
+      exit 1
+    end
   end
 
   def bag_id
@@ -26,11 +33,11 @@ class Uploader
 
   private
 
-  attr_accessor :request_params, :api_key, :bag_path
+  attr_accessor :request_params, :bag_path, :service, :rsyncer
 
   def print_result(qitem_result)
     if qitem_result["status"] == "DONE"
-      pp chipmunk_get(qitem_result["bag"])
+      pp service.get(qitem_result["bag"])
     else
       pp qitem_result
     end
@@ -56,24 +63,12 @@ class Uploader
      bag_id: tags['Bag-ID']}
   end
 
-  def auth_header
-    { Authorization: "Token token=#{api_key}" }
-  end
-
-
   def make_request
-    chipmunk_post("/v1/requests", request_params)
-  end
-
-  def rsync_bag(upload_link)
-    # append trailing / to bag path here so we actually put the bag instead of
-    # a directory containing the bag in the upload target
-    raise RuntimeError, 'rsync failed' unless
-      system('rsync','-avz',"#{bag_path}/",upload_link)
+    service.post("/v1/requests", request_params)
   end
 
   def complete_request(request)
-    chipmunk_post("/v1/requests/#{bag_id}/complete")
+    service.post("/v1/requests/#{bag_id}/complete")
   end
 
   def wait_for_bag(qitem)
@@ -83,39 +78,8 @@ class Uploader
       return result if result["status"] != "PENDING"
       puts "Waiting for queue item to be processed"
       sleep 10
-      result = chipmunk_get("/v1/queue/#{qitem["id"]}")
+      result = service.get("/v1/queue/#{qitem["id"]}")
     end
   end
 
-  def chipmunk_post(endpoint,params = {})
-    chipmunk_request(:post,endpoint,payload: params)
-  end
-
-  def chipmunk_get(endpoint)
-    chipmunk_request(:get,endpoint)
-  end
-  
-  # Manually follows the redirect from a 201 response
-  # if needed and returns the result as a JSON object.
-  def follow_redir_and_parse(response) 
-    # follow redirection from 201; avoid magic integer
-    if response.net_http_res.is_a? Net::HTTPCreated
-      response = response.follow_get_redirection
-    end
-
-    JSON.parse(response)
-  end
-
-  def chipmunk_request(method,endpoint,**kwargs)
-    begin
-    follow_redir_and_parse(RestClient::Request.execute(method: method, 
-                                url: CHIPMUNK_URL + endpoint,
-                                headers: auth_header,
-                                **kwargs))
-    rescue RestClient::InternalServerError => e
-      puts e.to_s
-      puts JSON.parse(e.response)["exception"]
-      exit 1
-    end
-  end
 end
