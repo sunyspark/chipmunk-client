@@ -7,10 +7,10 @@ require_relative './chipmunk_client'
 require_relative './bag_rsyncer'
 
 class Uploader
-  def initialize(api_key,bag_path,service: ChipmunkClient.new(api_key: api_key),rsyncer: BagRsyncer.new(bag_path))
+  def initialize(api_key,bag_path,client: ChipmunkClient.new(api_key: api_key),rsyncer: BagRsyncer.new(bag_path))
     @bag_path = bag_path.chomp('/')
     @request_params = request_params_from_bag(bag_path)
-    @service = service
+    @client = client
     @rsyncer = rsyncer
   end
 
@@ -36,11 +36,11 @@ class Uploader
 
   private
 
-  attr_accessor :request_params, :bag_path, :service, :rsyncer
+  attr_accessor :request_params, :bag_path, :client, :rsyncer
 
   def print_result(qitem_result)
     if qitem_result["status"] == "DONE"
-      pp service.get(qitem_result["bag"])
+      pp client.get(qitem_result["bag"])
     else
       pp qitem_result
     end
@@ -67,11 +67,11 @@ class Uploader
   end
 
   def make_request
-    service.post("/v1/requests", request_params)
+    client.post("/v1/requests", request_params)
   end
 
   def complete_request(request)
-    service.post("/v1/requests/#{bag_id}/complete")
+    client.post("/v1/requests/#{bag_id}/complete")
   end
 
   def wait_for_bag(qitem)
@@ -81,7 +81,7 @@ class Uploader
       return result if result["status"] != "PENDING"
       puts "Waiting for queue item to be processed"
       sleep 10
-      result = service.get("/v1/queue/#{qitem["id"]}")
+      result = client.get("/v1/queue/#{qitem["id"]}")
     end
   end
 

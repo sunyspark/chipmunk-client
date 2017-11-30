@@ -2,11 +2,11 @@ require "spec_helper"
 
 describe Uploader do
 
-  let(:mock_service) do
+  let(:client) do
     instance_double(ChipmunkClient, post: {}, get: {})
   end
-  let(:mock_rsyncer) { instance_double(BagRsyncer,upload: true) }
-  let(:mock_request) {
+  let(:rsyncer) { instance_double(BagRsyncer,upload: true) }
+  let(:request) {
     {
       bag_id: SecureRandom.uuid,
       user: Faker::Internet.user_name,
@@ -18,36 +18,36 @@ describe Uploader do
     }
   }
 
-  let(:item_id) { mock_request["item_id"] }
+  let(:item_id) { request["item_id"] }
 
   before(:each) do
-    allow(mock_service).to receive(:post)
+    allow(client).to receive(:post)
       .with("/v1/requests",anything)
-      .and_return(mock_request)
+      .and_return(request)
 
-    allow(mock_service).to receive(:get)
+    allow(client).to receive(:get)
       .with("/v1/queue/#{item_id}")
       .and_return( { status: "DONE" } )
   end
 
   subject do
-    described_class.new("foo",fixture('test_bag'),service: mock_service, rsyncer: mock_rsyncer)
+    described_class.new("foo",fixture('test_bag'),client: client, rsyncer: rsyncer)
   end
 
   context "when the bag is not stored" do
-    before(:each) { mock_request["stored"] = false }
+    before(:each) { request["stored"] = false }
 
     it "uploads the bag" do
-      expect(mock_rsyncer).to receive(:upload).with(mock_request["upload_link"])
+      expect(rsyncer).to receive(:upload).with(request["upload_link"])
       subject.upload
     end
   end
 
   context "when the bag is stored" do
-    before(:each) { mock_request["stored"] = true }
+    before(:each) { request["stored"] = true }
 
     it "does not attempt to upload the bag" do
-      expect(mock_rsyncer).not_to receive(:upload)
+      expect(rsyncer).not_to receive(:upload)
       subject.upload
     end
   end
@@ -60,7 +60,7 @@ describe Uploader do
     end
 
     before(:each) do
-      allow(mock_service).to receive(:post).and_raise(ChipmunkClientError.new(rest_error))
+      allow(client).to receive(:post).and_raise(ChipmunkClientError.new(rest_error))
     end
 
     it "prints the error message" do
