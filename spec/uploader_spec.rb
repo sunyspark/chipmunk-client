@@ -1,45 +1,81 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Uploader do
-
   let(:client) do
-    instance_double(ChipmunkClient, post: {}, get: {})
+    instance_double(ChipmunkClient)
   end
-  let(:rsyncer) { instance_double(BagRsyncer,upload: true) }
-  let(:request) {
+  let(:bag_id) { "14d25bcd-deaf-4c94-add7-c189fdca4692" }
+  let(:rsyncer) { instance_double(BagRsyncer, upload: true) }
+  let(:request) do
+    # from spec/support/fixtures/test_bag
     {
-      bag_id: SecureRandom.uuid,
-      user: Faker::Internet.user_name,
-      external_id: SecureRandom.uuid,
-      content_type: "fake",
-      upload_link: "#{Faker::Internet.email}:/#{Faker::Lorem.word}/path",
-      created_at: Time.at(0),
-      updated_at: Time.now
+      "bag_id"      => bag_id,
+      "external_id" => "test_ex_id_22",
+      "upload_link" => "#{Faker::Internet.email}:/#{Faker::Lorem.word}/path/#{bag_id}"
     }
-  }
+  end
 
-  let(:item_id) { request["item_id"] }
+  let(:queue_item) do
+    {
+      "id"     => 1,
+      "status" => "DONE",
+      "bag"    => "/v1/bags/#{bag_id}"
+    }
+  end
 
   before(:each) do
     allow(client).to receive(:post)
-      .with("/v1/requests",anything)
+      .with("/v1/requests", anything)
       .and_return(request)
-
-    allow(client).to receive(:get)
-      .with("/v1/queue/#{item_id}")
-      .and_return( { status: "DONE" } )
+    allow(client).to receive(:post)
+      .with("/v1/requests/#{request["bag_id"]}/complete")
+      .and_return(queue_item)
   end
 
   subject do
-    described_class.new("foo",fixture('test_bag'),client: client, rsyncer: rsyncer)
+    described_class.new("foo", fixture("test_bag"), client: client, rsyncer: rsyncer)
   end
 
-  context "when the bag is not stored" do
+  context "when the bag is not already stored" do
     before(:each) { request["stored"] = false }
 
-    it "uploads the bag" do
-      expect(rsyncer).to receive(:upload).with(request["upload_link"])
-      subject.upload
+    context "when bag validation succeeds" do
+      it "uploads the bag" do
+        expect(rsyncer).to receive(:upload).with(request["upload_link"])
+        subject.upload
+      end
+
+      it "prints a success message" do
+        expect { subject.upload }.to output(/#{request["external_id"]}.*success/).to_stdout
+      end
+
+      it "returns true" do
+        expect(subject.upload).to be true
+      end
+    end
+
+    context "when bag validation fails" do
+      let(:queue_item) do
+        {
+          status: "ERROR",
+          error:  "something went wrong\n" \
+            "here are the details"
+        }
+      end
+
+      it "prints an error message" do
+        expect { subject.upload }.to output(/#{request["external_id"]}.*failure/).to_stdout
+      end
+
+      it "returns false" do
+        expect(subject.upload).to be false
+      end
+
+      it "formats the validation failure" do
+        expect { subject.upload }.to output(/something went wrong\nhere are the details/).to_stdout
+      end
     end
   end
 
@@ -55,8 +91,8 @@ describe Uploader do
   context "when something goes wrong" do
     let(:rest_error) do
       double(:rest_error,
-             response: '{ "exception": "some problem"}',
-             message: '599 Having a bad problem')
+        response: '{ "exception": "some problem"}',
+        message: "599 Having a bad problem")
     end
 
     before(:each) do
@@ -64,7 +100,7 @@ describe Uploader do
     end
 
     it "prints the error message" do
-      expect{subject.upload}.to output(/some problem/).to_stdout
+      expect { subject.upload }.to output(/some problem/).to_stdout
     end
   end
 end

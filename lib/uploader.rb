@@ -40,9 +40,12 @@ class Uploader
 
   def print_result(qitem_result)
     if qitem_result["status"] == "DONE"
-      pp client.get(qitem_result["bag"])
+      puts "#{external_id} uploaded successfully"
+      true
     else
-      pp qitem_result
+      puts "#{external_id} upload failure"
+      puts qitem_result[:error]
+      false
     end
   end
 
@@ -83,6 +86,10 @@ class Uploader
       sleep 10
       result = client.get("/v1/queue/#{qitem["id"]}")
     end
+  end
+
+  def external_id
+    request_params[:external_id]
   end
 
 end
