@@ -1,4 +1,5 @@
 require "rails_helper"
+require "pry"
 
 module TurnipHelper
   include Rack::Test::Methods
@@ -10,6 +11,15 @@ end
 
 RSpec.configure do |config|
   config.include TurnipHelper, type: :feature
+
+  config.before(:type => :feature) do
+    @old_upload_config = Rails.application.config.upload.clone
+    @old_validation_config = Rails.application.config.validation.clone
+  end
+  config.after(:type => :feature) do
+    Rails.application.config.upload = @old_upload_config
+    Rails.application.config.validation = @old_validation_config
+  end
 end
 
 require_relative "support/step_definitions/placeholders"

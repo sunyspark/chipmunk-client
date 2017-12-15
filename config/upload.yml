@@ -8,8 +8,8 @@ development:
 
 test:
   # application-writable directory where upload points should be created, e.g. /pfdr/incoming/uniqname
-  upload_path: /pfdr/incoming/
+  upload_path: /tmp/pfdr/incoming/
   # rsync point to user-writable upload path
   rsync_point: localhost:incoming
   # application-writable directory for final storage of bags; allows creation of dirs, files
-  storage_path: /pfdr/storage/
+  storage_path: /tmp/pfdr/storage/

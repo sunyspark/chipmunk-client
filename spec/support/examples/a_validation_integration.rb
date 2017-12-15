@@ -16,10 +16,17 @@ RSpec.shared_examples 'a validation integration' do
   end
 
   before(:each) do
+    @old_validation = Rails.application.config.validation[content_type]
+    @old_upload_path = Rails.application.config.upload['upload_path']
     Rails.application.config.validation[content_type] = File.join(Rails.application.root,"bin",validation_script)
     Rails.application.config.upload['upload_path'] = fixture(content_type)
     # don't actually move the bag
     allow(File).to receive(:rename).with(bag.src_path,bag.dest_path).and_return true
+  end
+
+  after(:each) do
+    Rails.application.config.validation[content_type] = @old_validation
+    Rails.application.config.upload['upload_path'] = @old_upload_path
   end
 
   # for known upload location under fixtures/video
