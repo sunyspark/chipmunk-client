@@ -1,4 +1,6 @@
-require_relative 'boot'
+# frozen_string_literal: true
+
+require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
@@ -20,8 +22,8 @@ module Chipmunk
   class Application < Rails::Application
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => :any
+        origins "*"
+        resource "*", headers: :any, methods: :any
       end
     end
 
@@ -37,10 +39,10 @@ module Chipmunk
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths << Rails.root.join("lib")
 
-    config.upload = config_for('upload')
-    config.validation = config_for('validation')
+    config.upload = config_for("upload")
+    config.validation = config_for("validation")
 
     config.active_job.queue_adapter = :resque
   end

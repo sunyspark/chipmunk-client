@@ -1,9 +1,10 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe QueueItemBuilder do
-
-  let(:config_upload_path) { Rails.application.config.upload['upload_path'] }
-  let(:config_storage_path) { Rails.application.config.upload['storage_path'] }
+  let(:config_upload_path) { Rails.application.config.upload["upload_path"] }
+  let(:config_storage_path) { Rails.application.config.upload["storage_path"] }
 
   before(:each) do
     allow(BagMoveJob).to receive(:perform_later)
@@ -35,8 +36,6 @@ RSpec.describe QueueItemBuilder do
       expect(queue_item.pending?).to be true
     end
     it "enqueues a BagMoveJob to /<storage_path>/:bag_id" do
-      upload_path = File.join(config_upload_path, request.user.username, request.bag_id)
-      storage_path = File.join(config_storage_path, request.bag_id)
       _, queue_item = subject
       expect(BagMoveJob).to have_received(:perform_later).with(queue_item)
     end
@@ -73,7 +72,5 @@ RSpec.describe QueueItemBuilder do
         expect(subject).to contain_exactly(anything, an_instance_of(QueueItem))
       end
     end
-    
   end
 end
-

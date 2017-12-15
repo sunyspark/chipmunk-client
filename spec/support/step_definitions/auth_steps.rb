@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AuthSteps
   step "I am a valid API user with username :username" do |username|
     @user = Fabricate(:user, username: username)
@@ -5,4 +7,4 @@ module AuthSteps
   end
 end
 
-RSpec.configure {|config| config.include AuthSteps}
+RSpec.configure {|config| config.include AuthSteps }

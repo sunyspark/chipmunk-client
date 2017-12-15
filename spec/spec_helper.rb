@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -29,13 +31,12 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  config.filter_run_excluding integration: true unless ENV['RUN_INTEGRATION']
-
+  config.filter_run_excluding integration: true unless ENV["RUN_INTEGRATION"]
 end
 
-support_dir = File.expand_path(File.join(File.dirname(__FILE__), 'support'))
-['examples', 'contexts', 'helpers'].each do |folder|
-  Dir[File.join(support_dir, folder, '**', '*.rb')].each {|f| require f}
+support_dir = File.expand_path(File.join(File.dirname(__FILE__), "support"))
+["examples", "contexts", "helpers"].each do |folder|
+  Dir[File.join(support_dir, folder, "**", "*.rb")].each {|f| require f }
 end
 
 # Load Turnip. The rest of the config is in the turnip_helper.rb
@@ -43,5 +44,5 @@ require "turnip/rspec"
 require "webmock/rspec"
 
 def fixture(*path)
-  File.join(Rails.application.root,"spec","support","fixtures",File.join(*path))
+  File.join(Rails.application.root, "spec", "support", "fixtures", File.join(*path))
 end

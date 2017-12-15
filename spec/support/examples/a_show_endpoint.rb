@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 # @param key [Symbol] The key serving as the id, rails default is :id
 # @param factory [Proc] Proc that optionally takes a user, returns a saved record.
@@ -10,7 +12,7 @@ RSpec.shared_examples "a show endpoint" do
   end
   before(:each) do
     request.headers.merge! auth_header
-    get :show, params: {key => record.send(key)}
+    get :show, params: { key => record.send(key) }
   end
   context "as unauthenticated user" do
     include_context "as unauthenticated user"
@@ -74,4 +76,3 @@ RSpec.shared_examples "a show endpoint" do
     end
   end
 end
-

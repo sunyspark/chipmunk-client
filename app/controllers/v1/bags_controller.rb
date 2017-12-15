@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V1
   class BagsController < ApplicationController
 
@@ -16,7 +18,7 @@ module V1
     def create
       authorize Bag
       status, @request_record = RequestBuilder.new
-        .create(create_params.merge({user: current_user}))
+        .create(create_params.merge(user: current_user))
       case status
       when :duplicate
         head 303, location: v1_request_path(@request_record)
@@ -24,7 +26,6 @@ module V1
         head 201, location: v1_request_path(@request_record)
       when :invalid
         render json: @request_record.errors, status: :unprocessable_entity
-      else
       end
     end
 

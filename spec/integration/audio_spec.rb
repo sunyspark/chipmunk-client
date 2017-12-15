@@ -1,7 +1,9 @@
-require 'rails_helper'
-require 'fileutils'
+# frozen_string_literal: true
 
-RSpec.describe 'audio validation integration', integration: true do
+require "rails_helper"
+require "fileutils"
+
+RSpec.describe "audio validation integration", integration: true do
   it_behaves_like "a validation integration" do
     let(:content_type) { "audio" }
     let(:external_id) { "39015087086396" }

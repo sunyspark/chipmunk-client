@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "timecop"
 
 module TimeSteps
@@ -30,4 +32,4 @@ module TimeSteps
 
 end
 
-RSpec.configure {|config| config.include TimeSteps}
+RSpec.configure {|config| config.include TimeSteps }

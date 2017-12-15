@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require_relative '../lib/chipmunk_bagger'
+require_relative "../lib/chipmunk_bagger"
 
 unless ARGV.length == 4
-  raise ArgumentError, "Usage: #{$0} content_type external_id /path/to/source_files /path/to/output_bag" 
+  raise ArgumentError, "Usage: #{$PROGRAM_NAME} content_type external_id /path/to/source_files /path/to/output_bag"
 end
 
 ChipmunkBagger.new(*ARGV).make_bag

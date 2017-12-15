@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V1
   class QueueItemsController < ApplicationController
     # GET /v1/queue
@@ -14,7 +16,7 @@ module V1
 
     # POST /v1/requests/:bag_id/complete
     def create
-      skip_authorization #disables did-not-auth protection
+      skip_authorization # disables did-not-auth protection
       request = Bag.find_by_bag_id!(params[:bag_id])
       authorize_create!(request)
       status, @queue_item = QueueItemBuilder.new.create(request)
@@ -26,7 +28,7 @@ module V1
       when :invalid
         render json: @queue_item.errors, status: :unprocessable_entity
       else
-        raise RuntimeError, [status, @queue_item]
+        raise [status, @queue_item]
       end
     end
 

@@ -1,25 +1,26 @@
+# frozen_string_literal: true
+
 require "rack/test"
 
 module RequestSteps
 
   step "I send and accept JSON" do
-    header 'Accept', "application/json"
-    header 'Content-Type', "application/json"
+    header "Accept", "application/json"
+    header "Content-Type", "application/json"
   end
 
   step "I send a :http_verb request for/to :url" do |verb, url|
-    request url, { method: verb }
+    request url, method: verb
   end
 
   step "I send a :http_verb request for/to :url with this json:" do |verb, url, table|
-    request(url, {
+    request(url,
       method: verb,
-      params: table.rows_hash.to_json
-    })
+      params: table.rows_hash.to_json)
   end
 
   step "I send an empty POST request to :url" do |url|
-    request(url, { method: :post, params: {}.to_json } )
+    request(url, method: :post, params: {}.to_json)
   end
 
   step "the response should have the following headers:" do |table|
@@ -45,9 +46,8 @@ module RequestSteps
   def adjust_table_hash(hash)
     hash["id"] ? hash["id"] = Integer(hash["id"]) : nil
     hash["stored"] ? hash["stored"] = ActiveModel::Type::Boolean.new.cast(hash["stored"]) : nil
-    return hash
+    hash
   end
 end
 
-RSpec.configure {|config| config.include RequestSteps}
-
+RSpec.configure {|config| config.include RequestSteps }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.id queue_item.id
 json.status queue_item.status.to_s.upcase
 json.request v1_request_path(queue_item.bag)

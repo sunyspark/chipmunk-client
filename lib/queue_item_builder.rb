@@ -1,8 +1,9 @@
 
+# frozen_string_literal: true
+
 class QueueItemBuilder
 
-  def initialize
-  end
+  def initialize; end
 
   def create(request)
     duplicate = QueueItem.where(bag: request, status: [:pending, :done]).first
@@ -19,7 +20,5 @@ class QueueItemBuilder
       return :invalid, queue_item
     end
   end
-
-  private
 
 end

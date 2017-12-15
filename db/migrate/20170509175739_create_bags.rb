@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class CreateBags < ActiveRecord::Migration[5.1]
   def change
-
     create_table :bags do |t|
       t.string :bag_id, null: false
       t.string :type, null: false

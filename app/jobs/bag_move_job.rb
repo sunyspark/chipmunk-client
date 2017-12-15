@@ -1,4 +1,6 @@
-require 'open3'
+# frozen_string_literal: true
+
+require "open3"
 
 class BagMoveJob < ApplicationJob
   def perform(queue_item)
@@ -8,23 +10,21 @@ class BagMoveJob < ApplicationJob
     @errors = []
 
     begin
-      
       # TODO
       #  - if all validation succeeds:
       #    - start a transaction that updates the request to complete
       #    - move the bag into place
       #    - success: commit the transaction
       #    - failure (exception) - transaction automatically rolls back
-      if bag_exists? and bag_is_valid? and 
-        bag_includes_metadata?  and bag_externally_validates?
+      if bag_exists? && bag_is_valid? &&
+          bag_includes_metadata? && bag_externally_validates?
         FileUtils.mkdir_p(File.dirname(dest_path))
-        File.rename(src_path,dest_path)
+        File.rename(src_path, dest_path)
         record_success
       else
         record_failure
       end
-
-    rescue => exception
+    rescue StandardError => exception
       @errors.push(exception.to_s)
       record_failure
       raise exception
@@ -36,7 +36,7 @@ class BagMoveJob < ApplicationJob
   attr_accessor :queue_item, :src_path, :dest_path, :bag
 
   def bag_exists?
-    if File.exists?(src_path)
+    if File.exist?(src_path)
       @bag = ChipmunkBag.new(src_path)
       true
     else
@@ -49,11 +49,10 @@ class BagMoveJob < ApplicationJob
     if bag.valid?
       true
     else
-      @errors.push("Error validating bag:\n" + 
+      @errors.push("Error validating bag:\n" +
         indent_array(bag.errors.full_messages))
       false
     end
-
   end
 
   def record_failure
@@ -65,26 +64,26 @@ class BagMoveJob < ApplicationJob
   end
 
   def bag_includes_metadata?
-    bag_has_metadata_tags? and bag_has_metadata_file?
+    bag_has_metadata_tags? && bag_has_metadata_file?
   end
 
   def bag_has_metadata_tags?
     tags = bag.chipmunk_info
     has_metadata_tags = true
 
-    %w(Metadata-URL Metadata-Type Metadata-Tagfile)
-      .select { |tag| !tags[tag] }
-      .each do |tag| 
-        has_metadata_tags = false
-        @errors.push("Missing required tag #{tag} in chipmunk-info.txt")
-      end
+    ["Metadata-URL", "Metadata-Type", "Metadata-Tagfile"]
+      .reject {|tag| tags[tag] }
+      .each do |tag|
+      has_metadata_tags = false
+      @errors.push("Missing required tag #{tag} in chipmunk-info.txt")
+    end
 
     has_metadata_tags
   end
 
   def bag_has_metadata_file?
-    metadata_file = bag.chipmunk_info['Metadata-Tagfile']
-    if bag.tag_files.map { |f| File.basename(f) }.include?(metadata_file)
+    metadata_file = bag.chipmunk_info["Metadata-Tagfile"]
+    if bag.tag_files.map {|f| File.basename(f) }.include?(metadata_file)
       true
     else
       @errors.push("Missing referenced metadata #{metadata_file}")
@@ -93,9 +92,9 @@ class BagMoveJob < ApplicationJob
   end
 
   def bag_externally_validates?
-    stdout,stderr,status = Open3.capture3(queue_item.bag.external_validation_cmd)
+    _, stderr, status = Open3.capture3(queue_item.bag.external_validation_cmd)
 
-    if status == 0
+    if status.zero?
       true
     else
       @errors.push("Error validating content:\n" + stderr)
@@ -112,8 +111,8 @@ class BagMoveJob < ApplicationJob
     end
   end
 
-  def indent_array(array,width=2)
-    array.map { |s| ' '*width + s }.join("\n")
+  def indent_array(array, width = 2)
+    array.map {|s| " " * width + s }.join("\n")
   end
-  
+
 end

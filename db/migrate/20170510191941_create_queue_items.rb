@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateQueueItems < ActiveRecord::Migration[5.1]
   def change
     create_table :queue_items do |t|
@@ -13,6 +15,5 @@ class CreateQueueItems < ActiveRecord::Migration[5.1]
 
     add_index :queue_items, :request_id, unique: true
     add_foreign_key :queue_items, :requests
-
   end
 end

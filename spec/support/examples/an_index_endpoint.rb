@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 # @param factory [Proc] Proc that optionally takes a user, returns a saved record.
 RSpec.shared_examples "an index endpoint" do
   let(:template) do

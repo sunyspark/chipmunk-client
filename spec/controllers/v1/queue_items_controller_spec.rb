@@ -1,8 +1,9 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe V1::QueueItemsController, type: :controller do
   describe "/v1" do
-
     build_proc = proc do |user|
       uuid = SecureRandom.uuid
       if user
@@ -29,7 +30,6 @@ RSpec.describe V1::QueueItemsController, type: :controller do
     end
 
     describe "POST #create" do
-
       shared_context "mocked QueueItemBuilder" do |status|
         let(:result_queue_item) { Fabricate(:queue_item, bag_id: bag.bag_id) }
         let(:result_status) { status }
@@ -84,7 +84,6 @@ RSpec.describe V1::QueueItemsController, type: :controller do
         end
       end
 
-
       before(:each) do
         request.headers.merge! auth_header
       end
@@ -101,8 +100,8 @@ RSpec.describe V1::QueueItemsController, type: :controller do
           expect(response).to render_template(nil)
         end
         it "does not create the record" do
-          expect { post :create, params: { bag_id: bag.bag_id} }
-            .to_not change { QueueItem.count }
+          expect { post :create, params: { bag_id: bag.bag_id } }
+            .to_not(change { QueueItem.count })
         end
       end
 
@@ -125,8 +124,8 @@ RSpec.describe V1::QueueItemsController, type: :controller do
             expect(builder).to_not have_received(:create)
           end
           it "does not create the record" do
-            expect { post :create, params: { bag_id: bag.bag_id} }
-              .to_not change { QueueItem.count }
+            expect { post :create, params: { bag_id: bag.bag_id } }
+              .to_not(change { QueueItem.count })
           end
         end
         context "user owns the bag" do
@@ -148,7 +147,6 @@ RSpec.describe V1::QueueItemsController, type: :controller do
           end
         end
       end
-
     end
   end
 end

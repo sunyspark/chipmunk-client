@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "pathname"
 
 module ConfigSteps
 
-  step ":config_block.:field is :value" do |config,field, value|
+  step ":config_block.:field is :value" do |config, field, value|
     Rails.application.config.public_send(config.to_sym)[field] = value
   end
 

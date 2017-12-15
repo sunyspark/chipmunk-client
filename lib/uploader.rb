@@ -1,30 +1,30 @@
-require 'bagit'
-require 'rest-client'
-require 'pry'
-require 'json'
-require_relative './chipmunk_bag'
-require_relative './chipmunk_client'
-require_relative './bag_rsyncer'
+# frozen_string_literal: true
+
+require "bagit"
+require "rest-client"
+require "pry"
+require "json"
+require_relative "./chipmunk_bag"
+require_relative "./chipmunk_client"
+require_relative "./bag_rsyncer"
 
 class Uploader
-  def initialize(api_key,bag_path,client: ChipmunkClient.new(api_key: api_key),rsyncer: BagRsyncer.new(bag_path))
-    @bag_path = bag_path.chomp('/')
+  def initialize(api_key, bag_path, client: ChipmunkClient.new(api_key: api_key), rsyncer: BagRsyncer.new(bag_path))
+    @bag_path = bag_path.chomp("/")
     @request_params = request_params_from_bag(bag_path)
     @client = client
     @rsyncer = rsyncer
   end
 
   def upload
-    begin
-      req = make_request
-      return false unless check_request(req)
-      rsyncer.upload(req["upload_link"])
-      qitem = complete_request(req)
-      print_result(wait_for_bag(qitem))
-    rescue ChipmunkClientError => e
-      puts e.to_s
-      puts e.service_exception
-    end
+    req = make_request
+    return false unless check_request(req)
+    rsyncer.upload(req["upload_link"])
+    qitem = complete_request(req)
+    print_result(wait_for_bag(qitem))
+  rescue ChipmunkClientError => e
+    puts e.to_s
+    puts e.service_exception
   end
 
   def bag_id
@@ -59,30 +59,30 @@ class Uploader
   end
 
   def require_chipmunk_bag_tags(tags)
-  ["External-Identifier", 
-   "Bag-ID", 
-   "Chipmunk-Content-Type"].each do |field| 
-      raise RuntimeError, "missing #{field}" unless tags[field]
+    ["External-Identifier",
+     "Bag-ID",
+     "Chipmunk-Content-Type"].each do |field|
+      raise "missing #{field}" unless tags[field]
     end
   end
 
   def request_params_from_bag(bag_path)
     bag = ChipmunkBag.new bag_path
-    raise RuntimeError, bag.errors.full_messages if !bag.valid?
+    raise bag.errors.full_messages unless bag.valid?
 
     tags = bag.chipmunk_info
     require_chipmunk_bag_tags(tags)
 
-    {external_id: tags['External-Identifier'],
-     content_type: tags['Chipmunk-Content-Type'],
-     bag_id: tags['Bag-ID']}
+    { external_id:  tags["External-Identifier"],
+      content_type: tags["Chipmunk-Content-Type"],
+      bag_id:       tags["Bag-ID"] }
   end
 
   def make_request
     client.post("/v1/requests", request_params)
   end
 
-  def complete_request(request)
+  def complete_request(_request)
     client.post("/v1/requests/#{bag_id}/complete")
   end
 

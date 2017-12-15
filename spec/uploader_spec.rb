@@ -79,8 +79,7 @@ describe Uploader do
     end
 
     context "when the bag's external ID mismatches the external ID in the request" do
-      
-      let(:different_external_id_request)  { request.merge( "external_id" => "gobbledygook" ) }
+      let(:different_external_id_request) { request.merge("external_id" => "gobbledygook") }
 
       before(:each) do
         allow(client).to receive(:post)
@@ -89,7 +88,7 @@ describe Uploader do
       end
 
       it "prints an error message" do
-        expect{subject.upload}.to output(/expected.*"gobbledygook".*"test_ex_id_22"/).to_stdout
+        expect { subject.upload }.to output(/expected.*"gobbledygook".*"test_ex_id_22"/).to_stdout
       end
 
       it "does not upload the bag" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class QueueItemPolicy < ApplicationPolicy
 
   def index?
@@ -21,7 +23,7 @@ class QueueItemPolicy < ApplicationPolicy
       if user.admin?
         scope.all
       else
-        scope.joins(:bag).where(bags: {user_id: user.id })
+        scope.joins(:bag).where(bags: { user_id: user.id })
       end
     end
   end

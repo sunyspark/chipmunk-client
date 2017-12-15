@@ -1,5 +1,7 @@
 
 
+# frozen_string_literal: true
+
 # Given a hash of parameters, this builds a request of an
 # appropriate type. It does the following:
 #

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.bag_id bag.bag_id
 json.user bag.user.username
 json.content_type bag.content_type

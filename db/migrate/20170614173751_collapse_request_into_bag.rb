@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CollapseRequestIntoBag < ActiveRecord::Migration[5.1]
   def change
     add_index :bags, :bag_id, unique: true

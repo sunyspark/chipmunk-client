@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Fabricator(:bag, aliases: [:request]) do
   bag_id { SecureRandom.uuid }
   user { Fabricate(:user) }

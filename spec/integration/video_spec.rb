@@ -1,7 +1,9 @@
-require 'rails_helper'
-require 'fileutils'
+# frozen_string_literal: true
 
-RSpec.describe 'video validation integration', integration: true do
+require "rails_helper"
+require "fileutils"
+
+RSpec.describe "video validation integration", integration: true do
   it_behaves_like "a validation integration" do
     let(:content_type) { "video" }
     let(:external_id) { "foo" }

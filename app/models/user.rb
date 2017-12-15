@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
 
   validates :email, presence: true
@@ -12,7 +14,7 @@ class User < ApplicationRecord
 
   # Generate a unique API key
   def generate_api_key
-    SecureRandom.uuid.gsub('-', '')
+    SecureRandom.uuid.delete("-")
   end
 
 end

@@ -1,14 +1,15 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe V1::BagsController, type: :controller do
   describe "/v1" do
-
     describe "GET #index" do
       it_behaves_like "an index endpoint" do
         let(:key) { :bag_id }
-        let(:factory) {
+        let(:factory) do
           proc {|user| user ? Fabricate(:bag, user: user) : Fabricate(:bag) }
-        }
+        end
         let(:assignee) { :bags }
       end
     end
@@ -16,9 +17,9 @@ RSpec.describe V1::BagsController, type: :controller do
     describe "GET #show" do
       it_behaves_like "a show endpoint" do
         let(:key) { :bag_id }
-        let(:factory) {
+        let(:factory) do
           proc {|user| user ? Fabricate(:bag, user: user) : Fabricate(:bag) }
-        }
+        end
         let(:assignee) { :bag }
       end
     end
@@ -26,9 +27,9 @@ RSpec.describe V1::BagsController, type: :controller do
     describe "POST #create" do
       let(:attributes) do
         {
-          bag_id: SecureRandom.uuid,
+          bag_id:       SecureRandom.uuid,
           content_type: "audio",
-          external_id: SecureRandom.uuid
+          external_id:  SecureRandom.uuid
         }
       end
 
@@ -38,8 +39,7 @@ RSpec.describe V1::BagsController, type: :controller do
             bag_id: attributes[:bag_id],
             user: user,
             external_id: attributes[:external_id],
-            content_type: attributes[:content_type]
-          )
+            content_type: attributes[:content_type])
         end
         let(:result_status) { status }
         let(:builder) { double(:builder) }
@@ -77,7 +77,7 @@ RSpec.describe V1::BagsController, type: :controller do
             it "passes the parameters to a RequestBuilder" do
               post :create, params: attributes
               expect(RequestBuilder).to have_received(:new)
-              expect(builder).to have_received(:create).with(attributes.merge({user: user}))
+              expect(builder).to have_received(:create).with(attributes.merge(user: user))
             end
             it "returns 201" do
               post :create, params: attributes
@@ -125,7 +125,5 @@ RSpec.describe V1::BagsController, type: :controller do
         end
       end
     end
-
-
   end
 end

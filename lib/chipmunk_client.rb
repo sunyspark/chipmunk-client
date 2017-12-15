@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require "rest_client"
 
 class ChipmunkClientError < RuntimeError
   def initialize(rest_error)
-    @rest_error = rest_error 
+    @rest_error = rest_error
     super(rest_error.message)
   end
 
@@ -18,40 +20,38 @@ end
 # A wrapper around RestClient to make POST and GET calls to a Chipmunk API.
 class ChipmunkClient
 
-  def initialize(url: 'http://localhost:3000',api_key: )
+  def initialize(url: "http://localhost:3000", api_key:)
     @url = url
     @api_key = api_key
   end
 
-  def post(endpoint,params = {})
-    request(:post,endpoint,payload: params)
+  def post(endpoint, params = {})
+    request(:post, endpoint, payload: params)
   end
 
   def get(endpoint)
-    request(:get,endpoint)
+    request(:get, endpoint)
   end
 
   private
 
   attr_accessor :url, :api_key
 
-  def request(method,endpoint,**kwargs)
-    begin
-      response = RestClient::Request.execute(method: method, 
-                                  url: url + endpoint,
-                                  headers: auth_header,
-                                  **kwargs)
-      
-      # Manually follows the redirect from a 201 response
-      # if needed and returns the result as a JSON object.
-      if response.net_http_res.is_a? Net::HTTPCreated
-        response = response.follow_get_redirection
-      end
+  def request(method, endpoint, **kwargs)
+    response = RestClient::Request.execute(method: method,
+                                url: url + endpoint,
+                                headers: auth_header,
+                                **kwargs)
 
-      JSON.parse(response)
-    rescue RestClient::InternalServerError => e
-      raise ChipmunkClientError.new(e)
+    # Manually follows the redirect from a 201 response
+    # if needed and returns the result as a JSON object.
+    if response.net_http_res.is_a? Net::HTTPCreated
+      response = response.follow_get_redirection
     end
+
+    JSON.parse(response)
+  rescue RestClient::InternalServerError => e
+    raise ChipmunkClientError, e
   end
 
   def auth_header

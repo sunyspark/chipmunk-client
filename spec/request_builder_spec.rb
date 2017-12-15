@@ -1,7 +1,8 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require "rails_helper"
 
 RSpec.describe RequestBuilder do
-
   let(:user) { Fabricate(:user) }
   shared_examples "a RequestBuilder invocation that returns a duplicate" do
     it "returns :duplicate" do
@@ -36,9 +37,8 @@ RSpec.describe RequestBuilder do
 
   describe "#create" do
     let(:params) do
-      { content_type: 'audio', user: user,
-        bag_id: SecureRandom.uuid, external_id: "blah",
-      }
+      { content_type: "audio", user: user,
+        bag_id: SecureRandom.uuid, external_id: "blah" }
     end
     subject { described_class.new.create(params) }
     context "duplicate bag id" do
@@ -50,13 +50,10 @@ RSpec.describe RequestBuilder do
     end
     context "with no bag id" do
       let(:params) do
-        { content_type: 'audio', user: user,
-          bag_id: nil, external_id: "blah",
-        }
+        { content_type: "audio", user: user,
+          bag_id: nil, external_id: "blah" }
       end
       it_behaves_like "a RequestBuilder invocation that returns an invalid Bag"
     end
   end
 end
-
-
