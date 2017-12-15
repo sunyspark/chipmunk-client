@@ -10,10 +10,6 @@ Naming/FileName:
     - 'spec/**/*'
     - 'lib/*/version.rb'
     - 'bin/console'
-  AllowedAcronyms:
-    - EPUB
-    - HTML
-    - SIP
 
 Style/Alias:
   EnforcedStyle: prefer_alias_method

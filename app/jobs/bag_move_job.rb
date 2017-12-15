@@ -94,7 +94,7 @@ class BagMoveJob < ApplicationJob
   def bag_externally_validates?
     _, stderr, status = Open3.capture3(queue_item.bag.external_validation_cmd)
 
-    if status.zero?
+    if status == 0
       true
     else
       @errors.push("Error validating content:\n" + stderr)
