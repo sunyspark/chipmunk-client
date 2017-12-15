@@ -77,6 +77,26 @@ describe Uploader do
         expect { subject.upload }.to output(/something went wrong\nhere are the details/).to_stdout
       end
     end
+
+    context "when the bag's external ID mismatches the external ID in the request" do
+      
+      let(:different_external_id_request)  { request.merge( "external_id" => "gobbledygook" ) }
+
+      before(:each) do
+        allow(client).to receive(:post)
+          .with("/v1/requests", anything)
+          .and_return(different_external_id_request)
+      end
+
+      it "prints an error message" do
+        expect{subject.upload}.to output(/expected.*"gobbledygook".*"test_ex_id_22"/).to_stdout
+      end
+
+      it "does not upload the bag" do
+        expect(rsyncer).not_to receive(:upload)
+        subject.upload
+      end
+    end
   end
 
   context "when the bag is stored" do

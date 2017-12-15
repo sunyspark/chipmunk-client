@@ -10,7 +10,7 @@ Feature: End to End functionality
     And upload.upload_path is "/tmp/chipmunk/inc"
     And upload.rsync_point is "localhost:/tmp/chipmunk/inc"
     And upload.storage_path is "/tmp/chipmunk/store"
-    And validation.audio is "/bin/true"
+    And validation.audio is "true"
 
   Scenario Outline: Create initial request and verify
     Given "/tmp/chipmunk/inc/<username>" exists and is empty

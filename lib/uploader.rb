@@ -17,10 +17,7 @@ class Uploader
   def upload
     begin
       req = make_request
-      if req["stored"]
-        puts "Bag has already been uploaded"
-        return
-      end
+      return false unless check_request(req)
       rsyncer.upload(req["upload_link"])
       qitem = complete_request(req)
       print_result(wait_for_bag(qitem))
@@ -37,6 +34,18 @@ class Uploader
   private
 
   attr_accessor :request_params, :bag_path, :client, :rsyncer
+
+  def check_request(request)
+    if request["stored"]
+      puts "Bag has already been uploaded"
+      false
+    elsif external_id != request["external_id"]
+      puts "Server expected a bag with external ID \"#{request["external_id"]}\" but the provided bag has external ID \"#{external_id}\""
+      false
+    else
+      true
+    end
+  end
 
   def print_result(qitem_result)
     if qitem_result["status"] == "DONE"
