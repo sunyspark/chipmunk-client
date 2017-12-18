@@ -2,7 +2,39 @@
 
 require "open3"
 
+module Chipmunk::Validatable
+  def self.included(base)
+    base.extend(ClassMethods)
+  end
+
+  module ClassMethods
+    def validators
+      @validators ||= []
+    end
+
+    def validates(precondition: ->{}, condition:, error:)
+      validators << lambda do
+        precond_result = instance_exec(&precondition)
+        if instance_exec(*precond_result, &condition)
+          true
+        else
+          @errors.push(instance_exec(*precond_result, &error))
+          false
+        end
+      end
+    end
+  end
+
+  def valid?
+    self.class.validators.reduce(true) do |result, validator|
+      result && instance_exec(&validator)
+    end
+  end
+
+end
+
 class BagMoveJob < ApplicationJob
+
   def perform(queue_item)
     @queue_item = queue_item
     @src_path = queue_item.bag.src_path
@@ -10,14 +42,14 @@ class BagMoveJob < ApplicationJob
     @errors = []
 
     begin
+      @bag = ChipmunkBag.new(src_path) if File.exist?(src_path)
       # TODO
       #  - if all validation succeeds:
       #    - start a transaction that updates the request to complete
       #    - move the bag into place
       #    - success: commit the transaction
       #    - failure (exception) - transaction automatically rolls back
-      if bag_exists? && bag_is_valid? &&
-          bag_includes_metadata? && bag_externally_validates?
+      if valid?
         FileUtils.mkdir_p(File.dirname(dest_path))
         File.rename(src_path, dest_path)
         record_success
@@ -35,25 +67,7 @@ class BagMoveJob < ApplicationJob
 
   attr_accessor :queue_item, :src_path, :dest_path, :bag
 
-  def bag_exists?
-    if File.exist?(src_path)
-      @bag = ChipmunkBag.new(src_path)
-      true
-    else
-      @errors.push("Bag does not exist at upload location #{src_path}")
-      false
-    end
-  end
-
-  def bag_is_valid?
-    if bag.valid?
-      true
-    else
-      @errors.push("Error validating bag:\n" +
-        indent_array(bag.errors.full_messages))
-      false
-    end
-  end
+  include Chipmunk::Validatable
 
   def record_failure
     queue_item.transaction do
@@ -63,44 +77,32 @@ class BagMoveJob < ApplicationJob
     end
   end
 
-  def bag_includes_metadata?
-    bag_has_metadata_tags? && bag_has_metadata_file?
+  validates condition: -> { File.exist?(src_path) },
+      error: -> { "Bag does not exist at upload location #{src_path}" }
+
+  validates condition: -> { File.exist?(src_path) },
+      error: -> { "Bag does not exist at upload location #{src_path}" }
+
+  validates condition: -> { bag.valid? },
+      error: -> { "Error validating bag:\n" + indent_array(bag.errors.full_messages) }
+
+  ["Metadata-URL", "Metadata-Type", "Metadata-Tagfile"].each do |tag|
+    validates condition: -> { bag.chipmunk_info.key?(tag) },
+        error: -> { "Missing required tag #{tag} in chipmunk-info.txt" }
   end
 
-  def bag_has_metadata_tags?
-    tags = bag.chipmunk_info
-    has_metadata_tags = true
+  validates condition: -> { bag.tag_files
+                           .map {|f| File.basename(f) }
+                           .include?(bag.chipmunk_info["Metadata-Tagfile"]) },
+      error: -> { "Missing referenced metadata #{bag.chipmunk_info["Metadata-Tagfile"]}" }
 
-    ["Metadata-URL", "Metadata-Type", "Metadata-Tagfile"]
-      .reject {|tag| tags[tag] }
-      .each do |tag|
-      has_metadata_tags = false
-      @errors.push("Missing required tag #{tag} in chipmunk-info.txt")
-    end
+  validates precondition: -> { Open3.capture3(queue_item.bag.external_validation_cmd) },
+      condition: ->(_, _, status) { status == 0 },
+      error: ->(_, stderr, _) { "Error validating content\n" + stderr }
 
-    has_metadata_tags
-  end
-
-  def bag_has_metadata_file?
-    metadata_file = bag.chipmunk_info["Metadata-Tagfile"]
-    if bag.tag_files.map {|f| File.basename(f) }.include?(metadata_file)
-      true
-    else
-      @errors.push("Missing referenced metadata #{metadata_file}")
-      false
-    end
-  end
-
-  def bag_externally_validates?
-    _, stderr, status = Open3.capture3(queue_item.bag.external_validation_cmd)
-
-    if status == 0
-      true
-    else
-      @errors.push("Error validating content:\n" + stderr)
-      false
-    end
-  end
+  validates condition:  -> { bag.chipmunk_info["External-Identifier"] == queue_item.bag.external_id },
+      error: -> { "uploaded External-Identifier '#{bag.chipmunk_info["External-Identifier"]}'" +
+                  " does not match intended ID '#{queue_item.bag.external_id}'" }
 
   def record_success
     queue_item.transaction do

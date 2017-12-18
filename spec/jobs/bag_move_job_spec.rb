@@ -3,16 +3,21 @@
 require "rails_helper"
 
 RSpec.describe BagMoveJob do
-  CHIPMUNK_INFO_GOOD = {
-    "Metadata-Type"    => "MARC",
-    "Metadata-URL"     => "http://what.ever",
-    "Metadata-Tagfile" => "marc.xml"
-  }.freeze
-
   let(:queue_item) { Fabricate(:queue_item) }
   let(:src_path) { queue_item.bag.src_path }
   let(:dest_path) { queue_item.bag.dest_path }
   let(:good_tag_files) { [File.join(src_path, "marc.xml")] }
+
+  let(:chipmunk_info_good) do
+    {
+      "Metadata-Type"         => "MARC",
+      "Metadata-URL"          => "http://what.ever",
+      "Metadata-Tagfile"      => "marc.xml",
+      "External-Identifier"   => queue_item.bag.external_id,
+      "Chipmunk-Content-Type" => queue_item.bag.content_type,
+      "Bag-ID"                => queue_item.bag.id
+    }
+  end
 
   class InjectedError < RuntimeError
   end
@@ -29,51 +34,6 @@ RSpec.describe BagMoveJob do
       allow(Open3).to receive(:capture3).and_return(ext_validation_result)
     end
 
-    context "when the bag is valid" do
-      let(:fakebag) { double("fake bag", valid?: true) }
-      let(:ext_validation_result) { ["", "", 0] }
-      let(:chipmunk_info) { CHIPMUNK_INFO_GOOD }
-      let(:tag_files) { good_tag_files }
-
-      it "moves the bag" do
-        expect(File).to receive(:rename).with(src_path, dest_path)
-        subject
-      end
-
-      it "updates the queue_item to status :done" do
-        subject
-        expect(queue_item.status).to eql("done")
-      end
-
-      context "but the move fails" do
-        before(:each) do
-          allow(File).to receive(:rename).with(src_path, dest_path).and_raise InjectedError, "injected error"
-        end
-
-        it "re-raises the exception" do
-          expect { subject }.to raise_exception(InjectedError)
-        end
-
-        it "updates the queue_item to status 'failed'" do
-          begin
-            subject
-          rescue InjectedError
-          end
-
-          expect(queue_item.status).to eql("failed")
-        end
-
-        it "records the error in the queue_item" do
-          begin
-            subject
-          rescue InjectedError
-          end
-
-          expect(queue_item.error).to match(/injected error/)
-        end
-      end
-    end
-
     shared_examples_for "a failed bag" do |error_pattern|
       it "does not move the bag" do
         expect(File).not_to receive(:rename).with(src_path, dest_path)
@@ -88,6 +48,69 @@ RSpec.describe BagMoveJob do
         subject
         expect(queue_item.error).to match(error_pattern)
       end
+    end
+
+    context "when the bag is valid" do
+      let(:fakebag) { double("fake bag", valid?: true) }
+      let(:ext_validation_result) { ["", "", 0] }
+      let(:tag_files) { good_tag_files }
+
+      context "and its metadata matches the queue item" do
+        let(:chipmunk_info) { chipmunk_info_good }
+
+        it "moves the bag" do
+          expect(File).to receive(:rename).with(src_path, dest_path)
+          subject
+        end
+
+        it "updates the queue_item to status :done" do
+          subject
+          expect(queue_item.status).to eql("done")
+        end
+
+        context "but the move fails" do
+          before(:each) do
+            allow(File).to receive(:rename).with(src_path, dest_path).and_raise InjectedError, "injected error"
+          end
+
+          it "re-raises the exception" do
+            expect { subject }.to raise_exception(InjectedError)
+          end
+
+          it "updates the queue_item to status 'failed'" do
+            begin
+              subject
+            rescue InjectedError
+            end
+
+            expect(queue_item.status).to eql("failed")
+          end
+
+          it "records the error in the queue_item" do
+            begin
+              subject
+            rescue InjectedError
+            end
+
+            expect(queue_item.error).to match(/injected error/)
+          end
+        end
+      end
+
+      context "but its external ID does not match the queue item" do
+        let(:chipmunk_info) { chipmunk_info_good.merge("External-Identifier" => "something-different") }
+        it_behaves_like "a failed bag", /External-Identifier/
+      end
+
+      #      context "but its bag ID does not match the queue item" do
+      #        let(:chipmunk_info) { chipmunk_info_good.merge("Bag-ID" => "something-different") }
+      #        it_behaves_like "a failed bag", /Bag-ID/
+      #      end
+      #
+      #      context "but its package type does not match the queue item" do
+      #        let(:chipmunk_info) { chipmunk_info_good.merge("Chipmunk-Content-Type" => "something-different") }
+      #        it_behaves_like "a failed bag", /Chipmunk-Content-Type/
+      #      end
     end
 
     context "when the bag is invalid" do
@@ -112,7 +135,7 @@ RSpec.describe BagMoveJob do
 
     context "when the bag is valid but does not include metadata " do
       let(:fakebag) { double("fake bag", valid?: true) }
-      let(:chipmunk_info) { CHIPMUNK_INFO_GOOD }
+      let(:chipmunk_info) { chipmunk_info_good }
       let(:ext_validation_result) { ["", "", 0] }
       let(:tag_files) { [] }
 
@@ -125,12 +148,12 @@ RSpec.describe BagMoveJob do
       let(:ext_validation_result) { ["", "", 0] }
       let(:tag_files) { [] }
 
-      it_behaves_like "a failed bag", /Missing.*Metadata-Tagfile/
+      it_behaves_like "a failed bag", /Missing.*Metadata-/
     end
 
     context "when the bag is valid and has metadata but external validation fails" do
       let(:fakebag) { double("fake bag", valid?: true) }
-      let(:chipmunk_info) { CHIPMUNK_INFO_GOOD }
+      let(:chipmunk_info) { chipmunk_info_good }
       let(:ext_validation_result) { ["external output", "external error", 1] }
       let(:tag_files) { good_tag_files }
 
