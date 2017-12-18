@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "open3"
-require "chipmunk_validator"
+require "chipmunk_bag_validator"
 
 class BagMoveJob < ApplicationJob
 

@@ -4,19 +4,25 @@ require "rails_helper"
 
 RSpec.describe BagMoveJob do
   let(:queue_item) { Fabricate(:queue_item) }
+  let(:db_bag) { queue_item.bag }
   let(:src_path) { queue_item.bag.src_path }
   let(:dest_path) { queue_item.bag.dest_path }
   let(:good_tag_files) { [File.join(src_path, "marc.xml")] }
 
-  let(:chipmunk_info_good) do
+  let(:chipmunk_info_db) do
     {
+      "External-Identifier"   => db_bag.external_id,
+      "Chipmunk-Content-Type" => db_bag.content_type,
+      "Bag-ID"                => db_bag.bag_id
+    }
+  end
+
+  let(:chipmunk_info_good) do
+    chipmunk_info_db.merge(
       "Metadata-Type"         => "MARC",
       "Metadata-URL"          => "http://what.ever",
       "Metadata-Tagfile"      => "marc.xml",
-      "External-Identifier"   => queue_item.bag.external_id,
-      "Chipmunk-Content-Type" => queue_item.bag.content_type,
-      "Bag-ID"                => queue_item.bag.id
-    }
+    )
   end
 
   class InjectedError < RuntimeError
@@ -102,15 +108,15 @@ RSpec.describe BagMoveJob do
         it_behaves_like "a failed bag", /External-Identifier/
       end
 
-      #      context "but its bag ID does not match the queue item" do
-      #        let(:chipmunk_info) { chipmunk_info_good.merge("Bag-ID" => "something-different") }
-      #        it_behaves_like "a failed bag", /Bag-ID/
-      #      end
-      #
-      #      context "but its package type does not match the queue item" do
-      #        let(:chipmunk_info) { chipmunk_info_good.merge("Chipmunk-Content-Type" => "something-different") }
-      #        it_behaves_like "a failed bag", /Chipmunk-Content-Type/
-      #      end
+      context "but its bag ID does not match the queue item" do
+        let(:chipmunk_info) { chipmunk_info_good.merge("Bag-ID" => "something-different") }
+        it_behaves_like "a failed bag", /Bag-ID/
+      end
+      
+      context "but its package type does not match the queue item" do
+        let(:chipmunk_info) { chipmunk_info_good.merge("Chipmunk-Content-Type" => "something-different") }
+        it_behaves_like "a failed bag", /Chipmunk-Content-Type/
+      end
     end
 
     context "when the bag is invalid" do
@@ -144,7 +150,7 @@ RSpec.describe BagMoveJob do
 
     context "when the bag is valid but does not include metadata tags" do
       let(:fakebag) { double("fake bag", valid?: true) }
-      let(:chipmunk_info) { {} }
+      let(:chipmunk_info) { chipmunk_info_db }
       let(:ext_validation_result) { ["", "", 0] }
       let(:tag_files) { [] }
 
