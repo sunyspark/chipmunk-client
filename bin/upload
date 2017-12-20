@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative "../lib/uploader"
+require_relative "../lib/chipmunk_cli"
 
-API_KEY = ENV["CHIPMUNK_API_KEY"]
-
-bag_path = ARGV[0]
-
-raise ArgumentError, "Usage: #{$PROGRAM_NAME} /path/to/bag" unless bag_path
-
-Uploader.new(API_KEY, bag_path).upload
+ChipmunkCLI.new(ARGV).run

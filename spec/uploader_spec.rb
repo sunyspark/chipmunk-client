@@ -35,7 +35,7 @@ describe Uploader do
   end
 
   subject do
-    described_class.new("foo", fixture("test_bag"), client: client, rsyncer: rsyncer)
+    described_class.new(fixture("test_bag"), client: client, rsyncer: rsyncer)
   end
 
   context "when the bag is not already stored" do
@@ -59,8 +59,8 @@ describe Uploader do
     context "when bag validation fails" do
       let(:queue_item) do
         {
-          status: "ERROR",
-          error:  "something went wrong\n" \
+          "status" => "FAILED",
+          "error" =>  "something went wrong\n" \
             "here are the details"
         }
       end

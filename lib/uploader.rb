@@ -9,7 +9,7 @@ require_relative "./chipmunk_client"
 require_relative "./bag_rsyncer"
 
 class Uploader
-  def initialize(api_key, bag_path, client: ChipmunkClient.new(api_key: api_key), rsyncer: BagRsyncer.new(bag_path))
+  def initialize(bag_path, client:, rsyncer: BagRsyncer.new(bag_path))
     @bag_path = bag_path.chomp("/")
     @request_params = request_params_from_bag(bag_path)
     @client = client
@@ -37,7 +37,7 @@ class Uploader
 
   def check_request(request)
     if request["stored"]
-      puts "Bag has already been uploaded"
+      puts "Bag for #{request["external_id"]} has already been uploaded"
       false
     elsif external_id != request["external_id"]
       puts "Server expected a bag with external ID \"#{request["external_id"]}\" but the provided bag has external ID \"#{external_id}\""
@@ -53,7 +53,7 @@ class Uploader
       true
     else
       puts "#{external_id} upload failure"
-      puts qitem_result[:error]
+      puts qitem_result["error"]
       false
     end
   end
