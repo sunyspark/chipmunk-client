@@ -73,4 +73,4 @@ Feature: End to End functionality
 
   Examples:
     | bag_id                                | external_id   | username |
-    | a5180fb4-c64e-4a85-8a2f-abe25b0a0c79  | test_ex_id_22 | testuser |
+    | 14d25bcd-deaf-4c94-add7-c189fdca4692  | test_ex_id_22 | testuser |
