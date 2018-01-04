@@ -1,0 +1,18 @@
+{
+  "ordered": [
+    {
+      "Foo": {
+        "fieldRequired": true
+      }
+    },
+    {
+      "Baz": {
+        "fieldRequired": false,
+        "valueList": [
+          "quux",
+          "something"
+        ]
+      }
+    }
+  ]
+}
