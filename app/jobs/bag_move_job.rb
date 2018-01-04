@@ -5,13 +5,10 @@ require "chipmunk_bag_validator"
 
 class BagMoveJob < ApplicationJob
 
-  def perform(queue_item)
+  def perform(queue_item,errors: [], validator: ChipmunkBagValidator.new(queue_item.bag,errors))
     @queue_item = queue_item
     @src_path = queue_item.bag.src_path
     @dest_path = queue_item.bag.dest_path
-
-    errors = []
-
 
     begin
       # TODO
@@ -20,7 +17,6 @@ class BagMoveJob < ApplicationJob
       #    - move the bag into place
       #    - success: commit the transaction
       #    - failure (exception) - transaction automatically rolls back
-      validator = ChipmunkBagValidator.new(queue_item.bag,errors)
       if validator.valid?
         FileUtils.mkdir_p(File.dirname(dest_path))
         File.rename(src_path, dest_path)
