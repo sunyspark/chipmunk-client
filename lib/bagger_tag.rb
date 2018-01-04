@@ -27,23 +27,23 @@ class BaggerTag
     @allowed_values = allowed_values
   end
 
-  def value_valid?(value)
-    present_if_required?(value) && allowed_value?(value)
+  def value_valid?(value,errors: [])
+    present_if_required?(value,errors) && allowed_value?(value,errors)
   end
 
   private
 
   attr_reader :allowed_values, :required
 
-  def present_if_required?(value)
+  def present_if_required?(value,errors)
     result = !(required && value.nil?)
-    puts "#{name} is required but not present" unless result
+    errors << "#{name} is required but not present" unless result
     result
   end
 
-  def allowed_value?(value)
+  def allowed_value?(value,errors)
     result = value.nil? || !allowed_values || allowed_values.include?(value)
-    puts "#{name}: \"#{value}\" is not an allowed value" unless result
+    errors << "#{name}: \"#{value}\" is not an allowed value" unless result
     result
   end
 end
