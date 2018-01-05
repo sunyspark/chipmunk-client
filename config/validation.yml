@@ -3,11 +3,15 @@
 production:
 
 development:
-  audio: "/path/to/validator"
-  digital: "/path/to/validator"
-  video: "/path/to/validator"
+  external:
+    audio: "/path/to/validator"
+    video: "/path/to/validator"
+  bagger_profile:
+    digital: "http://uri_to_bagger_profile"
 
 test:
-  audio: "/path/to/validator"
-  digital: "/path/to/validator"
-  video: "/path/to/validator"
+  external:
+    audio: "/path/to/validator"
+    video: "/path/to/validator"
+  bagger_profile:
+    digital: "/path/to/profile"

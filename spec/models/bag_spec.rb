@@ -61,6 +61,19 @@ RSpec.describe Bag, type: :model do
     end
   end
 
+  describe "#bagger_profile" do
+    around(:each) do |example|
+      old_profile = Rails.application.config.validation["bagger_profile"]["audio"]
+      Rails.application.config.validation["bagger_profile"]["audio"] = "foo"
+      example.run
+      Rails.application.config.validation["bagger_profile"]["audio"] = old_profile
+    end
+
+    it "returns a bagger profile" do
+      expect(Fabricate.build(:bag).bagger_profile).not_to be_nil
+    end
+  end
+
   describe "#to_param" do
     it "uses the bag id" do
       bag_id = "made_up"

@@ -8,6 +8,10 @@ module ConfigSteps
     Rails.application.config.public_send(config.to_sym)[field] = value
   end
 
+  step ":config_block.:field.:subfield is :value" do |config, field, subfield, value|
+    Rails.application.config.public_send(config.to_sym)[field][subfield] = value
+  end
+
   step ":dir exists and is empty" do |dir|
     path = Pathname.new(dir)
     if path.exist?

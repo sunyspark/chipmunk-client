@@ -47,9 +47,15 @@ class ChipmunkBagValidator
     error: -> { "Missing referenced metadata #{disk_bag.chipmunk_info["Metadata-Tagfile"]}" }
 
   validates "bag on disk passes external validation",
+    only_if: -> { db_bag.external_validation_cmd },
     precondition: -> { Open3.capture3(db_bag.external_validation_cmd) },
     condition: ->(_, _, status) { status == 0 },
     error: ->(_, stderr, _) { "Error validating content\n" + stderr }
+
+  validates "bag on disk meets bagger profile",
+    only_if: -> { db_bag.bagger_profile },
+    condition: -> { BaggerProfile.new(db_bag.bagger_profile).valid?(disk_bag.bag_info, errors: errors) },
+    error: -> { "Not valid according to bagger profile" }
 
   private
 

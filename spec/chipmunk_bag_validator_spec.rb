@@ -25,7 +25,22 @@ RSpec.describe ChipmunkBagValidator do
     )
   end
 
+  # default (good case)
+  let(:fakebag) { double("fake bag", valid?: true) }
+  let(:ext_validation_result) { ["", "", 0] }
+  let(:bag_info) { { "Foo" => "bar", "Baz" => "quux" } }
+  let(:tag_files) { good_tag_files }
+  let(:chipmunk_info) { chipmunk_info_good }
+
   let(:errors) { [] }
+
+  around(:each) do |example|
+    old_profile = Rails.application.config.validation["bagger_profile"]
+    profile_path = File.join(Rails.root,"spec","support","fixtures","test-profile.json")
+    Rails.application.config.validation["bagger_profile"] = { "digital" => profile_path, "audio" => profile_path }
+    example.run
+    Rails.application.config.validation["bagger_profile"] = old_profile
+  end
 
   describe "#valid?" do
     subject { described_class.new(db_bag,errors).valid? }
@@ -35,6 +50,7 @@ RSpec.describe ChipmunkBagValidator do
       allow(ChipmunkBag).to receive(:new).with(src_path).and_return(fakebag)
       allow(fakebag).to receive(:chipmunk_info).and_return(chipmunk_info)
       allow(fakebag).to receive(:tag_files).and_return(tag_files)
+      allow(fakebag).to receive(:bag_info).and_return(bag_info)
       allow(Open3).to receive(:capture3).and_return(ext_validation_result)
     end
 
@@ -49,14 +65,9 @@ RSpec.describe ChipmunkBagValidator do
       end
     end
 
+
     context "when the bag is valid" do
-      let(:fakebag) { double("fake bag", valid?: true) }
-      let(:ext_validation_result) { ["", "", 0] }
-      let(:tag_files) { good_tag_files }
-
       context "and its metadata matches the queue item" do
-        let(:chipmunk_info) { chipmunk_info_good }
-
         it "returns true" do
           expect(subject).to be true
         end
@@ -81,9 +92,6 @@ RSpec.describe ChipmunkBagValidator do
     context "when the bag is invalid" do
       let(:bag_errors) { double("bag_errors", full_messages: ["injected error"]) }
       let(:fakebag) { double("fake bag", valid?: false, errors: bag_errors) }
-      let(:ext_validation_result) { ["", "", 0] }
-      let(:chipmunk_info) { {} }
-      let(:tag_files) { good_tag_files }
 
       it_behaves_like "an invalid item", /Error validating.*\n  injected error$/
 
@@ -94,30 +102,29 @@ RSpec.describe ChipmunkBagValidator do
     end
 
     context "when the bag is valid but does not include metadata " do
-      let(:fakebag) { double("fake bag", valid?: true) }
-      let(:chipmunk_info) { chipmunk_info_good }
-      let(:ext_validation_result) { ["", "", 0] }
       let(:tag_files) { [] }
 
       it_behaves_like "an invalid item", /Missing.*marc.xml/
     end
 
     context "when the bag is valid but does not include metadata tags" do
-      let(:fakebag) { double("fake bag", valid?: true) }
       let(:chipmunk_info) { chipmunk_info_db }
-      let(:ext_validation_result) { ["", "", 0] }
       let(:tag_files) { [] }
 
       it_behaves_like "an invalid item", /Missing.*Metadata-/
     end
 
     context "when the bag is valid and has metadata but external validation fails" do
-      let(:fakebag) { double("fake bag", valid?: true) }
       let(:chipmunk_info) { chipmunk_info_good }
       let(:ext_validation_result) { ["external output", "external error", 1] }
-      let(:tag_files) { good_tag_files }
 
       it_behaves_like "an invalid item", /external error/
+    end
+    
+    context "with a bagger profile and bag not valid according to the profile" do
+      let(:bag_info) { { "Baz" => "quux" } }
+
+      it_behaves_like "an invalid item", /Foo.*required/
     end
   end
 end
