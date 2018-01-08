@@ -44,12 +44,6 @@ RSpec.describe ChipmunkBag do
 
   subject { ChipmunkBag.new(@bag_path) }
 
-  describe "#initialize" do
-    it "does not create any files" do
-      expect(Dir.glob("#{@bag_path}/*")).to eq []
-    end
-  end
-
   describe "#chipmunk_info" do
     context "with no chipmunk-info.txt" do
       it "returns an empty hash" do
