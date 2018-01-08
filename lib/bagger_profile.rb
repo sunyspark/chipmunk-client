@@ -5,7 +5,7 @@ class BaggerProfile
   end
 
   def valid?(bag_info,errors: [])
-    tags.map {|tag| tag.value_valid?(bag_info[tag.name], errors: errors) }.reduce(true, :&)
+    tags.map {|tag| tag.value_valid?(bag_info[tag.name], errors: errors) }.all? { |valid| valid == true }
   end
 
   private

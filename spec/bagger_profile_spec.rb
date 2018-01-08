@@ -3,7 +3,7 @@ require "bagger_profile"
 
 describe BaggerProfile do
   subject do 
-    BaggerProfile.new(File.join(Rails.root, "spec", "support","fixtures","test-profile.json")) 
+    BaggerProfile.new(Rails.root.join("spec", "support","fixtures","test-profile.json")) 
   end
 
   let(:errors) { [] }
@@ -12,14 +12,14 @@ describe BaggerProfile do
     expect(subject).not_to be(nil)
   end
 
-  context "with valid bag info" do
+  context "with bag info appropriate for the profile" do
     let(:bag_info) { { "Foo" => "bar", "Baz" => "quux" } }
 
-    it "is true with bag info valid according to a given profile" do
+    it "is true" do
       expect(subject.valid?(bag_info)).to be true
     end
 
-    it "does not report any errors" do
+    it "reports no errors" do
       subject.valid?(bag_info,errors: errors)
       expect(errors).to be_empty
     end
@@ -32,7 +32,7 @@ describe BaggerProfile do
       expect(subject.valid?(bag_info)).to be false
     end
 
-    it "reports an error about the missing tag" do
+    it "reports an error" do
       subject.valid?(bag_info,errors: errors)
       expect(errors).to include a_string_matching(/Foo.*required/)
     end
@@ -45,7 +45,7 @@ describe BaggerProfile do
       expect(subject.valid?(bag_info)).to be false
     end
 
-    it "reports an error about the disallowed value" do
+    it "reports an error" do
       subject.valid?(bag_info,errors: errors)
       expect(errors).to include a_string_matching(/allowed/)
     end
@@ -58,7 +58,7 @@ describe BaggerProfile do
       expect(subject.valid?(bag_info)).to be true
     end
 
-    it "does not report any errors" do
+    it "reports no errors" do
       subject.valid?(bag_info,errors: errors)
       expect(errors).to be_empty
     end

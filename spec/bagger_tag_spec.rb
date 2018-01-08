@@ -1,12 +1,12 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "bagger_tag"
 
 describe BaggerTag do
-
-
   describe "::from_hash" do
     let(:json_tag) do
-      JSON.parse(<<JSON)
+      JSON.parse(<<~JSON)
       {
         "SomeField": {
           "fieldRequired": true,
@@ -16,9 +16,9 @@ describe BaggerTag do
           ]
         }
       }
-JSON
+      JSON
+    end
 
-  end
     it "accepts a hash deserialized from a JSON bagger profile" do
       expect(described_class.from_hash(json_tag)).not_to be(nil)
     end
@@ -30,8 +30,9 @@ JSON
     it "raises an exception if the provided hash has more than one key" do
       expect do
         described_class.from_hash(
-        { "SomeField" => { "fieldRequired" => true },
-          "AnotherField" => { "fieldRequired" => true } })
+          "SomeField" => { "fieldRequired" => true },
+            "AnotherField" => { "fieldRequired" => true }
+)
       end.to raise_exception(ArgumentError)
     end
 
@@ -40,9 +41,8 @@ JSON
     end
 
     it "raises an exception if the provided hash does not have a fieldRequired key" do
-      expect { described_class.from_hash({ "SomeField": {} }) }.to raise_exception(ArgumentError)
+      expect { described_class.from_hash("SomeField": {}) }.to raise_exception(ArgumentError)
     end
-
   end
 
   describe "#value_valid?" do
@@ -53,14 +53,14 @@ JSON
         expect(subject.value_valid?(value)).to be true
       end
 
-      it "does not report any errors" do
-        subject.value_valid?(value,errors: errors)
+      it "reports no errors" do
+        subject.value_valid?(value, errors: errors)
         expect(errors).to be_empty
       end
     end
 
-    def expect_error_with_value(value,error_pattern)
-      subject.value_valid?(value,errors: errors)
+    def expect_error_with_value(value, error_pattern)
+      subject.value_valid?(value, errors: errors)
       expect(errors).to include a_string_matching error_pattern
     end
 
@@ -72,19 +72,18 @@ JSON
       end
 
       it "reports an error when not given a value" do
-        expect_error_with_value(nil,/required/)
+        expect_error_with_value(nil, /required/)
       end
 
       it_behaves_like "true with no errors with value", "allowed_value"
       it_behaves_like "true with no errors with value", "some_other_value"
-
     end
 
     context "with a required tag with a value list" do
-      let(:subject) do 
-        BaggerTag.new(name: "SomeField", 
-                      required: true, 
-                      allowed_values: ['allowed_value','another_allowed_value'])
+      let(:subject) do
+        BaggerTag.new(name: "SomeField",
+                      required: true,
+                      allowed_values: ["allowed_value", "another_allowed_value"])
       end
 
       it "is false when not given a value" do
@@ -92,7 +91,7 @@ JSON
       end
 
       it "reports an error when not given a value" do
-        expect_error_with_value(nil,/required/)
+        expect_error_with_value(nil, /required/)
       end
 
       it_behaves_like "true with no errors with value", "allowed_value"
@@ -102,7 +101,7 @@ JSON
       end
 
       it "reports an error when given a value not on the list" do
-        expect_error_with_value("some_other_value",/not an allowed value/)
+        expect_error_with_value("some_other_value", /not an allowed value/)
       end
     end
 
@@ -115,10 +114,10 @@ JSON
     end
 
     context "with an optional tag with a value list" do
-      let(:subject) do 
-        BaggerTag.new(name: "SomeField", 
-                      required: false, 
-                      allowed_values: ['allowed_value','another_allowed_value'])
+      let(:subject) do
+        BaggerTag.new(name: "SomeField",
+                      required: false,
+                      allowed_values: ["allowed_value", "another_allowed_value"])
       end
 
       it_behaves_like "true with no errors with value", nil
@@ -129,9 +128,8 @@ JSON
       end
 
       it "reports an error when given a value not on the list" do
-        expect_error_with_value("some_other_value",/not an allowed value/)
+        expect_error_with_value("some_other_value", /not an allowed value/)
       end
     end
   end
 end
-

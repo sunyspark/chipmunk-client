@@ -36,7 +36,7 @@ RSpec.describe ChipmunkBagValidator do
 
   around(:each) do |example|
     old_profile = Rails.application.config.validation["bagger_profile"]
-    profile_path = File.join(Rails.root,"spec","support","fixtures","test-profile.json")
+    profile_path = Rails.root.join("spec","support","fixtures","test-profile.json")
     Rails.application.config.validation["bagger_profile"] = { "digital" => profile_path, "audio" => profile_path }
     example.run
     Rails.application.config.validation["bagger_profile"] = old_profile
