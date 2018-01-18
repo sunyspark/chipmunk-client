@@ -34,16 +34,17 @@ class ChipmunkBagValidator
     error: -> { "uploaded Bag-ID '#{disk_bag.chipmunk_info["Bag-ID"]}'" +
                 " does not match intended ID '#{db_bag.bag_id}'" }
 
-  ["Metadata-URL", "Metadata-Type", "Metadata-Tagfile"].each do |tag|
-    validates "chipmunk-info.txt has required tag #{tag}",
-      condition: -> { disk_bag.chipmunk_info.key?(tag) },
-      error: -> { "Missing required tag #{tag} in chipmunk-info.txt" }
-  end
+  metadata_tags = ["Metadata-URL", "Metadata-Type", "Metadata-Tagfile"]
+
+  validates "chipmunk-info.txt has metadata tags",
+    condition: -> { metadata_tags.all? { |tag| disk_bag.chipmunk_info.key?(tag) } ||
+                    metadata_tags.none? { |tag| disk_bag.chipmunk_info.key?(tag) } },
+    error: -> { "Some (but not all) metadata tags #{metadata_tags} missing in chipmunk-info.txt" }
 
   validates "bag on disk has referenced metadata files",
-    condition: -> { disk_bag.tag_files
+    condition: -> { !disk_bag.chipmunk_info["Metadata-Tagfile"] || disk_bag.tag_files
                     .map {|f| File.basename(f) }
-                    .include?(disk_bag.chipmunk_info["Metadata-Tagfile"]) },
+    .include?(disk_bag.chipmunk_info["Metadata-Tagfile"]) },
     error: -> { "Missing referenced metadata #{disk_bag.chipmunk_info["Metadata-Tagfile"]}" }
 
   validates "bag on disk passes external validation",

@@ -17,7 +17,7 @@ RSpec.describe ChipmunkBagValidator do
     }
   end
 
-  let(:chipmunk_info_good) do
+  let(:chipmunk_info_with_metadata) do
     chipmunk_info_db.merge(
       "Metadata-Type"         => "MARC",
       "Metadata-URL"          => "http://what.ever",
@@ -30,7 +30,7 @@ RSpec.describe ChipmunkBagValidator do
   let(:ext_validation_result) { ["", "", 0] }
   let(:bag_info) { { "Foo" => "bar", "Baz" => "quux" } }
   let(:tag_files) { good_tag_files }
-  let(:chipmunk_info) { chipmunk_info_good }
+  let(:chipmunk_info) { chipmunk_info_with_metadata }
 
   let(:errors) { [] }
 
@@ -74,17 +74,17 @@ RSpec.describe ChipmunkBagValidator do
       end
 
       context "but its external ID does not match the queue item" do
-        let(:chipmunk_info) { chipmunk_info_good.merge("External-Identifier" => "something-different") }
+        let(:chipmunk_info) { chipmunk_info_with_metadata.merge("External-Identifier" => "something-different") }
         it_behaves_like "an invalid item", /External-Identifier/
       end
 
       context "but its bag ID does not match the queue item" do
-        let(:chipmunk_info) { chipmunk_info_good.merge("Bag-ID" => "something-different") }
+        let(:chipmunk_info) { chipmunk_info_with_metadata.merge("Bag-ID" => "something-different") }
         it_behaves_like "an invalid item", /Bag-ID/
       end
       
       context "but its package type does not match the queue item" do
-        let(:chipmunk_info) { chipmunk_info_good.merge("Chipmunk-Content-Type" => "something-different") }
+        let(:chipmunk_info) { chipmunk_info_with_metadata.merge("Chipmunk-Content-Type" => "something-different") }
         it_behaves_like "an invalid item", /Chipmunk-Content-Type/
       end
     end
@@ -101,21 +101,36 @@ RSpec.describe ChipmunkBagValidator do
       end
     end
 
-    context "when the bag is valid but does not include metadata " do
+    context "when the bag is valid but does not include the referenced metadata file" do
       let(:tag_files) { [] }
 
       it_behaves_like "an invalid item", /Missing.*marc.xml/
     end
 
-    context "when the bag is valid but does not include metadata tags" do
+    context "when the bag is valid but does not any include metadata tags" do
       let(:chipmunk_info) { chipmunk_info_db }
       let(:tag_files) { [] }
 
-      it_behaves_like "an invalid item", /Missing.*Metadata-/
+      it "returns true" do
+        expect(subject).to be true
+      end
     end
 
-    context "when the bag is valid and has metadata but external validation fails" do
-      let(:chipmunk_info) { chipmunk_info_good }
+
+    context "when the bag is valid and has only some metadata tags" do
+      let(:chipmunk_info) do
+        chipmunk_info_db.merge(
+          "Metadata-URL"          => "http://what.ever",
+          "Metadata-Tagfile"      => "marc.xml")
+      end
+
+      it_behaves_like "an invalid item", /Metadata-Type/
+
+    end
+
+
+    context "when the bag is valid but external validation fails" do
+      let(:chipmunk_info) { chipmunk_info_with_metadata }
       let(:ext_validation_result) { ["external output", "external error", 1] }
 
       it_behaves_like "an invalid item", /external error/
