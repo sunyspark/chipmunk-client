@@ -42,9 +42,9 @@ class ChipmunkBagValidator
     error: -> { "Some (but not all) metadata tags #{metadata_tags} missing in chipmunk-info.txt" }
 
   validates "bag on disk has referenced metadata files",
-    condition: -> { !disk_bag.chipmunk_info["Metadata-Tagfile"] || disk_bag.tag_files
-                    .map {|f| File.basename(f) }
-    .include?(disk_bag.chipmunk_info["Metadata-Tagfile"]) },
+    only_if: -> { disk_bag.chipmunk_info["Metadata-Tagfile"] },
+    condition: -> { disk_bag.tag_files.map {|f| File.basename(f) }
+                     .include?(disk_bag.chipmunk_info["Metadata-Tagfile"]) },
     error: -> { "Missing referenced metadata #{disk_bag.chipmunk_info["Metadata-Tagfile"]}" }
 
   validates "bag on disk passes external validation",

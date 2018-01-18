@@ -59,6 +59,19 @@ RSpec.describe Bag, type: :model do
     it "returns a path to a command" do
       expect(Fabricate.build(:bag).external_validation_cmd).not_to be_nil
     end
+
+    context "when there is no external command configured" do
+      around(:each) do |example|
+        old_ext_validation = Rails.application.config.validation["external"]
+        Rails.application.config.validation["external"] = { }
+        example.run
+        Rails.application.config.validation["external"] = old_ext_validation
+      end
+
+      it "returns nil" do
+        expect(Fabricate.build(:bag).external_validation_cmd).to be_nil
+      end
+    end
   end
 
   describe "#bagger_profile" do

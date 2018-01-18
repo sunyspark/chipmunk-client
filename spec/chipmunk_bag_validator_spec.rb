@@ -87,6 +87,60 @@ RSpec.describe ChipmunkBagValidator do
         let(:chipmunk_info) { chipmunk_info_with_metadata.merge("Chipmunk-Content-Type" => "something-different") }
         it_behaves_like "an invalid item", /Chipmunk-Content-Type/
       end
+
+      context "but does not include the referenced metadata file" do
+        let(:tag_files) { [] }
+
+        it_behaves_like "an invalid item", /Missing.*marc.xml/
+      end
+
+      context "but does not any include descriptive metadata tags" do
+        let(:chipmunk_info) { chipmunk_info_db }
+        let(:tag_files) { [] }
+
+        it "returns true" do
+          expect(subject).to be true
+        end
+      end
+
+      context "but has only some descriptive metadata tags" do
+        let(:chipmunk_info) do
+          chipmunk_info_db.merge(
+            "Metadata-URL"          => "http://what.ever",
+            "Metadata-Tagfile"      => "marc.xml")
+        end
+
+        it_behaves_like "an invalid item", /Metadata-Type/
+      end
+
+
+      context "but external validation fails" do
+        around(:each) do |example|
+          old_ext_validation = Rails.application.config.validation["external"]
+          Rails.application.config.validation["external"] = { db_bag.content_type => "something" }
+          example.run
+          Rails.application.config.validation["external"] = old_ext_validation
+        end
+
+        let(:chipmunk_info) { chipmunk_info_with_metadata }
+        let(:ext_validation_result) { ["external output", "external error", 1] }
+
+        it_behaves_like "an invalid item", /external error/
+      end
+
+      context "but the package type has no external validation command" do
+        around(:each) do |example|
+          old_ext_validation = Rails.application.config.validation["external"]
+          Rails.application.config.validation["external"] = { }
+          example.run
+          Rails.application.config.validation["external"] = old_ext_validation
+        end
+
+        it "does not try to run external validation" do
+          expect(Open3).not_to receive(:capture3)
+          subject
+        end
+      end
     end
 
     context "when the bag is invalid" do
@@ -101,40 +155,6 @@ RSpec.describe ChipmunkBagValidator do
       end
     end
 
-    context "when the bag is valid but does not include the referenced metadata file" do
-      let(:tag_files) { [] }
-
-      it_behaves_like "an invalid item", /Missing.*marc.xml/
-    end
-
-    context "when the bag is valid but does not any include metadata tags" do
-      let(:chipmunk_info) { chipmunk_info_db }
-      let(:tag_files) { [] }
-
-      it "returns true" do
-        expect(subject).to be true
-      end
-    end
-
-
-    context "when the bag is valid and has only some metadata tags" do
-      let(:chipmunk_info) do
-        chipmunk_info_db.merge(
-          "Metadata-URL"          => "http://what.ever",
-          "Metadata-Tagfile"      => "marc.xml")
-      end
-
-      it_behaves_like "an invalid item", /Metadata-Type/
-
-    end
-
-
-    context "when the bag is valid but external validation fails" do
-      let(:chipmunk_info) { chipmunk_info_with_metadata }
-      let(:ext_validation_result) { ["external output", "external error", 1] }
-
-      it_behaves_like "an invalid item", /external error/
-    end
     
     context "with a bagger profile and bag not valid according to the profile" do
       let(:bag_info) { { "Baz" => "quux" } }

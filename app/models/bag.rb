@@ -37,7 +37,9 @@ class Bag < ApplicationRecord
   end
 
   def external_validation_cmd
-    [Rails.application.config.validation["external"][content_type.to_s], external_id, src_path].join(" ")
+    ext_cmd = Rails.application.config.validation["external"][content_type.to_s]
+    return unless ext_cmd
+    [ext_cmd, external_id, src_path].join(" ")
   end
 
   def bagger_profile
