@@ -102,5 +102,38 @@ RSpec.describe BagMoveJob do
       end
     end
 
+    context "when validation raises an exception" do
+
+      let(:validator) { double(:validator) }
+      subject { described_class.perform_now(queue_item, validator: validator) }
+
+      before(:each) do
+        allow(validator).to receive(:valid?).and_raise InjectedError, "injected error"
+      end
+
+      it "re-raises the exception" do
+        expect { subject }.to raise_exception(InjectedError)
+      end
+
+      it "records the exception" do
+        begin
+          subject
+        rescue InjectedError
+        end
+
+        expect(queue_item.error).to match(/injected error/)
+      end
+
+      it "records the stack trace" do 
+        begin
+          subject
+        rescue InjectedError
+        end
+
+        expect(queue_item.error).to match(__FILE__)
+      end
+
+    end
+
   end
 end
