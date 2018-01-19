@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "chipmunk_audio_bagger"
+require "chipmunk_bagger"
 
-RSpec.describe ChipmunkDigitalBagger do
+RSpec.describe ChipmunkBagger do
   let(:external_id) { "12345" }
   let(:fakeuuid) { "fakeuuid" }
   let(:fixture_data) { fixture("digital", "pre-chipmunk") }
 
   def make_bag
-    described_class.new(content_type: "audio",
+    described_class.new(content_type: "digital",
                         external_id: external_id,
                         bag_path: @bag_path).make_bag
   end
@@ -43,7 +43,7 @@ RSpec.describe ChipmunkDigitalBagger do
       it "adds the expected metadata tags" do
         expect(bag).to receive(:write_chipmunk_info).with(
           "External-Identifier" => external_id,
-          "Chipmunk-Content-Type" => "audio",
+          "Chipmunk-Content-Type" => "digital",
           "Bag-ID" => fakeuuid,
         )
 

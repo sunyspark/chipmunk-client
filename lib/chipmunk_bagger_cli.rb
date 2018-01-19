@@ -1,6 +1,5 @@
 require "chipmunk_bagger"
 require "chipmunk_audio_bagger"
-require "chipmunk_digital_bagger"
 require "optparse"
 
 class ChipmunkBaggerCLI
@@ -21,18 +20,19 @@ class ChipmunkBaggerCLI
   attr_reader :content_type, :external_id, :src_path, :bag_path
 
   def make_bagger
-    klass = self.class.class_for(content_type)
-    klass.new(content_type: content_type,
-             external_id: external_id,
-             src_path: src_path,
-             bag_path: bag_path)
+    class_for(content_type).new({content_type: content_type,
+                                 external_id: external_id,
+                                 src_path: src_path,
+                                 bag_path: bag_path})
   end
 
 
-  def self.class_for(content_type)
-    klass = "Chipmunk#{content_type.capitalize}Bagger"
-    if const_defined?(klass)
-      const_get(klass)
+  def class_for(content_type)
+    case content_type
+    when "audio"
+      ChipmunkAudioBagger
+    when "digital"
+      ChipmunkBagger
     else
       raise ArgumentError, "No processor for content type #{content_type}"
     end

@@ -56,8 +56,19 @@ RSpec.describe Bag, type: :model do
   end
 
   describe "#external_validation_cmd" do
-    it "returns a path to a command" do
-      expect(Fabricate.build(:bag).external_validation_cmd).not_to be_nil
+    let(:bag) { Fabricate.build(:bag) }
+
+    context "when there is an external command configured" do
+      around(:each) do |example|
+        old_ext_validation = Rails.application.config.validation["external"]
+        Rails.application.config.validation["external"] = { bag.content_type => '/bin/true' }
+        example.run
+        Rails.application.config.validation["external"] = old_ext_validation
+      end
+
+      it "returns a command starting with the configured executable" do
+        expect(bag.external_validation_cmd).to match /^\/bin\/true/
+      end
     end
 
     context "when there is no external command configured" do
@@ -69,7 +80,7 @@ RSpec.describe Bag, type: :model do
       end
 
       it "returns nil" do
-        expect(Fabricate.build(:bag).external_validation_cmd).to be_nil
+        expect(bag.external_validation_cmd).to be_nil
       end
     end
   end

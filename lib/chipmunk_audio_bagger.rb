@@ -7,27 +7,19 @@ require "chipmunk_bagger"
 
 class ChipmunkAudioBagger < ChipmunkBagger
 
-  def initialize(src_path:, **kwargs)
-    super(**kwargs)
-    # make sure src_path ends in a '/'
-    src_path += "/" unless src_path[-1] == "/"
-    @src_path = src_path
-  end
-
-  # Moves data from src_path to bag_path/data and generates appropriate manifests
-  def process_bag
+  # Moves data from src_path to bag_path/data, adds metadata, and generates
+  # appropriate manifests
+  def make_bag
 
     # move everything into the data subdir if data subdir does not exist
     move_files_to_bag
-
     bag.write_chipmunk_info(common_tags.merge(audio_metadata))
     bag.download_metadata
+    bag.manifest!
 
   end
 
   private
-
-  attr_accessor :src_path
 
   def audio_metadata
     mets_fh = bag.get("mets.xml")
