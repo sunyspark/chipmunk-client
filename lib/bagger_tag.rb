@@ -10,7 +10,7 @@ class BaggerTag
     name = hash.keys.first
     params = hash.values.first
 
-    raise ArgumentError, "fieldRequired is required" if params["fieldRequired"].nil?
+    raise ArgumentError, "fieldRequired is required for #{name} (given: #{params.keys})" if params["fieldRequired"].nil?
 
     new(
       name: name,

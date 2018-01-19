@@ -1,3 +1,7 @@
+require 'json'
+require 'open-uri'
+require 'bagger_tag'
+
 class BaggerProfile
 
   def initialize(uri)

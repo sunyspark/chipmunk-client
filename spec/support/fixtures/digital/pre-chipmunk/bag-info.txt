@@ -1,0 +1,34 @@
+BagCreator: Example McPerson
+Payload-Oxum: 2607663.11
+Medium/Carrier #2: ???
+BarcodeNumber/Identifier: 39015092233538
+VirusCheckRun?: YES
+Hardware: External 3.5in Floppy Reader
+VirusCheckResultsNotes: 
+Profile Name: UMICH-Disk-Imaging
+WriteBlockerSoftware: Not Active
+ItemInformationNotes: Transcribed information from the label on the floppy
+   disk: Example
+OAISDigitalCurationLifecycle: SIP
+AccessionNumber/Collection: Redacted
+Bagging-Date: 2017-07-11
+Bag-Size: 2.5 MB
+Medium/CarrierDetails: Transcribed information from floppy disk: "FUJIFILM
+   MF2HD FORMATTED For Apple Macintosh Computers (1.40MB) Double Sided High
+   Density 135TPI / 80 Tracks".
+recordsTitle: Example
+Medium/CarrierConditionNotes: 
+BagContent: Disk Image/Forensic Image
+VirusCheckResults: PASS
+MediaRetentionPriority: High
+VirusCheckSoftware?: Clam Tk
+OriginatingUnit/Department: Example
+TestMountResults: SUCCESSFUL
+MediaConditionNotes #2: 
+TestMountPerformed?: YES
+Medium/Carrier: Floppy: 3.5in
+Medium/CarrierDetails #2: 
+Software: Guymager
+WriteBlockerHardware: Floppy Disk Write Protect
+Notes: It is impossible to run all BitCurator reports due to the
+   formatting/file system of the floppy disk. 

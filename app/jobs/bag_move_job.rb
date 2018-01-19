@@ -25,7 +25,8 @@ class BagMoveJob < ApplicationJob
         record_failure(errors)
       end
     rescue StandardError => exception
-      errors << exception.to_s
+      errors << "#{exception.backtrace.first}: #{exception.message} (#{exception.class})"
+      errors << exception.backtrace.drop(1).map{|s| "\t#{s}"}
       record_failure(errors)
       raise exception
     end
