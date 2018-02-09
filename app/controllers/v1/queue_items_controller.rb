@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'queue_item_builder'
+
 module V1
   class QueueItemsController < ApplicationController
     # GET /v1/queue

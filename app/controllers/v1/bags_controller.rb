@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "request_builder"
+
 module V1
   class BagsController < ApplicationController
 
