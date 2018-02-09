@@ -28,7 +28,7 @@ RSpec.describe ChipmunkDigitalBagger do
 
     context "with stubbed ChipmunkBag" do
       let(:bag) do
-        double(:bag,
+        instance_double(ChipmunkBag,
           "manifest!": nil,
           "valid?": true,
           "errors": double(:errors, full_messages: []),

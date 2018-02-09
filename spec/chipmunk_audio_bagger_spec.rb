@@ -40,7 +40,7 @@ RSpec.describe ChipmunkAudioBagger do
 
     context "with stubbed ChipmunkBag" do
       let(:bag) do
-        double(:bag,
+        instance_double(ChipmunkBag,
           "manifest!": nil,
           write_chipmunk_info: nil,
           add_tag_file: nil,
