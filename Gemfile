@@ -17,6 +17,7 @@ gem "resque-pool"
 # cli - should separate out
 gem "bagit"
 gem "rest-client"
+gem "mysql2"
 
 group :development, :test do
   gem "byebug", platforms: [:mri]
