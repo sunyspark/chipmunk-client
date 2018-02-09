@@ -1,5 +1,6 @@
 require "chipmunk_bagger"
 require "chipmunk_audio_bagger"
+require "chipmunk_digital_bagger"
 require "optparse"
 
 class ChipmunkBaggerCLI
@@ -32,7 +33,7 @@ class ChipmunkBaggerCLI
     when "audio"
       ChipmunkAudioBagger
     when "digital"
-      ChipmunkBagger
+      ChipmunkDigitalBagger
     else
       raise ArgumentError, "No processor for content type #{content_type}"
     end

@@ -3,7 +3,7 @@
 require "spec_helper"
 require "chipmunk_bagger"
 
-RSpec.describe ChipmunkBagger do
+RSpec.describe ChipmunkDigitalBagger do
   let(:external_id) { "12345" }
   let(:fakeuuid) { "fakeuuid" }
   let(:fixture_data) { fixture("digital", "pre-chipmunk") }
@@ -30,6 +30,8 @@ RSpec.describe ChipmunkBagger do
       let(:bag) do
         double(:bag,
           "manifest!": nil,
+          "valid?": true,
+          "errors": double(:errors, full_messages: []),
           write_chipmunk_info: nil,
           add_tag_file: nil,
           download_metadata: nil)
@@ -48,6 +50,19 @@ RSpec.describe ChipmunkBagger do
         )
 
         make_bag
+      end
+
+      it "validates the existing bag before manifesting it" do
+        expect(bag).to receive(:valid?).ordered
+        expect(bag).to receive(:manifest!).ordered
+
+        make_bag
+      end
+
+      it "raises an exception if the bag is not valid" do
+        allow(bag).to receive(:valid?).and_return(false)
+
+        expect{make_bag}.to raise_exception(RuntimeError)
       end
 
     end
