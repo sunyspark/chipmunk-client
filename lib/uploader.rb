@@ -68,7 +68,7 @@ class Uploader
 
   def request_params_from_bag(bag_path)
     bag = ChipmunkBag.new bag_path
-    raise bag.errors.full_messages unless bag.valid?
+    raise "Bag is not valid:\n" + bag.errors.full_messages.join("\n") unless bag.valid?
 
     tags = bag.chipmunk_info
     require_chipmunk_bag_tags(tags)
