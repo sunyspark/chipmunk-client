@@ -24,6 +24,20 @@ RSpec.describe V1::BagsController, type: :controller do
       end
     end
 
+    describe "GET #show/:external_id" do
+      context "as an admin" do
+        include_context "as admin user"
+        let(:bag) { Fabricate(:bag) }
+
+        it "can fetch a bag by external id" do
+          request.headers.merge! auth_header
+          get :show, params: { :bag_id => bag.external_id }
+
+          expect(assigns(:bag)).to eql(bag)
+        end
+      end
+    end
+
     describe "POST #create" do
       let(:attributes) do
         {

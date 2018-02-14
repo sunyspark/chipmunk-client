@@ -11,8 +11,10 @@ module V1
     end
 
     # GET /bags/1
+    # GET /bags/39015012345678
     def show
       @bag = Bag.find_by_bag_id(params[:bag_id])
+      @bag ||= Bag.find_by_external_id(params[:bag_id])
       authorize @bag
     end
 
