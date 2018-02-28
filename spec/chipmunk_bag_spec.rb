@@ -73,6 +73,48 @@ RSpec.describe ChipmunkBag do
     end
 
     expect_manifested_tagfile("chipmunk-info.txt")
+
+    context "when chipmunk-info.txt and the manifests are written twice" do
+      before(:each) do
+        # need to have some actual data to be valid
+        subject.add_file("somefile") do |file|
+          file.write("whatever")
+        end
+
+        subject.write_chipmunk_info(INFO_HASH)
+        subject.manifest!
+        subject.tagmanifest!
+
+        subject.write_chipmunk_info(new_info)
+        subject.manifest!
+        subject.tagmanifest!
+      end
+
+      let(:new_info) do
+        {"Foo" => "bar", 
+         "Baz" => "quux"}
+      end
+
+      it "updates chipmunk-info.txt with the new information" do
+        expect(File.read(chipmunk_info)).to eq(<<~TXT)
+          Foo: bar
+          Baz: quux
+        TXT
+      end
+
+      it "adds the revised chipmunk-info.txt to the manifest" do
+        chipmunk_info_md5 = Digest::MD5.file(chipmunk_info)
+        chipmunk_info_sha1 = Digest::SHA1.file(chipmunk_info)
+
+        expect(File.readlines(subject.tagmanifest_file('md5'))).to include("#{chipmunk_info_md5} chipmunk-info.txt\n")
+        expect(File.readlines(subject.tagmanifest_file('sha1'))).to include("#{chipmunk_info_sha1} chipmunk-info.txt\n")
+      end
+
+      it "results in a valid bag" do
+        expect(subject).to be_valid
+      end
+
+    end
   end
 
   describe "#download_metadata" do
@@ -132,4 +174,5 @@ RSpec.describe ChipmunkBag do
       expect(File.read(File.join(bag_data, somefile))).to eq(FILE_CONTENTS)
     end
   end
+
 end

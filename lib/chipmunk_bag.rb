@@ -15,7 +15,7 @@ class ChipmunkBag < BagIt::Bag
 
   def write_chipmunk_info(hash)
     write_info_file chipmunk_info_txt_file, hash
-    add_tag_file("chipmunk-info.txt")
+    add_tag_file("chipmunk-info.txt") unless tag_files.include?(chipmunk_info_txt_file)
   end
 
   def download_metadata
