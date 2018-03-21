@@ -19,6 +19,15 @@ require "action_controller/railtie"
 Bundler.require(*Rails.groups)
 
 module Chipmunk
+  class << self
+    def config
+      @config ||= Ettin.for(Ettin.settings_files('config', Rails.env))
+    end
+  end
+
+  # eager load
+  self.config
+
   class Application < Rails::Application
     config.middleware.insert_before 0, Rack::Cors do
       allow do
@@ -41,8 +50,11 @@ module Chipmunk
 
     config.autoload_paths << Rails.root.join("lib")
 
-    config.upload = config_for("upload")
-    config.validation = config_for("validation")
+    upload_path = Pathname.new(Rails.root)/"config"/"upload.yml"
+    config.upload = YAML.load(ERB.new(upload_path.read).result)
+
+    validation_path = Pathname.new(Rails.root)/"config"/"validation.yml"
+    config.validation = YAML.load(ERB.new(validation_path.read).result)
 
     config.active_job.queue_adapter = :resque
   end

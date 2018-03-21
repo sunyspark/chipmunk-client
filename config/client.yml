@@ -1,0 +1,2 @@
+url: <%= Chipmunk.config.client.url %>
+api_key: <%= Chipmunk.config.client.api_key %>

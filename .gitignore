@@ -22,11 +22,6 @@
 # rbenv local file
 .ruby-version
 
-# Ignore application configuration
-/.env.production
-/.env.local
-/.env
-
 # Ignore test coverage
 /coverage
 
@@ -38,8 +33,6 @@
 
 # Configuration files
 Gemfile.local
-config/resque.yml
-config/resque-pool.yml
 
 # Ignore capistrano
 /Capfile
@@ -59,3 +52,8 @@ tags
 # dev. repository
 /incoming
 /repo
+
+# local config
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml

@@ -8,6 +8,7 @@
 source "https://rubygems.org"
 
 gem "bcrypt", "~> 3.1.7"
+gem "ettin"
 gem "jbuilder"
 gem "pundit"
 gem "rack-cors"

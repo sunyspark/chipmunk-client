@@ -1,17 +1,7 @@
 # configuration for upload paths
 
-production:
-
-development:
-  external:
-    audio: "/path/to/validator"
-    video: "/path/to/validator"
-  bagger_profile:
-    digital: "http://uri_to_bagger_profile"
-
-test:
-  external:
-    audio: "/path/to/validator"
-    video: "/path/to/validator"
-  bagger_profile:
-    digital: "/path/to/profile"
+external:
+  audio: <%= Chipmunk.config.validation.external.audio %>
+  video: <%= Chipmunk.config.validation.external.video %>
+bagger_profile:
+  digital: <%= Chipmunk.config.validation.bagger_profile.digital %>
