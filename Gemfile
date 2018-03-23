@@ -7,36 +7,22 @@
 
 source "https://rubygems.org"
 
-gem "bcrypt", "~> 3.1.7"
-gem "ettin"
-gem "jbuilder"
-gem "pundit"
-gem "rack-cors"
-gem "rails", "~> 5.1.0"
-gem "resque"
-gem "resque-pool"
-# cli - should separate out
 gem "bagit"
 gem "rest-client"
-gem "mysql2"
+gem "ettin"
+gem "nokogiri"
 
 group :development, :test do
   gem "byebug", platforms: [:mri]
-  gem "fabrication"
-  gem "faker"
   gem "pry"
   gem "pry-byebug"
-  gem "rails-controller-testing"
-  gem "sqlite3"
 end
 
 group :test do
+  gem "fabrication"
+  gem "faker"
   gem "rspec"
-  gem "rspec-activejob"
-  gem "rspec-rails"
   gem "simplecov"
-  gem "timecop"
-  gem "turnip"
   gem "webmock"
 end
 

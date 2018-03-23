@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "chipmunk_client"
 
 describe ChipmunkClient do
   let(:url) { "https://www.example.com" }

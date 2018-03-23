@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "uploader"
 
 describe Uploader do
   let(:client) do

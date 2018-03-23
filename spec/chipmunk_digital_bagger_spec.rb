@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "chipmunk_bagger"
+require "chipmunk_digital_bagger"
 
 RSpec.describe ChipmunkDigitalBagger do
   let(:external_id) { "12345" }
