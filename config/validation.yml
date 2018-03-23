@@ -1,7 +1,0 @@
-# configuration for upload paths
-
-external:
-  audio: <%= Chipmunk.config.validation.external.audio %>
-  video: <%= Chipmunk.config.validation.external.video %>
-bagger_profile:
-  digital: <%= Chipmunk.config.validation.bagger_profile.digital %>

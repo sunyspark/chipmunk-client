@@ -1,8 +1,0 @@
-# configuration for upload paths
-
-# application-writable directory where upload points should be created, e.g. /pfdr/incoming/uniqname
-upload_path: <%= Chipmunk.config.upload.upload_path %>
-# rsync point to user-writable upload path
-rsync_point: <%= Chipmunk.config.upload.rsync_point %>
-# application-writable directory for final storage of bags; allows creation of dirs, files
-storage_path: <%= Chipmunk.config.upload.storage_path %>
