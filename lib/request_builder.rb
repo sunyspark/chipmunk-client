@@ -12,7 +12,8 @@
 # This process is synchronous.
 class RequestBuilder
   def create(bag_id:, content_type:, external_id:, user:)
-    duplicate = Bag.where(bag_id: bag_id).first
+    duplicate = Bag.find_by_bag_id(bag_id)
+    duplicate ||= Bag.find_by_external_id(external_id)
     unless duplicate.nil?
       return :duplicate, duplicate
     end

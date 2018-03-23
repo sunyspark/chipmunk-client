@@ -41,10 +41,22 @@ RSpec.describe RequestBuilder do
         bag_id: SecureRandom.uuid, external_id: "blah" }
     end
     subject { described_class.new.create(params) }
+
     context "duplicate bag id" do
+      let!(:existing) { Fabricate(:bag, bag_id: params[:bag_id], external_id: SecureRandom.uuid) }
+      it_behaves_like "a RequestBuilder invocation that returns a duplicate"
+    end
+
+    context "duplicate external id" do
+      let!(:existing) { Fabricate(:bag, bag_id: SecureRandom.uuid, external_id: params[:external_id]) }
+      it_behaves_like "a RequestBuilder invocation that returns a duplicate"
+    end
+
+    context "duplicate bag and external id" do
       let!(:existing) { Fabricate(:bag, bag_id: params[:bag_id], external_id: params[:external_id]) }
       it_behaves_like "a RequestBuilder invocation that returns a duplicate"
     end
+
     context "no duplicate bag" do
       it_behaves_like "a RequestBuilder invocation that creates a new Bag"
     end
