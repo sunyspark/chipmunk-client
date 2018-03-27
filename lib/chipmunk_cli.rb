@@ -1,32 +1,28 @@
 require 'optparse'
-require 'active_support/core_ext/hash'
 require 'yaml'
 require_relative './chipmunk_client'
 require_relative './uploader'
-require 'pry'
+require 'ettin'
 
 class ChipmunkCLI
-  def initialize(args)
+  def initialize(args,client_factory: ChipmunkClient)
+    @config_files = Ettin.settings_files("config",nil)
     parse_options(args)
-    load_default_config
-
-    @config = @config.symbolize_keys.slice(:url,:api_key)
-    config[:api_key] = ENV["CHIPMUNK_API_KEY"] if ENV["CHIPMUNK_API_KEY"]
-
-    @client = ChipmunkClient.new(**config)
+    config ||= Ettin.for(@config_files)
+    @client = client_factory.new(**config)
   end
 
-  def run
+  def run(uploader_factory: Uploader)
     bag_paths.each do |bag_path|
       puts "Uploading #{bag_path}"
-      Uploader.new(bag_path, client: client).upload
+      uploader_factory.new(bag_path, client: client).upload
       puts
     end
   end
 
   private
 
-  attr_reader :client, :config, :bag_paths
+  attr_reader :client, :bag_paths
 
   USAGE = "Usage: #{$PROGRAM_NAME} [options] /path/to/bag1 /path/to/bag2 ..."
 
@@ -34,23 +30,14 @@ class ChipmunkCLI
     OptionParser.new do |opts|
       opts.banner = USAGE
 
-      opts.on("-c", "--config", "Configuration file") do |c|
-        @config = YAML.load(File.read(c))
+      opts.on("-c CONFIG", "--config", "Configuration file") do |c|
+        @config_files << c
       end
     end.parse!(args)
 
     raise ArgumentError, USAGE if args.empty?
 
     @bag_paths = args
-  end
-
-  def load_default_config
-    default_config = "#{File.dirname(__FILE__)}/../config/client.yml"
-    if File.exists?(default_config) and !@config
-      @config = YAML.load(File.read(default_config)) 
-    else
-      @config = {}
-    end
   end
 
 end

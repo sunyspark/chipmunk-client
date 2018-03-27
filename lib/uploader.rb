@@ -2,7 +2,6 @@
 
 require "bagit"
 require "rest-client"
-require "pry"
 require "json"
 require_relative "./chipmunk_bag"
 require_relative "./chipmunk_client"
