@@ -42,7 +42,8 @@ module Chipmunk
         puts "Bag for #{request["external_id"]} has already been uploaded"
         false
       elsif external_id != request["external_id"]
-        puts "Server expected a bag with external ID \"#{request["external_id"]}\" but the provided bag has external ID \"#{external_id}\""
+        puts "Server expected a bag with external ID \"#{request["external_id"]}\" " \
+          "but the provided bag has external ID \"#{external_id}\""
         false
       else
         true
@@ -70,7 +71,7 @@ module Chipmunk
 
     def bag_at_path(bag_path)
       Bag.new(bag_path).tap do |bag|
-        if config.validate_before_upload and !bag.valid?
+        if config.validate_before_upload && !bag.valid?
           raise "Bag is not valid:\n" + bag.errors.full_messages.join("\n")
         end
       end

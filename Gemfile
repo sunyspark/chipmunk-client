@@ -8,9 +8,9 @@
 source "https://rubygems.org"
 
 gem "bagit"
-gem "rest-client"
 gem "ettin"
 gem "nokogiri"
+gem "rest-client"
 
 group :development, :test do
   gem "byebug", platforms: [:mri]

@@ -1,29 +1,20 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "chipmunk/bagger/audio"
+require "chipmunk/bagger/video"
 
-RSpec.describe Chipmunk::AudioBagger do
-  let(:marc_url) {  "https://mirlyn.lib.umich.edu/Record/011500592.xml" }
-  let(:external_id) {  "12345" }
-  let(:fake_uuid) {  "fakeuuid" }
-  let(:good_data_path) {  fixture("audio", "upload", "good", "data")  }
+RSpec.describe Chipmunk::Bagger::Video do
+  let(:external_id) { "12345" }
+  let(:fake_uuid) { "fakeuuid" }
+  let(:good_data_path) { fixture("video", "upload", "good", "data") }
 
   def make_bag
-    described_class.new(content_type: "audio",
+    described_class.new(content_type: "video",
                         external_id: external_id,
                         src_path: @src_path,
                         bag_path: @bag_path).make_bag
   end
 
-  before(:each) do
-    # don't actually fetch marc
-    allow(Net::HTTP).to receive(:get)
-      .with(URI(marc_url))
-      .and_return(File.read(fixture("marc.xml")))
-  end
-
-  let(:mets_path) { File.join(good_data_path, "mets.xml") }
   let(:bag_data) { File.join(@bag_path, "data") }
 
   context "with fixture data" do
@@ -49,10 +40,9 @@ RSpec.describe Chipmunk::AudioBagger do
       before(:each) do
         allow(SecureRandom).to receive(:uuid).and_return(fake_uuid)
         allow(Chipmunk::Bag).to receive(:new).and_return(bag)
-        allow(bag).to receive(:get).with("mets.xml").and_return(File.open(mets_path))
       end
 
-      context "with good audio data" do
+      context "with good video data" do
         let(:fixture_data) { good_data_path }
 
         before(:each) do
@@ -60,7 +50,8 @@ RSpec.describe Chipmunk::AudioBagger do
         end
 
         shared_examples_for "moves files to the data dir" do
-          ["am000001.wav", "pm000001.wav", "mets.xml"].each do |file|
+          ["metadata.yaml", "miam0001.mov", "mipm0001.mov", "tn0001_1.jpg",
+           "tn0001_2.jpg", "tn0001_3.jpg", "tn0001_4.jpg", "tn0001_5.jpg"].each do |file|
             it "moves #{file} to the data dir" do
               expect(bag).to receive(:add_file_by_moving).with(file, File.join(@src_path, file))
               make_bag
@@ -79,45 +70,16 @@ RSpec.describe Chipmunk::AudioBagger do
         it "adds the expected metadata tags" do
           expect(bag).to receive(:write_chipmunk_info).with(
             "External-Identifier" => external_id,
-            "Chipmunk-Content-Type" => "audio",
-            "Bag-ID" => fake_uuid,
-            'Metadata-URL': marc_url,
-            'Metadata-Type': "MARC",
-            'Metadata-Tagfile': "marc.xml"
+            "Chipmunk-Content-Type" => "video",
+            "Bag-ID" => fake_uuid
           )
 
-          make_bag
-        end
-
-        it "downloads the metadata" do
-          expect(bag).to receive(:download_metadata)
-          make_bag
-        end
-
-        context "when bag doesn't contain mets.xml" do
-          before(:each) do
-            allow(bag).to receive(:get).with("mets.xml").and_return(nil)
-          end
-
-          it "reports an error" do
-            expect { make_bag }.to raise_error(Chipmunk::MetadataError, /mets.xml/)
-          end
-        end
-      end
-
-      context "with src data that has hierarchy" do
-        let(:fixture_data) { fixture("data_hierarchy") }
-
-        it "preserves directory hierarchy under source dir" do
-          expect(bag).to receive(:add_file_by_moving).with("zero_file", File.join(@src_path, "zero_file"))
-          expect(bag).to receive(:add_file_by_moving).with("one/one_file", File.join(@src_path, "one/one_file"))
-          expect(bag).to receive(:add_file_by_moving).with("one/two/two_file", File.join(@src_path, "one/two/two_file"))
           make_bag
         end
       end
     end
 
-    context "with good audio data" do
+    context "with good video data" do
       let(:fixture_data) { good_data_path }
 
       it "creates a valid Chipmunk::Bag" do

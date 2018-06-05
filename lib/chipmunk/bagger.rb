@@ -25,10 +25,9 @@ module Chipmunk
 
     private
 
-    def process_bag
-    end
+    def process_bag; end
 
-    attr_accessor :bag, :src_path
+    attr_accessor :src_path
 
     def bag
       @bag ||= Bag.new bag_path

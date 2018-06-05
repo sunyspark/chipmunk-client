@@ -8,8 +8,10 @@ Naming/FileName:
   ExpectMatchingDefinition: true
   Exclude:
     - 'spec/**/*'
-    - 'lib/*/version.rb'
-    - 'bin/console'
+    - 'bin/*'
+  AllowedAcronyms:
+    - METS
+    - CLI
 
 Style/Alias:
   EnforcedStyle: prefer_alias_method
@@ -111,13 +113,13 @@ Layout/SpaceInsideBlockBraces:
 Style/SymbolArray:
   EnforcedStyle: brackets
 
-Lint/BlockAlignment:
+Layout/BlockAlignment:
   EnforcedStyleAlignWith: start_of_line
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   EnforcedStyleAlignWith: start_of_line
 
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   EnforcedStyleAlignWith: def
 
 Performance/RedundantMerge:

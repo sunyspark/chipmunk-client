@@ -4,8 +4,7 @@ require "securerandom"
 require "chipmunk/bag"
 
 module Chipmunk
-  class DigitalBagger < Bagger
-
+  class Bagger::Digital < Bagger
 
     # validates the bag at bag_path, adds chipmunk_info.txt, and updates the
     # manifest.
@@ -17,8 +16,6 @@ module Chipmunk
       bag.write_chipmunk_info(common_tags)
       bag.manifest!
     end
-
-    private
 
   end
 end

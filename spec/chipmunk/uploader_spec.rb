@@ -20,9 +20,9 @@ describe Chipmunk::Uploader do
 
   let(:queue_item) do
     {
-      "id"     => 1,
-      "status" => "DONE",
-      "package"    => "/v1/packages/#{bag_id}"
+      "id"      => 1,
+      "status"  => "DONE",
+      "package" => "/v1/packages/#{bag_id}"
     }
   end
 
@@ -36,7 +36,7 @@ describe Chipmunk::Uploader do
   end
 
   subject do
-    described_class.new(fixture("test_bag"), client: client, rsyncer: rsyncer, config: double(:config, validate_before_upload: true) )
+    described_class.new(fixture("test_bag"), client: client, rsyncer: rsyncer, config: double(:config, validate_before_upload: true))
   end
 
   context "when the bag is not already stored" do
@@ -61,7 +61,7 @@ describe Chipmunk::Uploader do
       let(:queue_item) do
         {
           "status" => "FAILED",
-          "error" =>  "something went wrong\n" \
+          "error"  => "something went wrong\n" \
             "here are the details"
         }
       end

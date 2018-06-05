@@ -4,7 +4,7 @@ require "spec_helper"
 require "chipmunk/bagger/digital"
 require "chipmunk/bag"
 
-RSpec.describe Chipmunk::DigitalBagger do
+RSpec.describe Chipmunk::Bagger::Digital do
   let(:external_id) { "12345" }
   let(:fakeuuid) { "fakeuuid" }
   let(:fixture_data) { fixture("digital", "pre-chipmunk") }
@@ -47,7 +47,7 @@ RSpec.describe Chipmunk::DigitalBagger do
         expect(bag).to receive(:write_chipmunk_info).with(
           "External-Identifier" => external_id,
           "Chipmunk-Content-Type" => "digital",
-          "Bag-ID" => fakeuuid,
+          "Bag-ID" => fakeuuid
         )
 
         make_bag
@@ -63,9 +63,8 @@ RSpec.describe Chipmunk::DigitalBagger do
       it "raises an exception if the bag is not valid" do
         allow(bag).to receive(:valid?).and_return(false)
 
-        expect{make_bag}.to raise_exception(RuntimeError)
+        expect { make_bag }.to raise_exception(RuntimeError)
       end
-
     end
 
     it "creates a valid Chipmunk::Bag" do

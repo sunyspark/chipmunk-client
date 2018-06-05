@@ -6,18 +6,16 @@ require "chipmunk/metadata_error"
 require "chipmunk/bagger"
 
 module Chipmunk
-  class AudioBagger < Bagger
+  class Bagger::Audio < Bagger
 
     # Moves data from src_path to bag_path/data, adds metadata, and generates
     # appropriate manifests
     def make_bag
-
       # move everything into the data subdir if data subdir does not exist
       move_files_to_bag
       bag.write_chipmunk_info(common_tags.merge(audio_metadata))
       bag.download_metadata
       bag.manifest!
-
     end
 
     private

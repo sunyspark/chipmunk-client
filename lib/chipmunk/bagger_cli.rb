@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "chipmunk/bagger"
 require "optparse"
 
@@ -20,21 +22,20 @@ module Chipmunk
     attr_reader :content_type, :external_id, :src_path, :bag_path
 
     def make_bagger
-      class_for(content_type).new({content_type: content_type,
+      class_for(content_type).new(content_type: content_type,
                                    external_id: external_id,
                                    src_path: src_path,
-                                   bag_path: bag_path})
+                                   bag_path: bag_path)
     end
-
 
     def class_for(content_type)
       case content_type
       when "audio"
-        Chipmunk::AudioBagger
+        Chipmunk::Bagger::Audio
       when "digital"
-        Chipmunk::DigitalBagger
+        Chipmunk::Bagger::Digital
       when "video"
-        Chipmunk::VideoBagger
+        Chipmunk::Bagger::Video
       else
         raise ArgumentError, "No processor for content type #{content_type}"
       end

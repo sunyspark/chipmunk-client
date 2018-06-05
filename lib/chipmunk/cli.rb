@@ -1,13 +1,15 @@
-require 'optparse'
-require 'yaml'
-require 'chipmunk/client'
-require 'chipmunk/uploader'
-require 'ettin'
+# frozen_string_literal: true
+
+require "optparse"
+require "yaml"
+require "chipmunk/client"
+require "chipmunk/uploader"
+require "ettin"
 
 module Chipmunk
   class CLI
-    def initialize(args,client_factory: Client)
-      @config_files = Ettin.settings_files("config",nil)
+    def initialize(args, client_factory: Client)
+      @config_files = Ettin.settings_files("config", nil)
       parse_options(args)
       @config ||= Ettin.for(@config_files)
       @client = client_factory.new(**config)

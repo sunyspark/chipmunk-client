@@ -4,17 +4,15 @@ require "find"
 require "chipmunk/bagger"
 
 module Chipmunk
-  class VideoBagger < Bagger
+  class Bagger::Video < Bagger
 
     # Moves data from src_path to bag_path/data, adds metadata, and generates
     # appropriate manifests
     def make_bag
-
       # move everything into the data subdir if data subdir does not exist
       move_files_to_bag
       bag.write_chipmunk_info(common_tags)
       bag.manifest!
-
     end
 
     private
