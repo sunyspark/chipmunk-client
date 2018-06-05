@@ -1,0 +1,6 @@
+External-Identifier: video_test
+Chipmunk-Content-Type: video
+Bag-ID: goodbag
+Metadata-URL: http://mirlyn.lib.umich.edu/Record/011500592.xml
+Metadata-Type: MARC
+Metadata-Tagfile: marc.xml

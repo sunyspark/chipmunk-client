@@ -1,6 +1,7 @@
 require "chipmunk_bagger"
 require "chipmunk_audio_bagger"
 require "chipmunk_digital_bagger"
+require "chipmunk_video_bagger"
 require "optparse"
 
 class ChipmunkBaggerCLI
