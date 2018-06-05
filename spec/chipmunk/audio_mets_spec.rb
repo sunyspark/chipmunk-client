@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "audio_mets"
+require "chipmunk/audio_mets"
 
-RSpec.describe AudioMETS do
+RSpec.describe Chipmunk::AudioMETS do
   describe "#marcxml_url" do
     subject { described_class.new(File.open(mets_path)).marcxml_url }
 
@@ -15,14 +15,14 @@ RSpec.describe AudioMETS do
     context "when mets.xml doesn't have a MARC record" do
       let(:mets_path) { fixture("audio", "mets-nomarc.xml") }
       it do
-        expect { subject }.to raise_error(ChipmunkMetadataError, /MARC/)
+        expect { subject }.to raise_error(Chipmunk::MetadataError, /MARC/)
       end
     end
 
     context "when MARC link isn't to mirlyn" do
       let(:mets_path) { fixture("audio", "mets-nonmirlyn.xml") }
       it do
-        expect { subject }.to raise_error(ChipmunkMetadataError,
+        expect { subject }.to raise_error(Chipmunk::MetadataError,
           /does not match mirlyn/)
       end
     end

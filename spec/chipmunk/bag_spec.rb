@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "chipmunk_bag"
+require "chipmunk/bag"
 
 def make_bag
-  @bag = ChipmunkBag.new bag_path
+  @bag = Chipmunk::Bag.new bag_path
 end
 
 TAGFILES = ["bag-info.txt", "bagit.txt", "chipmunk-info.txt", "manifest-md5.txt", "manifest-sha1.txt"].freeze
@@ -29,7 +29,7 @@ def expect_manifested_tagfile(tagfile)
   end
 end
 
-RSpec.describe ChipmunkBag do
+RSpec.describe Chipmunk::Bag do
   # set up data in safe area
   around(:each) do |example|
     Dir.mktmpdir do |tmp_dir|
@@ -42,7 +42,7 @@ RSpec.describe ChipmunkBag do
   let(:bag_data) { File.join(@bag_path, "data") }
   let(:chipmunk_info) { File.join(@bag_path, "chipmunk-info.txt") }
 
-  subject { ChipmunkBag.new(@bag_path) }
+  subject { described_class.new(@bag_path) }
 
   describe "#chipmunk_info" do
     context "with no chipmunk-info.txt" do

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "chipmunk_audio_bagger"
+require "chipmunk/bagger/audio"
 
-RSpec.describe ChipmunkAudioBagger do
+RSpec.describe Chipmunk::AudioBagger do
   let(:marc_url) {  "https://mirlyn.lib.umich.edu/Record/011500592.xml" }
   let(:external_id) {  "12345" }
   let(:fake_uuid) {  "fakeuuid" }
@@ -37,9 +37,9 @@ RSpec.describe ChipmunkAudioBagger do
       end
     end
 
-    context "with stubbed ChipmunkBag" do
+    context "with stubbed Chipmunk::Bag" do
       let(:bag) do
-        instance_double(ChipmunkBag,
+        instance_double(Chipmunk::Bag,
           "manifest!": nil,
           write_chipmunk_info: nil,
           add_tag_file: nil,
@@ -48,7 +48,7 @@ RSpec.describe ChipmunkAudioBagger do
 
       before(:each) do
         allow(SecureRandom).to receive(:uuid).and_return(fake_uuid)
-        allow(ChipmunkBag).to receive(:new).and_return(bag)
+        allow(Chipmunk::Bag).to receive(:new).and_return(bag)
         allow(bag).to receive(:get).with("mets.xml").and_return(File.open(mets_path))
       end
 
@@ -100,7 +100,7 @@ RSpec.describe ChipmunkAudioBagger do
           end
 
           it "reports an error" do
-            expect { make_bag }.to raise_error(ChipmunkMetadataError, /mets.xml/)
+            expect { make_bag }.to raise_error(Chipmunk::MetadataError, /mets.xml/)
           end
         end
       end
@@ -120,9 +120,9 @@ RSpec.describe ChipmunkAudioBagger do
     context "with good audio data" do
       let(:fixture_data) { good_data_path }
 
-      it "creates a valid ChipmunkBag" do
+      it "creates a valid Chipmunk::Bag" do
         make_bag
-        expect(ChipmunkBag.new(@bag_path)).to be_valid
+        expect(Chipmunk::Bag.new(@bag_path)).to be_valid
       end
     end
   end

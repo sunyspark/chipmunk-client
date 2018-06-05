@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "chipmunk_digital_bagger"
+require "chipmunk/bagger/digital"
+require "chipmunk/bag"
 
-RSpec.describe ChipmunkDigitalBagger do
+RSpec.describe Chipmunk::DigitalBagger do
   let(:external_id) { "12345" }
   let(:fakeuuid) { "fakeuuid" }
   let(:fixture_data) { fixture("digital", "pre-chipmunk") }
@@ -26,9 +27,9 @@ RSpec.describe ChipmunkDigitalBagger do
       end
     end
 
-    context "with stubbed ChipmunkBag" do
+    context "with stubbed Chipmunk::Bag" do
       let(:bag) do
-        instance_double(ChipmunkBag,
+        instance_double(Chipmunk::Bag,
           "manifest!": nil,
           "valid?": true,
           "errors": double(:errors, full_messages: []),
@@ -39,7 +40,7 @@ RSpec.describe ChipmunkDigitalBagger do
 
       before(:each) do
         allow(SecureRandom).to receive(:uuid).and_return(fakeuuid)
-        allow(ChipmunkBag).to receive(:new).and_return(bag)
+        allow(Chipmunk::Bag).to receive(:new).and_return(bag)
       end
 
       it "adds the expected metadata tags" do
@@ -67,9 +68,9 @@ RSpec.describe ChipmunkDigitalBagger do
 
     end
 
-    it "creates a valid ChipmunkBag" do
+    it "creates a valid Chipmunk::Bag" do
       make_bag
-      expect(ChipmunkBag.new(@bag_path)).to be_valid
+      expect(Chipmunk::Bag.new(@bag_path)).to be_valid
     end
   end
 end

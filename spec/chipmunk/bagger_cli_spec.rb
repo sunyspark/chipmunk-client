@@ -1,8 +1,8 @@
 
 require "spec_helper"
-require "chipmunk_bagger_cli"
+require "chipmunk/bagger_cli"
 
-RSpec.describe ChipmunkBaggerCLI do
+RSpec.describe Chipmunk::BaggerCLI do
   describe "#initialize" do
     it "accepts audio with a source path" do
       expect(described_class.new(%w(audio foo -s /foo/bar /baz/quux))).not_to be_nil
@@ -31,11 +31,11 @@ RSpec.describe ChipmunkBaggerCLI do
 
   describe "#bagger" do
     it "can make an audio bagger" do
-      expect(described_class.new(%w(audio foo -s foo bar)).bagger).to be_a_kind_of(ChipmunkBagger)
+      expect(described_class.new(%w(audio foo -s foo bar)).bagger).to be_a_kind_of(Chipmunk::Bagger)
     end
 
     it "can make a digital bagger" do
-      expect(described_class.new(%w(digital foo bar)).bagger).to be_a_kind_of(ChipmunkBagger)
+      expect(described_class.new(%w(digital foo bar)).bagger).to be_a_kind_of(Chipmunk::Bagger)
     end
   end
 end

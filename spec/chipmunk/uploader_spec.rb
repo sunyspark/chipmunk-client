@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "uploader"
+require "chipmunk/uploader"
 
-describe Uploader do
+describe Chipmunk::Uploader do
   let(:client) do
-    instance_double(ChipmunkClient)
+    instance_double(Chipmunk::Client)
   end
   let(:bag_id) { "14d25bcd-deaf-4c94-add7-c189fdca4692" }
-  let(:rsyncer) { instance_double(BagRsyncer, upload: true) }
+  let(:rsyncer) { instance_double(Chipmunk::BagRsyncer, upload: true) }
   let(:request) do
     # from spec/support/fixtures/test_bag
     {
@@ -116,7 +116,7 @@ describe Uploader do
     end
 
     before(:each) do
-      allow(client).to receive(:post).and_raise(ChipmunkClientError.new(rest_error))
+      allow(client).to receive(:post).and_raise(Chipmunk::ClientError.new(rest_error))
     end
 
     it "prints the error message" do

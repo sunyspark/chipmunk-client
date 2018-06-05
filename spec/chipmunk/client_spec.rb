@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "chipmunk_client"
+require "chipmunk/client"
 
-describe ChipmunkClient do
+describe Chipmunk::Client do
   let(:url) { "https://www.example.com" }
   let(:api_key) { "mykey" }
-  subject { ChipmunkClient.new(url: url, api_key: api_key) }
+  subject { described_class.new(url: url, api_key: api_key) }
 
-  shared_examples_for "a ChipmunkClient http method" do |method|
+  shared_examples_for "a Chipmunk::Client http method" do |method|
     it "parses the response" do
       stub_request(method, "#{url}/something")
         .to_return(body: '{"foo":"bar"}')
@@ -28,12 +28,12 @@ describe ChipmunkClient do
         .to have_been_requested
     end
 
-    it "handles errors by raising a ChipmunkClientError" do
+    it "handles errors by raising a Chipmunk::ClientError" do
       stub_request(method, "#{url}/error")
         .to_return(status: 500, body: "{}")
 
       expect { subject.public_send(method, "/error") }
-        .to raise_exception(ChipmunkClientError)
+        .to raise_exception(Chipmunk::ClientError)
     end
 
     it "handles errors by raising an error that encapsulates the returned error" do
@@ -68,7 +68,7 @@ describe ChipmunkClient do
         .to have_been_requested
     end
 
-    it_behaves_like "a ChipmunkClient http method", :post
+    it_behaves_like "a Chipmunk::Client http method", :post
   end
 
   describe "#get" do
@@ -81,6 +81,6 @@ describe ChipmunkClient do
         .to have_been_requested
     end
 
-    it_behaves_like "a ChipmunkClient http method", :get
+    it_behaves_like "a Chipmunk::Client http method", :get
   end
 end

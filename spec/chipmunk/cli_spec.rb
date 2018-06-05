@@ -1,8 +1,8 @@
 require "spec_helper"
-require "chipmunk_cli"
+require "chipmunk/cli"
 require "ettin"
 
-RSpec.describe ChipmunkCLI do
+RSpec.describe Chipmunk::CLI do
   let(:client_factory) { double(:factory) }
 
   describe "#initialize" do
