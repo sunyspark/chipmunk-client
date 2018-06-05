@@ -69,9 +69,9 @@ module Chipmunk
       end
     end
 
-    def bag_at_path(bag_path)
+    def bag_at_path(bag_path, validate: Chipmunk.config.validate_before_upload)
       Bag.new(bag_path).tap do |bag|
-        if config.validate_before_upload && !bag.valid?
+        if validate && !bag.valid?
           raise "Bag is not valid:\n" + bag.errors.full_messages.join("\n")
         end
       end

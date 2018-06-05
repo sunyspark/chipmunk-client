@@ -4,15 +4,13 @@ require "optparse"
 require "yaml"
 require "chipmunk/client"
 require "chipmunk/uploader"
-require "ettin"
+require "chipmunk"
 
 module Chipmunk
   class CLI
     def initialize(args, client_factory: Client)
-      @config_files = Ettin.settings_files("config", nil)
       parse_options(args)
-      @config ||= Ettin.for(@config_files)
-      @client = client_factory.new(**config)
+      @client = client_factory.new
     end
 
     def run(uploader_factory: Uploader)
@@ -34,7 +32,7 @@ module Chipmunk
         opts.banner = USAGE
 
         opts.on("-c CONFIG", "--config", "Configuration file") do |c|
-          @config_files << c
+          Chipmunk.add_config(c)
         end
       end.parse!(args)
 

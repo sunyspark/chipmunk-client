@@ -21,7 +21,7 @@ module Chipmunk
   # A wrapper around RestClient to make POST and GET calls to a Chipmunk API.
   class Client
 
-    def initialize(url: "http://localhost:3000", api_key:)
+    def initialize(url: Chipmunk.config.url, api_key: Chipmunk.config.api_key)
       @url = url
       @api_key = api_key
     end

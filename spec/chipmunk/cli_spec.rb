@@ -13,13 +13,13 @@ RSpec.describe Chipmunk::CLI do
     end
 
     it "creates a client with the default config" do
-      expect(client_factory).to receive(:new).with(Ettin.for("config/settings.yml"))
+      expect(client_factory).to receive(:new)
       described_class.new(["foo", "bar"], client_factory: client_factory)
     end
 
     it "accepts a -c option with an overriding config" do
-      expect(client_factory).to receive(:new).with(Ettin.for("config/settings.yml", "spec/support/fixtures/other_config.yml"))
-      described_class.new(["-c", "spec/support/fixtures/other_config.yml", "foo"], client_factory: client_factory)
+      described_class.new(["-c", "spec/support/fixtures/other_config.yml", "foo"])
+      expect(Chipmunk.config.api_key).to eq("overriden_api_key")
     end
   end
 
