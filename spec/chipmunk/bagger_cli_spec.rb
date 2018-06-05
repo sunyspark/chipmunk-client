@@ -39,6 +39,10 @@ RSpec.describe Chipmunk::BaggerCLI do
     it "can make a digital bagger" do
       expect(described_class.new(["digital", "foo", "bar"]).bagger).to be_a_kind_of(Chipmunk::Bagger)
     end
+
+    it "can make a video bagger" do
+      expect(described_class.new(["video", "foo", "-s", "foo", "bar"]).bagger).to be_a_kind_of(Chipmunk::Bagger)
+    end
   end
 
   describe "#run" do
@@ -46,6 +50,14 @@ RSpec.describe Chipmunk::BaggerCLI do
       allow(File).to receive(:exist?).with("dest_path/data").and_return(true)
       expect { described_class.new(["audio", "ext_id", "-s", "src_path", "dest_path"]).run }
         .to raise_exception(RuntimeError, /won't overwrite/)
+    end
+
+    it "calls check_bag and make_bag on the bagger" do
+      cli = described_class.new(["digital", "foo", "bar"])
+      expect(cli.bagger).to receive(:check_bag)
+      expect(cli.bagger).to receive(:make_bag)
+
+      cli.run
     end
   end
 end
