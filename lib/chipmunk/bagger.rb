@@ -16,16 +16,7 @@ module Chipmunk
       @src_path = File.join(params[:src_path], "") if params[:src_path]
     end
 
-    # creates a new bag at bag_path, adds chipmunk_info.txt, and updates the
-    # manifest.
-    def make_bag
-      bag.write_chipmunk_info(common_tags)
-      bag.manifest!
-    end
-
-    private
-
-    def process_bag; end
+    protected
 
     attr_accessor :src_path
 
@@ -39,6 +30,27 @@ module Chipmunk
         "Chipmunk-Content-Type" => content_type,
         "Bag-ID"                => bag_id
       }
+    end
+
+    def move_files_to_bag
+      Find.find(src_path) do |file_to_add|
+        # directories will automatically be created in the bag based on the files
+        # added, so we don't need to explicitly add them to the bag
+        next if File.directory?(file_to_add)
+
+        # relative_path is the destination path within the bag (relative to data)
+        # file_to_add is a resolvable path on disk to an actual file.
+        relative_path = remove_prefix(src_path, file_to_add)
+        bag.add_file_by_moving(relative_path, file_to_add)
+      end
+
+      FileUtils.rmdir src_path if Dir.empty?(src_path)
+    end
+
+    private
+
+    def remove_prefix(_prefix, file)
+      file.sub(/^#{src_path}/, "")
     end
 
     def bag_id

@@ -86,6 +86,11 @@ RSpec.describe Chipmunk::Bagger::Video do
         make_bag
         expect(Chipmunk::Bag.new(@bag_path)).to be_valid
       end
+
+      it "removes the empty source path" do
+        make_bag
+        expect(File.exist?(@src_path)).to be false
+      end
     end
   end
 end
