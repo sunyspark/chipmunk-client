@@ -8,9 +8,11 @@ require_relative "./chipmunk_client"
 require_relative "./bag_rsyncer"
 
 class Uploader
-  def initialize(bag_path, client:, rsyncer: BagRsyncer.new(bag_path))
-    @bag_path = bag_path.chomp("/")
-    @request_params = request_params_from_bag(bag_path)
+  def initialize(bag_path, client:, rsyncer: BagRsyncer.new(bag_path), config:)
+    @config = config
+    bag_path = bag_path.chomp("/")
+    bag = bag_at_path(bag_path)
+    @request_params = request_params_from_bag(bag)
     @client = client
     @rsyncer = rsyncer
   end
@@ -32,7 +34,7 @@ class Uploader
 
   private
 
-  attr_accessor :request_params, :bag_path, :client, :rsyncer
+  attr_accessor :request_params, :client, :rsyncer, :config
 
   def check_request(request)
     if request["stored"]
@@ -65,10 +67,15 @@ class Uploader
     end
   end
 
-  def request_params_from_bag(bag_path)
-    bag = ChipmunkBag.new bag_path
-    raise "Bag is not valid:\n" + bag.errors.full_messages.join("\n") unless bag.valid?
+  def bag_at_path(bag_path)
+    ChipmunkBag.new(bag_path).tap do |bag|
+      if config.validate_before_upload and !bag.valid?
+        raise "Bag is not valid:\n" + bag.errors.full_messages.join("\n")
+      end
+    end
+  end
 
+  def request_params_from_bag(bag)
     tags = bag.chipmunk_info
     require_chipmunk_bag_tags(tags)
 
@@ -91,7 +98,7 @@ class Uploader
       # update qitem
       return result if result["status"] != "PENDING"
       puts "Waiting for queue item to be processed"
-      sleep 10
+      sleep 1
       result = client.get("/v1/queue/#{qitem["id"]}")
     end
   end

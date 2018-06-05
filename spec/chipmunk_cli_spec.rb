@@ -34,7 +34,7 @@ RSpec.describe ChipmunkCLI do
         
       bag_paths.each do |path| 
         uploader = double("uploader for #{path}")
-        allow(uploader_factory).to receive(:new).with(path,client: client).and_return(uploader)
+        allow(uploader_factory).to receive(:new).with(path,client: client,config: anything).and_return(uploader)
         expect(uploader).to receive(:upload)
       end
 

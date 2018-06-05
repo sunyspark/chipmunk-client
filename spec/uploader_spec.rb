@@ -22,7 +22,7 @@ describe Uploader do
     {
       "id"     => 1,
       "status" => "DONE",
-      "bag"    => "/v1/bags/#{bag_id}"
+      "package"    => "/v1/packages/#{bag_id}"
     }
   end
 
@@ -36,7 +36,7 @@ describe Uploader do
   end
 
   subject do
-    described_class.new(fixture("test_bag"), client: client, rsyncer: rsyncer)
+    described_class.new(fixture("test_bag"), client: client, rsyncer: rsyncer, config: double(:config, validate_before_upload: true) )
   end
 
   context "when the bag is not already stored" do

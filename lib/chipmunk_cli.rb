@@ -8,21 +8,21 @@ class ChipmunkCLI
   def initialize(args,client_factory: ChipmunkClient)
     @config_files = Ettin.settings_files("config",nil)
     parse_options(args)
-    config ||= Ettin.for(@config_files)
+    @config ||= Ettin.for(@config_files)
     @client = client_factory.new(**config)
   end
 
   def run(uploader_factory: Uploader)
     bag_paths.each do |bag_path|
       puts "Uploading #{bag_path}"
-      uploader_factory.new(bag_path, client: client).upload
+      uploader_factory.new(bag_path, client: client, config: config).upload
       puts
     end
   end
 
   private
 
-  attr_reader :client, :bag_paths
+  attr_reader :client, :bag_paths, :config
 
   USAGE = "Usage: #{$PROGRAM_NAME} [options] /path/to/bag1 /path/to/bag2 ..."
 
