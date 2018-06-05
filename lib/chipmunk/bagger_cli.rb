@@ -23,8 +23,8 @@ module Chipmunk
     attr_reader :content_type, :external_id, :src_path, :bag_path
 
     def check_dest_dir
-      if src_path and File.exist?(File.join(bag_path,"data"))
-        raise RuntimeError, "Source path specified and #{bag_path}/data already exists; won't overwrite"
+      if src_path && File.exist?(File.join(bag_path, "data"))
+        raise "Source path specified and #{bag_path}/data already exists; won't overwrite"
       end
     end
 

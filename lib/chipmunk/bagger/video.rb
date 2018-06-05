@@ -14,7 +14,5 @@ module Chipmunk
       bag.manifest!
     end
 
-    private
-
   end
 end

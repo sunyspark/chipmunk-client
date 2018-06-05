@@ -8,13 +8,6 @@ RSpec.describe Chipmunk::Bagger::Digital do
   let(:external_id) { "12345" }
   let(:fakeuuid) { "fakeuuid" }
   let(:fixture_data) { fixture("digital", "pre-chipmunk") }
-
-  def make_bag
-    described_class.new(content_type: "digital",
-                        external_id: external_id,
-                        bag_path: @bag_path).make_bag
-  end
-
   let(:bag_data) { File.join(@bag_path, "data") }
 
   context "with fixture data" do
@@ -50,25 +43,25 @@ RSpec.describe Chipmunk::Bagger::Digital do
           "Bag-ID" => fakeuuid
         )
 
-        make_bag
+        make_bag("digital")
       end
 
       it "validates the existing bag before manifesting it" do
         expect(bag).to receive(:valid?).ordered
         expect(bag).to receive(:manifest!).ordered
 
-        make_bag
+        make_bag("digital")
       end
 
       it "raises an exception if the bag is not valid" do
         allow(bag).to receive(:valid?).and_return(false)
 
-        expect { make_bag }.to raise_exception(RuntimeError)
+        expect { make_bag("digital") }.to raise_exception(RuntimeError)
       end
     end
 
     it "creates a valid Chipmunk::Bag" do
-      make_bag
+      make_bag("digital")
       expect(Chipmunk::Bag.new(@bag_path)).to be_valid
     end
   end

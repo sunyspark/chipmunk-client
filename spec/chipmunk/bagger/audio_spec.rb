@@ -9,13 +9,6 @@ RSpec.describe Chipmunk::Bagger::Audio do
   let(:fake_uuid) { "fakeuuid" }
   let(:good_data_path) { fixture("audio", "upload", "good", "data") }
 
-  def make_bag
-    described_class.new(content_type: "audio",
-                        external_id: external_id,
-                        src_path: @src_path,
-                        bag_path: @bag_path).make_bag
-  end
-
   before(:each) do
     # don't actually fetch marc
     allow(Net::HTTP).to receive(:get)
@@ -26,29 +19,13 @@ RSpec.describe Chipmunk::Bagger::Audio do
   let(:mets_path) { File.join(good_data_path, "mets.xml") }
   let(:bag_data) { File.join(@bag_path, "data") }
 
-  context "with fixture data" do
-    # set up data in safe area
-    around(:each) do |example|
-      Dir.mktmpdir do |tmpdir|
-        @bag_path = File.join(tmpdir, "testbag")
-        @src_path = File.join(tmpdir, "srcpath")
-        FileUtils.cp_r(fixture_data, @src_path)
-        example.run
-      end
-    end
+  context "with fixture data and stubbed Chipmunk::Bag" do
+    include_context "fixture data"
 
     context "with stubbed Chipmunk::Bag" do
-      let(:bag) do
-        instance_double(Chipmunk::Bag,
-          "manifest!": nil,
-          write_chipmunk_info: nil,
-          add_tag_file: nil,
-          download_metadata: nil)
-      end
+      include_context "stubbed Chipmunk::Bag"
 
       before(:each) do
-        allow(SecureRandom).to receive(:uuid).and_return(fake_uuid)
-        allow(Chipmunk::Bag).to receive(:new).and_return(bag)
         allow(bag).to receive(:get).with("mets.xml").and_return(File.open(mets_path))
       end
 
@@ -63,7 +40,7 @@ RSpec.describe Chipmunk::Bagger::Audio do
           ["am000001.wav", "pm000001.wav", "mets.xml"].each do |file|
             it "moves #{file} to the data dir" do
               expect(bag).to receive(:add_file_by_moving).with(file, File.join(@src_path, file))
-              make_bag
+              make_bag("audio")
             end
           end
         end
@@ -86,12 +63,12 @@ RSpec.describe Chipmunk::Bagger::Audio do
             'Metadata-Tagfile': "marc.xml"
           )
 
-          make_bag
+          make_bag("audio")
         end
 
         it "downloads the metadata" do
           expect(bag).to receive(:download_metadata)
-          make_bag
+          make_bag("audio")
         end
 
         context "when bag doesn't contain mets.xml" do
@@ -100,7 +77,7 @@ RSpec.describe Chipmunk::Bagger::Audio do
           end
 
           it "reports an error" do
-            expect { make_bag }.to raise_error(Chipmunk::MetadataError, /mets.xml/)
+            expect { make_bag("audio") }.to raise_error(Chipmunk::MetadataError, /mets.xml/)
           end
         end
       end
@@ -112,23 +89,11 @@ RSpec.describe Chipmunk::Bagger::Audio do
           expect(bag).to receive(:add_file_by_moving).with("zero_file", File.join(@src_path, "zero_file"))
           expect(bag).to receive(:add_file_by_moving).with("one/one_file", File.join(@src_path, "one/one_file"))
           expect(bag).to receive(:add_file_by_moving).with("one/two/two_file", File.join(@src_path, "one/two/two_file"))
-          make_bag
+          make_bag("audio")
         end
       end
     end
 
-    context "with good audio data" do
-      let(:fixture_data) { good_data_path }
-
-      it "creates a valid Chipmunk::Bag" do
-        make_bag
-        expect(Chipmunk::Bag.new(@bag_path)).to be_valid
-      end
-
-      it "removes the empty source path" do
-        make_bag
-        expect(File.exist?(@src_path)).to be false
-      end
-    end
+    it_behaves_like "a bagger", "audio"
   end
 end

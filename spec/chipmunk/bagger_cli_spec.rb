@@ -44,7 +44,8 @@ RSpec.describe Chipmunk::BaggerCLI do
   describe "#run" do
     it "raises a RuntimeError if the source path is specified and the destination directory exists" do
       allow(File).to receive(:exist?).with("dest_path/data").and_return(true)
-      expect { described_class.new(["audio", "ext_id", "-s", "src_path", "dest_path"]).run }.to raise_exception(RuntimeError,/won't overwrite/)
+      expect { described_class.new(["audio", "ext_id", "-s", "src_path", "dest_path"]).run }
+        .to raise_exception(RuntimeError, /won't overwrite/)
     end
   end
 end

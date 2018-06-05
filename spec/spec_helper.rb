@@ -47,3 +47,10 @@ require "webmock/rspec"
 def fixture(*path)
   File.join(File.dirname(__FILE__), "support", "fixtures", File.join(*path))
 end
+
+def make_bag(content_type)
+  described_class.new(content_type: content_type,
+                      external_id: external_id,
+                      src_path: @src_path,
+                      bag_path: @bag_path).make_bag
+end

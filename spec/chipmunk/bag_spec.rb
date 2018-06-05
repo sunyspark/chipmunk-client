@@ -3,10 +3,6 @@
 require "spec_helper"
 require "chipmunk/bag"
 
-def make_bag
-  @bag = Chipmunk::Bag.new bag_path
-end
-
 TAGFILES = ["bag-info.txt", "bagit.txt", "chipmunk-info.txt", "manifest-md5.txt", "manifest-sha1.txt"].freeze
 TAGMANIFESTS = ["tagmanifest-md5.txt", "tagmanifest-sha1.txt"].freeze
 
