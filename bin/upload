@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative "../lib/chipmunk_cli"
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require "bundler/setup"
+require "chipmunk/cli"
 
-ChipmunkCLI.new(ARGV).run
+Chipmunk::CLI.new(ARGV).run

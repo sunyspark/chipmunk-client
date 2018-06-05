@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require "chipmunk/bagger"
+require "chipmunk/bagger/audio"
+require "chipmunk/bagger/digital"
+require "chipmunk/bagger/video"
 require "optparse"
 
 module Chipmunk
@@ -14,19 +17,12 @@ module Chipmunk
     end
 
     def run
-      check_dest_dir
-      bagger.make_bag
+      bagger.check_bag && bagger.make_bag
     end
 
     private
 
     attr_reader :content_type, :external_id, :src_path, :bag_path
-
-    def check_dest_dir
-      if src_path && File.exist?(File.join(bag_path, "data"))
-        raise "Source path specified and #{bag_path}/data already exists; won't overwrite"
-      end
-    end
 
     def make_bagger
       class_for(content_type).new(content_type: content_type,

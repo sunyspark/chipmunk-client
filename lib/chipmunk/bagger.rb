@@ -16,6 +16,16 @@ module Chipmunk
       @src_path = File.join(params[:src_path], "") if params[:src_path]
     end
 
+    def check_bag
+      if src_path && File.exist?(File.join(bag_path, "data"))
+        raise "Source path specified and #{bag_path}/data already exists; won't overwrite"
+      end
+
+      if File.exist?(File.join(bag_path, "chipmunk-info.txt"))
+        raise "chipmunk-info.txt already exists, won't overwrite"
+      end
+    end
+
     protected
 
     attr_accessor :src_path
@@ -33,6 +43,8 @@ module Chipmunk
     end
 
     def move_files_to_bag
+      return unless src_path
+
       Find.find(src_path) do |file_to_add|
         # directories will automatically be created in the bag based on the files
         # added, so we don't need to explicitly add them to the bag
