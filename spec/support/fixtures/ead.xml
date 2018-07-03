@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ead>
+  <eadheader countryencoding="iso3166-1" dateencoding="iso8601" langencoding="iso639-2b" repositoryencoding="iso15511">
+    <eadid publicid="-//us::MiU//TEXT us::MiU::rossiter.xml//EN" countrycode="US" mainagencycode="US-MiU">umich-scl-rossiter</eadid>
+    <filedesc>
+      <titlestmt>
+        <titleproper>Finding aid for
+
+Margaret L. Rossiter "Women in the Resistance" Papers, 1974-1998 </titleproper>
+        <author>Encoded finding aid prepared by Kathleen Dow, 2007</author>
+      </titlestmt>
+      <publicationstmt>
+        <publisher>University of Michigan Library (Special Collections Library)</publisher>
+        <address>
+          <addressline>University of Michigan, Special Collections Library</addressline>
+          <addressline>Harlan Hatcher Graduate Library (South)</addressline>
+          <addressline>913 S. University Avenue</addressline>
+          <addressline>Ann Arbor, MI 48109-1190</addressline>
+          <addressline>URL:  http://www.lib.umich.edu/special-collections-library </addressline>
+        </address>
+      </publicationstmt>
+    </filedesc>
+    <profiledesc>
+      <creation>This finding aid was produced using ArchivesSpace on <date>2017-06-26 15:44:01 -0400</date>.</creation>
+      <langusage>The finding aid is written in <language langcode="eng">English</language></langusage>
+    </profiledesc>
+  </eadheader>
+</ead>
