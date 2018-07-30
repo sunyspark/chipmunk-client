@@ -35,7 +35,7 @@ RSpec.configure do |config|
   # inherited by the metadata hash of host groups and examples, rather than
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
-  
+
   config.before(:each) do
     Chipmunk.reset_config
   end
@@ -52,9 +52,9 @@ def fixture(*path)
   File.join(File.dirname(__FILE__), "support", "fixtures", File.join(*path))
 end
 
-def make_bag(content_type)
+def make_bag(content_type, **kwargs)
   described_class.new(content_type: content_type,
                       external_id: external_id,
                       src_path: @src_path,
-                      bag_path: @bag_path).make_bag
+                      bag_path: @bag_path, **kwargs).make_bag
 end

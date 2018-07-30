@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/version15/mets.xsd"
+    TYPE="AUDIO RECORDING" ID="mdp.39015087086396" OBJID="39015087086396">
+    <mets:metsHdr CREATEDATE="2017-04-13T09:00:42.125-04:00">
+        <mets:agent ROLE="OTHER">
+            <mets:name>The MediaPreserve</mets:name>
+        </mets:agent>
+    </mets:metsHdr>
+    <mets:structMap>
+      <div />
+    </mets>
+</mets:mets>

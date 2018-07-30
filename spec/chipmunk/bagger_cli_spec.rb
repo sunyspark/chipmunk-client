@@ -33,15 +33,22 @@ RSpec.describe Chipmunk::BaggerCLI do
 
   describe "#bagger" do
     it "can make an audio bagger" do
-      expect(described_class.new(["audio", "foo", "-s", "foo", "bar"]).bagger).to be_a_kind_of(Chipmunk::Bagger)
+      expect(described_class.new(["audio", "foo", "-s", "foo", "bar"]).bagger).to be_a(Chipmunk::Bagger::Audio)
     end
 
     it "can make a digital bagger" do
-      expect(described_class.new(["digital", "foo", "bar"]).bagger).to be_a_kind_of(Chipmunk::Bagger)
+      expect(described_class.new(["digital", "foo", "bar"]).bagger).to be_a(Chipmunk::Bagger::Digital)
     end
 
     it "can make a video bagger" do
-      expect(described_class.new(["video", "foo", "-s", "foo", "bar"]).bagger).to be_a_kind_of(Chipmunk::Bagger)
+      expect(described_class.new(["video", "foo", "-s", "foo", "bar"]).bagger).to be_a(Chipmunk::Bagger::Video)
+    end
+
+    it "can make a audio bagger with local metadata" do
+      expect(described_class.new(["audio", "foo", "-s", "foo", "bar",
+                                  "--metadata-type", "MARC",
+                                  "--metadata-path", "/somewhere/whatever.xml",
+                                  "--metadata-url", "http://foo.bar/whatever.xml"]).bagger).to be_a_kind_of(Chipmunk::Bagger::AudioLocalMetadata)
     end
   end
 

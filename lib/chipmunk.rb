@@ -20,7 +20,7 @@ module Chipmunk
     end
 
     def default_config_files
-      Ettin.settings_files(File.join(File.dirname(__FILE__),"..","config"), nil)
+      Ettin.settings_files(File.join(File.dirname(__FILE__), "..", "config"), nil)
     end
 
     def add_config(c)
