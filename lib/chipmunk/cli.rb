@@ -14,10 +14,17 @@ module Chipmunk
     end
 
     def run(uploader_factory: Uploader)
-      bag_paths.each do |bag_path|
+      bag_paths.map do |bag_path|
         puts "Uploading #{bag_path}"
-        uploader_factory.new(bag_path, client: client, config: config).upload
+        uploader = uploader_factory.new(bag_path,
+                                        client: client,
+                                        config: config)
+        uploader.upload_without_waiting_for_result
         puts
+        [bag_path, uploader]
+      end.each do |bag_path, uploader|
+        puts "Loading #{bag_path}"
+        uploader.print_result_when_done
       end
     end
 
