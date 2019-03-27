@@ -43,17 +43,54 @@ describe Chipmunk::Uploader do
     before(:each) { request["stored"] = false }
 
     context "when bag validation succeeds" do
-      it "uploads the bag" do
-        expect(rsyncer).to receive(:upload).with(request["upload_link"])
-        subject.upload
+      describe "#upload" do
+        it "uploads the bag" do
+          expect(rsyncer).to receive(:upload).with(request["upload_link"])
+          subject.upload
+        end
+
+        it "prints a success message" do
+          expect { subject.upload }.to output(/#{request["external_id"]}.*success/).to_stdout
+        end
+
+        it "returns true" do
+          expect(subject.upload).to be true
+        end
       end
 
-      it "prints a success message" do
-        expect { subject.upload }.to output(/#{request["external_id"]}.*success/).to_stdout
+      describe "#upload_without_waiting_for_result" do
+        it "doesn't write anything to stdout" do
+          expect{ subject.upload_without_waiting_for_result }.not_to output.to_stdout
+        end
+
+        it "uploads the bag" do
+          expect(rsyncer).to receive(:upload).with(request["upload_link"])
+          subject.upload_without_waiting_for_result
+        end
       end
 
-      it "returns true" do
-        expect(subject.upload).to be true
+      describe "#print_result_when_done" do
+        context "before running #upload_without_waiting_for_result" do
+          it "returns nil" do
+            expect(subject.print_result_when_done).to be nil
+          end
+
+          it "doesn't write anything to stdout" do
+            expect{ subject.print_result_when_done }.not_to output.to_stdout
+          end
+        end
+
+        context "after running #upload_without_waiting_for_result" do
+          before(:each) { subject.upload_without_waiting_for_result }
+
+          it "prints a success message" do
+            expect { subject.print_result_when_done }.to output(/#{request["external_id"]}.*success/).to_stdout
+          end
+
+          it "returns true" do
+            expect(subject.print_result_when_done).to be true
+          end
+        end
       end
     end
 
@@ -66,16 +103,57 @@ describe Chipmunk::Uploader do
         }
       end
 
-      it "prints an error message" do
-        expect { subject.upload }.to output(/#{request["external_id"]}.*failure/).to_stdout
+      describe "#upload" do
+        it "prints an error message" do
+          expect { subject.upload }.to output(/#{request["external_id"]}.*failure/).to_stdout
+        end
+
+        it "returns false" do
+          expect(subject.upload).to be false
+        end
+
+        it "formats the validation failure" do
+          expect { subject.upload }.to output(/something went wrong\nhere are the details/).to_stdout
+        end
       end
 
-      it "returns false" do
-        expect(subject.upload).to be false
+      describe "#upload_without_waiting_for_result" do
+        it "doesn't write anything to stdout" do
+          expect{ subject.upload_without_waiting_for_result }.not_to output.to_stdout
+        end
+
+        it "uploads the bag" do
+          expect(rsyncer).to receive(:upload).with(request["upload_link"])
+          subject.upload_without_waiting_for_result
+        end
       end
 
-      it "formats the validation failure" do
-        expect { subject.upload }.to output(/something went wrong\nhere are the details/).to_stdout
+      describe "#print_result_when_done" do
+        context "before running #upload_without_waiting_for_result" do
+          it "returns nil" do
+            expect(subject.print_result_when_done).to be nil
+          end
+
+          it "doesn't write anything to stdout" do
+            expect{ subject.print_result_when_done }.not_to output.to_stdout
+          end
+        end
+
+        context "after running #upload_without_waiting_for_result" do
+          before(:each) { subject.upload_without_waiting_for_result }
+
+          it "prints an error message" do
+            expect { subject.print_result_when_done }.to output(/#{request["external_id"]}.*failure/).to_stdout
+          end
+
+          it "returns false" do
+            expect(subject.print_result_when_done).to be false
+          end
+
+          it "formats the validation failure" do
+            expect { subject.print_result_when_done }.to output(/something went wrong\nhere are the details/).to_stdout
+          end
+        end
       end
     end
 
@@ -88,13 +166,50 @@ describe Chipmunk::Uploader do
           .and_return(different_external_id_request)
       end
 
-      it "prints an error message" do
-        expect { subject.upload }.to output(/expected.*"gobbledygook".*"test_ex_id_22"/).to_stdout
+      describe "#upload" do
+        it "prints an error message" do
+          expect { subject.upload }.to output(/expected.*"gobbledygook".*"test_ex_id_22"/).to_stdout
+        end
+
+        it "does not upload the bag" do
+          expect(rsyncer).not_to receive(:upload)
+          subject.upload
+        end
       end
 
-      it "does not upload the bag" do
-        expect(rsyncer).not_to receive(:upload)
-        subject.upload
+      describe "#upload_without_waiting_for_result" do
+        it "prints an error message" do
+          expect { subject.upload_without_waiting_for_result }.to output(/expected.*"gobbledygook".*"test_ex_id_22"/).to_stdout
+        end
+
+        it "does not upload the bag" do
+          expect(rsyncer).not_to receive(:upload)
+          subject.upload_without_waiting_for_result
+        end
+      end
+
+      describe "#print_result_when_done" do
+        context "before running #upload_without_waiting_for_result" do
+          it "returns nil" do
+            expect(subject.print_result_when_done).to be nil
+          end
+
+          it "doesn't write anything to stdout" do
+            expect{ subject.print_result_when_done }.not_to output.to_stdout
+          end
+        end
+
+        context "after running #upload_without_waiting_for_result" do
+          before(:each) { subject.upload_without_waiting_for_result }
+
+          it "returns nil" do
+            expect(subject.print_result_when_done).to be nil
+          end
+
+          it "doesn't write anything to stdout" do
+            expect{ subject.print_result_when_done }.not_to output.to_stdout
+          end
+        end
       end
     end
   end
@@ -102,9 +217,42 @@ describe Chipmunk::Uploader do
   context "when the bag is stored" do
     before(:each) { request["stored"] = true }
 
-    it "does not attempt to upload the bag" do
-      expect(rsyncer).not_to receive(:upload)
-      subject.upload
+    describe "#upload" do
+      it "does not attempt to upload the bag" do
+        expect(rsyncer).not_to receive(:upload)
+        subject.upload
+      end
+    end
+
+    describe "#upload_without_waiting_for_result" do
+      it "does not attempt to upload the bag" do
+        expect(rsyncer).not_to receive(:upload)
+        subject.upload_without_waiting_for_result
+      end
+    end
+
+    describe "#print_result_when_done" do
+      context "before running #upload_without_waiting_for_result" do
+        it "returns nil" do
+          expect(subject.print_result_when_done).to be nil
+        end
+
+        it "doesn't write anything to stdout" do
+          expect{ subject.print_result_when_done }.not_to output.to_stdout
+        end
+      end
+
+      context "after running #upload_without_waiting_for_result" do
+        before(:each) { subject.upload_without_waiting_for_result }
+
+        it "returns nil" do
+          expect(subject.print_result_when_done).to be nil
+        end
+
+        it "doesn't write anything to stdout" do
+          expect{ subject.print_result_when_done }.not_to output.to_stdout
+        end
+      end
     end
   end
 
@@ -119,8 +267,40 @@ describe Chipmunk::Uploader do
       allow(client).to receive(:post).and_raise(Chipmunk::ClientError.new(rest_error))
     end
 
-    it "prints the error message" do
-      expect { subject.upload }.to output(/some problem/).to_stdout
+    describe "#upload" do
+      it "prints the error message" do
+        expect { subject.upload }.to output(/some problem/).to_stdout
+      end
+    end
+
+    describe "#upload_without_waiting_for_result" do
+      it "prints the error message" do
+        expect { subject.upload_without_waiting_for_result }.to output(/some problem/).to_stdout
+      end
+    end
+
+    describe "#print_result_when_done" do
+      context "before running #upload_without_waiting_for_result" do
+        it "returns nil" do
+          expect(subject.print_result_when_done).to be nil
+        end
+
+        it "doesn't write anything to stdout" do
+          expect{ subject.print_result_when_done }.not_to output.to_stdout
+        end
+      end
+
+      context "after running #upload_without_waiting_for_result" do
+        before(:each) { subject.upload_without_waiting_for_result }
+
+        it "returns nil" do
+          expect(subject.print_result_when_done).to be nil
+        end
+
+        it "doesn't write anything to stdout" do
+          expect{ subject.print_result_when_done }.not_to output.to_stdout
+        end
+      end
     end
   end
 end

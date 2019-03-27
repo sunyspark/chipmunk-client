@@ -19,11 +19,22 @@ module Chipmunk
     end
 
     def upload
+      upload_without_waiting_for_result
+      print_result_when_done
+    end
+
+    def upload_without_waiting_for_result
       req = make_request
       return false unless check_request(req)
       rsyncer.upload(req["upload_link"])
-      qitem = complete_request(req)
-      print_result(wait_for_bag(qitem))
+      @qitem = complete_request(req)
+    rescue ClientError => e
+      puts e.to_s
+      puts e.service_exception
+    end
+
+    def print_result_when_done
+      print_result(wait_for_bag) unless qitem.nil?
     rescue ClientError => e
       puts e.to_s
       puts e.service_exception
@@ -35,7 +46,7 @@ module Chipmunk
 
     private
 
-    attr_accessor :request_params, :client, :rsyncer, :config
+    attr_accessor :request_params, :client, :rsyncer, :config, :qitem
 
     def check_request(request)
       if request["stored"]
@@ -94,7 +105,7 @@ module Chipmunk
       client.post("/v1/requests/#{bag_id}/complete")
     end
 
-    def wait_for_bag(qitem)
+    def wait_for_bag
       result = qitem
       loop do
         # update qitem
